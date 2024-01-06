@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 23:04:20 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/06 10:55:51 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/06 12:22:24 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,11 @@ void webServer::loadLocation()
         if (!parsingLocation(input))
             throw std::runtime_error("Error");
         std::string configStr = input.substr(6,input.length());
-        std::cout << configStr << std::endl;
+        // std::cout << configStr << std::endl;
         for (size_t i = 0; i < configStr.length(); i++)
         {
-           if ((configStr[i] == ':' && (configStr[i + 1] != ' ' )) || !isalpha(configStr[0]))
+           if ((configStr[i] == ':' && (configStr[i + 1] != ' ' )) 
+                || !isalpha(configStr[0]))
                 throw std::runtime_error("Error");
         }
         *it = configStr;
@@ -90,12 +91,13 @@ void webServer::loadLocation()
             }
         }
     }
-    
+    pairs = locationPairs;
     // return config;
 }
 
 void webServer::loadConfigFile()
 {
+    Server server;
     bool status = true;
     int cont = 0;
     std::ifstream configFile;
@@ -132,6 +134,7 @@ void webServer::loadConfigFile()
     }
     if(!status || lines.empty() || locations.empty())
         throw std::runtime_error("error 1"); 
+    servers.push_back(server);
 }
 
 webServer::~webServer()

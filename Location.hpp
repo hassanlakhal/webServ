@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/06 10:15:38 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/06 11:19:08 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@
 #include <map>
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <utility>
+#include"Server.hpp"
 class Location
 {
-    private:
+    protected:
         std::vector<std::pair<std::string, std::string> > pairs;
         std::string path;
         std::string auto_index;
