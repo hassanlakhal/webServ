@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/07 07:06:54 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/07 09:18:44 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ Location::Location()
 Location::~Location()
 {
 }
-void Location::setLocation(const std::vector<std::pair<std::string, std::string> >& pairs)
+const Location& Location::getLocation() const
 {
-    this->locationPairs = pairs;
+   return *this;
 }
 
 bool referenceConfig(std::string value)
@@ -41,37 +41,39 @@ bool referenceConfig(std::string value)
     return false;
 }
 
-void Location::loadLocation(std::vector<std::string>& locations)
+void Location::loadLocation(std::vector<std::string>& location)
 {
     std::string key, value;
-    std::vector<std::string>::iterator it = locations.begin();
-    for (; it != locations.end(); it++)
+    std::vector<std::string>::iterator it = location.begin();
+    std::cout << "============"<< "\n";
+    for (; it != location.end(); it++)
     {
         std::string input(*it);
-        // if (!parsingLocation(input))
-        //     throw std::runtime_error("Error");
-        std::string configStr = input.substr(6,input.length());
-        for (size_t i = 0; i < configStr.length(); i++)
-        {
-           if ((configStr[i] == ':' && (configStr[i + 1] != ' ' )) 
-                || !isalpha(configStr[0]))
-                throw std::runtime_error("Error");
-        }
-        *it = configStr;
-    }
-    it = locations.begin();
-    for (; it != locations.end(); it++)
-    {
-        std::istringstream iss(*it);
-        while (std::getline(iss,key,':') && std::getline(iss,value))
-        {
-            if (referenceConfig(key))
-                locationPairs.push_back(std::make_pair(key,value));
-            else
-            {
-                locationPairs.clear();
-                throw std::runtime_error("Error");
-            }
-        }
-    }
+        std::cout << input << std::endl; 
+    //     // if (!parsingLocation(input))
+    //     //     throw std::runtime_error("Error");
+    //     std::string configStr = input.substr(6,input.length());
+    //     for (size_t i = 0; i < configStr.length(); i++)
+    //     {
+    //        if ((configStr[i] == ':' && (configStr[i + 1] != ' ' )) 
+    //             || !isalpha(configStr[0]))
+    //             throw std::runtime_error("Error");
+    //     }
+    //     *it = configStr;
+    // }
+    // it = locations.begin();
+    // for (; it != locations.end(); it++)
+    // {
+    //     std::istringstream iss(*it);
+    //     while (std::getline(iss,key,':') && std::getline(iss,value))
+    //     {
+    //         if (referenceConfig(key))
+    //             locationPairs.push_back(std::make_pair(key,value));
+    //         else
+    //         {
+    //             locationPairs.clear();
+    //             throw std::runtime_error("Error");
+    //         }
+    //     }
+     }
 } 

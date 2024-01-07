@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/07 06:53:11 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/07 09:12:03 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ class Location
     public:
         Location();
         void loadLocation(std::vector<std::string>& locations);
-        void setLocation(const std::vector<std::pair<std::string, std::string> >& pairs);
+        const Location& getLocation() const;
+        // void setLocation(const std::vector<std::pair<std::string, std::string> >& pairs);
         ~Location();
 };
 

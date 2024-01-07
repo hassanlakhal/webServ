@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 23:04:20 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/07 07:15:33 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/07 09:16:12 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,23 +78,25 @@ void webServer::loadConfigFile()
                         if (!status)
                             break;
                    }
+                   else
+                        std::cout << "test ===> " << std::endl;
                 }
                 lines.push_back(line); 
             }
-            // location.loadLocation(locations);
-            std::vector<std::string>::iterator it = locations.begin();
-            std::cout << "-------------\n";
-            while (it != locations.end())
-            {
-               std::cout << *it << std::endl;
-               ++it;
-            }
-            std::cout << "-------------\n";
+            location.loadLocation(locations);
+            // std::vector<std::string>::iterator it = locations.begin();
+            // std::cout << "-------------\n";
+            // while (it != locations.end())
+            // {
+            //    std::cout << *it << std::endl;
+            //    ++it;
+            // }
+            // std::cout << "-------------\n";
             lines.clear();
             locations.clear();
         }
         else
-            std::cout <<"test" <<line << std::endl;
+            std::cout <<"test" << line << std::endl;
     }
     // if(!status || lines.empty() || locations.empty())
     //     throw std::runtime_error("error 1"); 
