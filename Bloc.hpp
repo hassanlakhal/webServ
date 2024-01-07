@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   webserver.hpp                                      :+:      :+:    :+:   */
+/*   Bloc.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 23:05:17 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/07 02:36:25 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/07 01:43:10 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "Location.hpp"
 class Location;
 class Server;
-class webServer
+class Bloc
 {
     private:
         std::vector<Server> servers;
@@ -24,11 +24,11 @@ class webServer
         std::vector<std::string> lines;
         std::vector<std::string> locations;
     public:
-        webServer();
-        webServer(const std::string &nameFile);
+        Bloc();
+        Bloc(const std::string &nameFile);
         void loadConfigFile();
         void loadLocation();
-        ~webServer();
+        ~Bloc();
 };
 
 #endif

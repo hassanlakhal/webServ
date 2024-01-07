@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:41:04 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/06 11:45:54 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/07 02:43:04 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ class Server
         std::vector<Location> Locations;
     public:
         Server();
+        void addLocation(Location& location);
         ~Server();
 };
 

@@ -14,6 +14,9 @@ server:
     - cgi_path: [.php, /usr/bin/php-cgi]
     - cgi_path: [.sh, /usr/bin/bash]
     - proxy_read_time_out: 5s
+  location:
+    - p: ""
+    - test: ""
 
 server:
   listen: 5001

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   location.hpp                                       :+:      :+:    :+:   */
+/*   Location.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/06 11:19:08 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/07 06:53:11 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 class Location
 {
     protected:
-        std::vector<std::pair<std::string, std::string> > pairs;
+        std::vector<std::pair<std::string, std::string> > locationPairs;
         std::string path;
         std::string auto_index;
         std::vector<std::string> methods;
@@ -32,6 +32,8 @@ class Location
         // long proxy_read_time_out;
     public:
         Location();
+        void loadLocation(std::vector<std::string>& locations);
+        void setLocation(const std::vector<std::pair<std::string, std::string> >& pairs);
         ~Location();
 };
 
