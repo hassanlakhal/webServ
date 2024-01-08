@@ -14,9 +14,11 @@ server:
     - cgi_path: [.php, /usr/bin/php-cgi]
     - cgi_path: [.sh, /usr/bin/bash]
     - proxy_read_time_out: 5s
-  
-  test:
-    - p: ""
+  location:
+    - p: 1 ""
+    - test: ""
+  location:
+    - p: 1 ""
     - test: ""
 
 server:
