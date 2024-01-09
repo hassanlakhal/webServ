@@ -6,13 +6,13 @@
 #    By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 01:05:23 by hlakhal-          #+#    #+#              #
-#    Updated: 2024/01/08 18:54:02 by hlakhal-         ###   ########.fr        #
+#    Updated: 2024/01/09 15:23:09 by hlakhal-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = web
 
-SRC =  Location.cpp  Server.cpp webServer.cpp main.cpp
+SRC =  Location.cpp  Server.cpp webServer.cpp main.cpp parsingFile.cpp
 
 CXX = c++ -std=c++98
 

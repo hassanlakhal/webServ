@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/09 00:34:43 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/09 16:59:38 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,24 @@ Server* Server::createServer()
 
 void Server::setListen(std::string& listen)
 {
+    (void)listen;
     // this->listen = listen;
 }
 
 void Server::setHost(std::string& host)
 {
+    (void)host;
     // this->host =  host;
 }
 
 void Server::setRoot(std::string& root)
 {
+    std::cout << root << std::endl;
     // this->host =  host;
 }
 
-void Server::setMaxBodySize(std::string& host)
+void Server::setMaxBodySize(std::string& maxBodySize)
 {
+    (void)maxBodySize;
     // this->client_max_body_size = maxBodySize;
 }
