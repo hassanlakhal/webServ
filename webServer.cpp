@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 23:04:20 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/08 07:27:15 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/08 21:49:48 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ webServer::webServer()
 
 void webServer::loadLocation()
 {
+}
+
+void webServer::addSever(Server *s)
+{
+    servers.push_back(s);
 }
 
 void webServer::loadConfigFile()

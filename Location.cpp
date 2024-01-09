@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/08 07:28:41 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/08 19:50:08 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,11 +122,11 @@ std::vector<Location *>  Location::makeLocation()
 {
     std::vector<Location *> locations;
     size_t cont = lineOfLocation.size();
-    std::cout << "-----\n";
-    for (size_t i = 0; i < cont; i++)
-    {
-        std::cout << "create :" << std::endl;
-        locations.push_back(new Location);    
-    }
+    std::cout << cont << "-----\n";
+    // for (size_t i = 0; i < cont; i++)
+    // {
+    //     std::cout << "create :" << std::endl;
+    //     locations.push_back(new Location);    
+    // }
     return locations;
 }
