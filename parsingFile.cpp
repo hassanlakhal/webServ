@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/09 23:42:58 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:56:06 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,16 +120,20 @@ void fillServer(std::ifstream& configFile)
         line = lastTrim(line);
         if (line.empty() || line[0] == '#')
             continue;
+        std::string word = getWordLocation(line,2,false);
+        std::istringstream valueOfLocation(word);
+        std::getline(valueOfLocation,word,':');
+        std::getline(valueOfLocation,word);
         if (lastTrim(getLine(line)) == "  location:")
             fillLocation(configFile,s);
         else if (lastTrim(getLine(line)) == "  listen:")
-            s->setListen(line);
+            s->setListen(word);
         else if (lastTrim(getLine(line)) == "  host:")
-            s->setHost(line);
+            s->setHost(word);
         else if (lastTrim(getLine(line)) == "  root:")
-            s->setRoot(line);
+            s->setRoot(word);
         else if (lastTrim(getLine(line)) == "  client_max_body_size:")
-            s->setMaxBodySize(line);
+            s->setMaxBodySize(word);
         if (line == "server:")
         {
             GlobalConfig.addServer(s);
@@ -158,6 +162,13 @@ void loadingData(std::string& nameFile)
         }
         else
             std::cout <<"test" << line << std::endl;
-        
     }
+    // std::vector<Server *>:: iterator it =  GlobalConfig.getServer().begin();
+    // while (it != GlobalConfig.getServer().end())
+    // {
+    //     Server *server = *it;
+        
+    //     it++;
+    // }
+    
 }

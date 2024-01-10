@@ -4,20 +4,20 @@ server:
   root: www/1
 
   location:
-    - path: "/"
+    - path : /
     - root: www
     - upload: on  
     - autoindex: on
-    - methods: GET
+    - methods: GET POST
     - index:  index.html
     - cgi_path: .py, /usr/bin/python3
     - cgi_path: .php, /usr/bin/php-cgi
     - cgi_path: .sh, /usr/bin/bash
   location:
-    - path: "/"
+    - path:     /
     - test: ""
   location:
-    - path: "/"
+    - path: /
     - test: ""
 
 server:
@@ -27,7 +27,7 @@ server:
   client_max_body_size: 2g
 
   location:
-    - path: "/cgi-bin"
+    - path: /cgi-bin
     - root:   www 
     - autoindex: on
     - methods: POST
@@ -40,7 +40,7 @@ server:
   root: www/3
 
   location:
-    - path: "/uploads"
+    - path: /uploads
     - root: www
     - methods: DELETE
     - upload: on

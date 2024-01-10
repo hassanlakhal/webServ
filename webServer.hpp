@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 23:05:17 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/09 16:04:13 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:47:56 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ class webServer
         void loadConfigFile();
         void loadLocation();
         void addServer(Server * s);
+        std::vector<Server *> getServer() const;
         ~webServer();
 };
 

@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 00:20:40 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/09 15:24:45 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/10 17:31:57 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,20 @@
 
 int main(int ac, char *av[])
 {
-    if (ac == 2)
-    {     
-        std::string input(av[1]);
-        // webServer a(input);
-        loadingData(input);
-        // a.loadConfigFile();
-        // a.loadLocation();
+    try
+    {
+        if (ac == 2)
+        {     
+            std::string input(av[1]);
+            // webServer a(input);
+            loadingData(input);
+            // a.loadConfigFile();
+            // a.loadLocation();
+        }
     }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    
 }
