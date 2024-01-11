@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/11 02:14:43 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/11 10:48:38 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,7 @@ Server::~Server()
 
 void Server::addLocation(Location *location)
 {
-   std::cout << location->getPath() << std::endl;
     Locations.push_back(*location);
-    printf("%p\n",location);
 }
 
 Server* Server::createServer()

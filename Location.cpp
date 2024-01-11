@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/11 02:31:11 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/11 10:24:30 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,6 @@ void Location::setPath(std::string& path)
 
 std::string Location::getPath() const
 {
-     printf("%p\n",this);
-    if(this == nullptr)
-    {
-        // std::cout << path << std::endl;
-        exit(10);
-    }
     return path;
 }
 
@@ -117,8 +111,6 @@ void Location::setUpload(std::string& upload)
 {
     (void)upload;
 }
-
-
 
 Location* Location::createLocation()
 {
