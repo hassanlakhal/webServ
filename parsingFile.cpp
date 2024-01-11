@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/11 12:32:27 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/11 16:43:06 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ std::string getLine(const std::string& word)
     for (size_t i = 0; i < word.length(); i++)
     {
         if (word[i] == ':')
-            return word.substr(0,i + 1);
+            return word.substr(0,i);
     }
     return word;
 }
@@ -40,10 +40,18 @@ int numberOfCharacter(const std::string& information, char c, size_t& i)
     {
         if (information[i] == c)
             cont++;
-        if(information[i] == '-')
+        if(information[i] == '-' || isalpha(information[i]))
             break;
     }
     return cont;
+}
+static std::string trim(std::string word)
+{
+    size_t first = word.find_first_not_of(" ");
+    if (first == std::string::npos)
+        return word;
+    size_t last = word.find_last_not_of(" ");
+    return word.substr(first, last - first + 1);
 }
 
 bool parsingLocation(const std::string& information)
@@ -57,7 +65,7 @@ bool parsingLocation(const std::string& information)
     }
     else if(ind == 2)
     {
-        if(information != "  location:")
+        if(trim(getLine(information))!= "location")
             return false;
     }
     else
@@ -87,19 +95,19 @@ void fillLocation( std::ifstream& configFile,std::string& line, Server* s)
         std::istringstream valueOfLocation(word);
         std::getline(valueOfLocation,word,':');
         std::getline(valueOfLocation,word);
-        if(getWordLocation(line,6,true) == "path:")
+        if(trim(getWordLocation(line,6,true)) == "path")
             loc->setPath(word);
-        else if(getWordLocation(line,6,true) == "root:")
+        else if(trim(getWordLocation(line,6,true)) == "root")
             loc->setRoot(word);
-        else if(getWordLocation(line,6,true) == "cgi_path:")
+        else if(trim(getWordLocation(line,6,true)) == "cgi_path")
             loc->setCgi(word);
-        else if(getWordLocation(line,6,true) == "methods:")
+        else if(trim(getWordLocation(line,6,true)) == "methods")
             loc->setMethods(word);
-        else if(getWordLocation(line,6,true) == "autoindex:")
+        else if(trim(getWordLocation(line,6,true)) == "autoindex")
             loc->setAutoIndex(word);
-        else if(getWordLocation(line,6,true) == "upload:")
+        else if(trim(getWordLocation(line,6,true)) == "upload")
             loc->setUpload(word);
-        else if (lastTrim(getLine(line)) == "  location:")
+        if (trim(getLine(line)) == "location")
         {
             s->addLocation(loc);
             fillLocation(configFile,line,s);
@@ -115,24 +123,30 @@ void fillServer(std::ifstream& configFile)
 {
     Server *s = new Server;
     std::string line;
+    size_t hint;
     while (std::getline(configFile,line))
     {
-        line = lastTrim(line);
-        if (line.empty() || line[0] == '#')
+        hint = 0;
+        if (line.empty() || trim(line)[0] == '#')
             continue;
+        int ind = numberOfCharacter(line, ' ',hint);
+        if (ind == 2)
+            line = trim(line);
+        else
+            throw std::runtime_error("Missing space");
         std::string word = getWordLocation(line,2,false);
         std::istringstream valueOfLocation(word);
         std::getline(valueOfLocation,word,':');
         std::getline(valueOfLocation,word);
-        if (lastTrim(getLine(line)) == "  listen:")
+        if (trim(getLine(line)) == "listen")
             s->setListen(word);
-        else if (lastTrim(getLine(line)) == "  host:")
+        else if (trim(getLine(line)) == "host")
             s->setHost(word);
-        else if (lastTrim(getLine(line)) == "  root:")
+        else if (trim(getLine(line)) == "root")
             s->setRoot(word);
-        else if (lastTrim(getLine(line)) == "  client_max_body_size:")
+        else if (trim(getLine(line)) == "client_max_body_size")
             s->setMaxBodySize(word);
-        else if(lastTrim(getLine(line)) == "  location:")
+        else if(trim(getLine(line)) == "location")
             fillLocation(configFile,line,s);
         if (line == "server:")
         {
@@ -157,35 +171,29 @@ void loadingData(std::string& nameFile)
         if (line.empty() || line[0] == '#')
             continue;
         if(line == "server:")
-        {
-            // std::string input(configFile);
             fillServer(configFile);
-        }
         else
             std::cout <<"test" << line << std::endl;
     }
-    // const std::string name = " name:";
-    // std::cout << "server 1 :"<< GlobalConfig.getServer()[0].getLocation()[0].getPath() << std::endl;
-    // std::cout << "server 1 :"<< GlobalConfig.getServer()[0].getLocation()[1].getPath() << std::endl;
-    // std::cout << "server 2 :"<< GlobalConfig.getServer()[0].getLocation()[2].getPath() << std::endl;
-    // std::cout << "server 1 :"<< GlobalConfig.getServer()[1].getLocation()[0].getPath() << std::endl;
-    
-    std::vector<Server>:: const_iterator it =  GlobalConfig.getServer().begin();
-    int count = 0;
-    while (it != GlobalConfig.getServer().end())
-    {
-        Server server = *it;
-        std::cout << "server : " << count++ << std::endl ;
-        std::vector<Location>::const_iterator it1 = server.getLocation().begin();
-        // std::cout << server.getListen() << std::endl;
-        // std::cout << server.getRoot() << std::endl;
-        // std::cout << server.getHost() << std::endl;
-        while (it1 != server.getLocation().end())
-        {
-            Location loc = *it1;
-            std::cout << loc.getPath() << std::endl;
-            it1++;
-        }
-        it++;
-    };
+    // std::vector<Server>:: const_iterator it =  GlobalConfig.getServer().begin();
+    // int count = 0;
+    // while (it != GlobalConfig.getServer().end())
+    // {
+    //     Server server = *it;
+    //     std::cout << "server : " << count++ << std::endl ;
+    //     std::vector<Location>::const_iterator it1 = server.getLocation().begin();
+    //     std::cout << server.getListen() << std::endl;
+    //     std::cout << server.getRoot() << std::endl;
+    //     std::cout << server.getHost() << std::endl;
+    //     count = 0;
+    //     while (it1 != server.getLocation().end())
+    //     {
+    //         std::cout << "  location : " << count++ << std::endl ;
+    //         Location loc = *it1;
+    //         std::cout << loc.getPath() << std::endl;
+    //         std::cout << loc.getAutoIndex() << std::endl;
+    //         it1++;
+    //     }
+    //     it++;
+    // }
 }

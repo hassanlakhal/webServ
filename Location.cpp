@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/11 10:24:30 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/11 16:39:00 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void Location::setCgi(std::string& path)
 
 void Location::setAutoIndex(std::string& AutoIndex)
 {
+    this->auto_index = AutoIndex;
     // std::cout << AutoIndex << std::endl;
     (void)AutoIndex;
 }

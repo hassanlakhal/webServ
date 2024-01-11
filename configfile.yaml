@@ -14,10 +14,6 @@ server:
     - cgi_path: .php, /usr/bin/php-cgi
     - cgi_path: .sh, /usr/bin/bash
     - proxy_read_time_out: 5s
-  location:
-    - path: /test1
-  location:
-    - path: /test2
 
 server:
   listen: 5001
@@ -39,6 +35,7 @@ server:
   root: www/
 
   location:
+    - path: /uploads
     - root: www
     - methods: DELETE
     - upload: on
