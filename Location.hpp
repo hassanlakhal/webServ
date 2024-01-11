@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/10 19:31:21 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/11 02:29:27 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ class Location
         void setCgi(std::string& CgiPath);
         void setRoot(std::string& root);
         void setUpload(std::string& upload);
+        std::string getPath() const;
+        std::string getAutoIndex() const;
         // void setLocation(const std::vector<std::pair<std::string, std::string> >& pairs);
         ~Location();
 };

@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/10 19:39:30 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/11 02:31:11 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,17 @@ void Location::setPath(std::string& path)
     this->path = path;
 }
 
+std::string Location::getPath() const
+{
+     printf("%p\n",this);
+    if(this == nullptr)
+    {
+        // std::cout << path << std::endl;
+        exit(10);
+    }
+    return path;
+}
+
 void Location::setRoot(std::string& root)
 {
      if (root[0] != ' ')
@@ -73,7 +84,13 @@ void Location::setCgi(std::string& path)
 
 void Location::setAutoIndex(std::string& AutoIndex)
 {
+    // std::cout << AutoIndex << std::endl;
     (void)AutoIndex;
+}
+
+std::string Location::getAutoIndex() const
+{
+    return this->auto_index;
 }
 
 void Location::setMethods(std::string& Methods)
@@ -92,6 +109,7 @@ void Location::setMethods(std::string& Methods)
 
 void Location::setIndex(std::string& index)
 {
+    std::cout << index << std::endl;
     (void)index;
 }
 
@@ -99,6 +117,8 @@ void Location::setUpload(std::string& upload)
 {
     (void)upload;
 }
+
+
 
 Location* Location::createLocation()
 {

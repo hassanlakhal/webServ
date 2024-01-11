@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/09 16:59:38 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/11 02:14:43 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@ Server::~Server()
 {
 }
 
-void Server::addLocation(Location& location)
+void Server::addLocation(Location *location)
 {
-    Locations.push_back(location);
+   std::cout << location->getPath() << std::endl;
+    Locations.push_back(*location);
+    printf("%p\n",location);
 }
 
 Server* Server::createServer()
@@ -34,20 +36,44 @@ Server* Server::createServer()
 
 void Server::setListen(std::string& listen)
 {
-    (void)listen;
+    if (listen[0] != ' ')
+        throw std::runtime_error("error line listen");
+    std::istringstream iss(listen);
+    long nb;
+    iss >> nb;
+    this->listen = nb;
     // this->listen = listen;
+}
+
+long Server::getListen() const
+{
+    return this->listen;
 }
 
 void Server::setHost(std::string& host)
 {
     (void)host;
-    // this->host =  host;
+    this->host =  host;
 }
 
+std::string Server::getHost() const
+{
+    return host;
+}
 void Server::setRoot(std::string& root)
 {
-    std::cout << root << std::endl;
-    // this->host =  host;
+    // std::cout << root << std::endl;
+    this->root =  root;
+}
+
+std::string Server::getRoot() const
+{
+    return root;
+}
+
+const std::vector<Location>& Server::getLocation() const
+{
+    return this->Locations;
 }
 
 void Server::setMaxBodySize(std::string& maxBodySize)

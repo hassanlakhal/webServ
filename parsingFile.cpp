@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/10 18:56:06 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/11 02:36:29 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ std::string getWordLocation(std::string& word, int pos, bool type)
 }
 
 
-void fillLocation( std::ifstream& configFile, Server *s)
+void fillLocation( std::ifstream& configFile, Server* s)
 {
     Location *loc = new Location;
     std::string line;
@@ -100,20 +100,22 @@ void fillLocation( std::ifstream& configFile, Server *s)
             loc->setAutoIndex(word);
         else if(getWordLocation(line,6,true) == "upload:")
             loc->setUpload(word);
-        if (lastTrim(getLine(line)) == "  location:")
+        else if (lastTrim(getLine(line)) == "  location:")
         {
-            s->addLocation(*loc);
+            s->addLocation(loc);
+            printf("%p\n",loc);
             fillLocation(configFile,s);
+            delete loc;
             return ;
         }
     }
+    s->addLocation(loc);
     delete loc;
 }
 
 void fillServer(std::ifstream& configFile)
 {
     Server *s = new Server;
-    // std::ifstream configFile(file);
     std::string line;
     while (std::getline(configFile,line))
     {
@@ -124,9 +126,7 @@ void fillServer(std::ifstream& configFile)
         std::istringstream valueOfLocation(word);
         std::getline(valueOfLocation,word,':');
         std::getline(valueOfLocation,word);
-        if (lastTrim(getLine(line)) == "  location:")
-            fillLocation(configFile,s);
-        else if (lastTrim(getLine(line)) == "  listen:")
+        if (lastTrim(getLine(line)) == "  listen:")
             s->setListen(word);
         else if (lastTrim(getLine(line)) == "  host:")
             s->setHost(word);
@@ -134,15 +134,20 @@ void fillServer(std::ifstream& configFile)
             s->setRoot(word);
         else if (lastTrim(getLine(line)) == "  client_max_body_size:")
             s->setMaxBodySize(word);
+        else if(lastTrim(getLine(line)) == "  location:")
+        {
+            GlobalConfig.addServer(s);
+            fillLocation(configFile,s);
+        }
         if (line == "server:")
         {
             GlobalConfig.addServer(s);
-            fillServer(configFile); 
+            fillServer(configFile);
+            // printf("%p\n",loc);
+            delete s; 
             return ;
         }
     }
-    GlobalConfig.addServer(s);
-    delete s;
 }
 
 void loadingData(std::string& nameFile)
@@ -163,12 +168,25 @@ void loadingData(std::string& nameFile)
         else
             std::cout <<"test" << line << std::endl;
     }
-    // std::vector<Server *>:: iterator it =  GlobalConfig.getServer().begin();
+    // const std::string name = " name:";
+    // std::cout << "server 1 :"<< GlobalConfig.getServer()[0].getLocation()[0].getAutoIndex() << std::endl;
+    
+    // std::vector<Server>:: const_iterator it =  GlobalConfig.getServer().begin();
+    // int count = 0;
     // while (it != GlobalConfig.getServer().end())
     // {
-    //     Server *server = *it;
-        
+    //     Server server = *it;
+    //     std::cout << "server : " << count++ << std::endl ;
+    //     std::vector<Location>::const_iterator it1 = server.getLocation().begin();
+    //     while (it1 != server.getLocation().end())
+    //     {
+    //         Location loc = *it1;
+    //         std::cout << loc.getPath() << std::endl;
+    //         it1++;
+    //     }
+    //     // std::cout << server.getListen() << std::endl;
+    //     // std::cout << server.getRoot() << std::endl;
+    //     // std::cout << server.getHost() << std::endl;
     //     it++;
-    // }
-    
+    // };
 }

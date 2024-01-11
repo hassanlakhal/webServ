@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:41:04 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/09 00:36:09 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/11 02:12:00 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,22 @@
 class Server
 {
     protected:
-        int listen;
+        long listen;
         std::string host;
         std::string root;
         std::vector<Location> Locations;
         int client_max_body_size;
     public:
         Server();
-        void addLocation(Location& location);
+        void addLocation(Location* location);
         void setListen(std::string& listen);
         void setHost(std::string& host);
         void setMaxBodySize(std::string& maxBodySize);
         void setRoot(std::string& root);
+        long getListen() const;
+        const std::vector<Location>& getLocation() const;
+        std::string getRoot() const;
+        std::string getHost() const;
         Server* createServer();
         ~Server();
 };
