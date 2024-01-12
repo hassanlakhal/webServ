@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/11 16:43:06 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/12 13:30:59 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ void fillServer(std::ifstream& configFile)
 void loadingData(std::string& nameFile)
 {
     std::ifstream configFile;
-    configFile.open(nameFile);
+    configFile.open(nameFile.c_str());
     std::string line;
     while (std::getline(configFile,line))
     {
