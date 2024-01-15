@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*    exceptionError.cpp                                :+:      :+:    :+:   */
+/*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/06 00:50:07 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/06 00:51:00 by hlakhal-         ###   ########.fr       */
+/*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
+/*   Updated: 2024/01/15 11:44:52 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include<iostream>
 
-#include"exceptionError.hpp"
 
-exceptionError:: exceptionError(/* args */)
+class Client
 {
-}
-
- exceptionError::~ exceptionError()
-{
-}
+private:
+    std::string host;
+    std::string method;
+    // short port;
+public:
+    Client();
+    void ParsingRequest(std::string& );
+    ~Client();
+};

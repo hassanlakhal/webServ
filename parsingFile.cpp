@@ -6,12 +6,12 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/11 16:43:06 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/15 12:38:02 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"parsingFile.hpp"
-
+#include"setupServer.hpp"
 webServer GlobalConfig;
 
 std::string lastTrim(const std::string& str)
@@ -163,7 +163,7 @@ void fillServer(std::ifstream& configFile)
 void loadingData(std::string& nameFile)
 {
     std::ifstream configFile;
-    configFile.open(nameFile);
+    configFile.open(nameFile.c_str());
     std::string line;
     while (std::getline(configFile,line))
     {
@@ -175,6 +175,8 @@ void loadingData(std::string& nameFile)
         else
             std::cout <<"test" << line << std::endl;
     }
+    configFile.close();
+    setupServer(GlobalConfig); 
     // std::vector<Server>:: const_iterator it =  GlobalConfig.getServer().begin();
     // int count = 0;
     // while (it != GlobalConfig.getServer().end())

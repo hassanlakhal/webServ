@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:41:04 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/11 02:12:00 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/15 18:48:52 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,15 @@
 
 // #include "webServer.hpp"
 #include "Location.hpp"
-
+#include <errno.h>
+#include <stdio.h>
+#include <cstdlib>
+#include <cstring>
 class Server
 {
     protected:
-        long listen;
-        std::string host;
+        __int16_t   listen;
+        u_long      host;
         std::string root;
         std::vector<Location> Locations;
         int client_max_body_size;
@@ -31,10 +34,10 @@ class Server
         void setHost(std::string& host);
         void setMaxBodySize(std::string& maxBodySize);
         void setRoot(std::string& root);
-        long getListen() const;
+        __int16_t getListen() const;
         const std::vector<Location>& getLocation() const;
         std::string getRoot() const;
-        std::string getHost() const;
+        u_long getHost() const;
         Server* createServer();
         ~Server();
 };
