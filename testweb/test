@@ -1,0 +1,1 @@
+<div class="main"><h1>Welcome To GFG</h1><h3>Choose Your Gender</h3><form><label>Male<input type="radio" 'name="gender" value="male" /></label><label>Female<input type="radio"name="gender" value="female" /></label></form></div>
