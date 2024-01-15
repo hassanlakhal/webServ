@@ -1,20 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsingFile.hpp                                    :+:      :+:    :+:   */
+/*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/09 15:19:17 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/15 11:27:49 by hlakhal-         ###   ########.fr       */
+/*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
+/*   Updated: 2024/01/15 11:45:14 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSINGFILE_HPP
-#define PARSINGFILE_HPP
+#include"Client.hpp"
 
-#include"webServer.hpp"
+Client::Client()
+{
+}
 
-void loadingData(std::string& nameFile);
+Client::~Client()
+{
+}
 
-#endif
+void Client::ParsingRequest(std::string& header)
+{
+    (void)header;
+}

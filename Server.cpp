@@ -6,7 +6,7 @@
 /*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/11 10:48:38 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/15 18:48:33 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,33 @@ void Server::setListen(std::string& listen)
     // this->listen = listen;
 }
 
-long Server::getListen() const
+__int16_t Server::getListen() const
 {
     return this->listen;
 }
 
 void Server::setHost(std::string& host)
 {
-    (void)host;
-    this->host =  host;
+    // (void)host;
+
+    std::istringstream iss(host);
+    std::string line;
+    u_long number[4];
+    int i = 0;
+    while (getline(iss, line, '.') && i < 4)
+    {
+        if(line.length() > 4)
+            exit(0);
+        number[i] = atoi(line.c_str());
+        i++;
+    }
+    // getline(iss,line,'.');
+    // u_long ip = ((127 << 24) | (0 << 16) | (0 << 8) | 1)
+    // std::cout << host << std::endl;
+    this->host = ((number[0] << 24) | (number[1] << 16) | (number[2] << 8) | number[3]);
 }
 
-std::string Server::getHost() const
+u_long Server::getHost() const
 {
     return host;
 }
