@@ -1,5 +1,5 @@
 server:
-  listen: 5000
+  listen: 5058
   host: 127.0.0.2
   root: www/
 
@@ -14,29 +14,3 @@ server:
     - cgi_path: .php, /usr/bin/php-cgi
     - cgi_path: .sh, /usr/bin/bash
     - proxy_read_time_out: 5s
-
-server:
-  listen: 5001
-  host: 127.0.0.3
-  root: www/
-  client_max_body_size: 2g
-
-  location:
-    - path: /cgi-bin
-    - root:   www 
-    - autoindex: on
-    - methods: POST
-    - cgi_path: .php, /usr/bin/php-cgi
-    - proxy_read_time_out: 5s
-
-server:
-  listen: 5002
-  host: 127.0.0.4
-  root: www/
-
-  location:
-    - path: /uploads
-    - root: www
-    - methods: DELETE
-    - upload: on
-    - autoindex: on
