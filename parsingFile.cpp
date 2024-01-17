@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsingFile.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/15 12:38:02 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/17 14:21:35 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"parsingFile.hpp"
-#include"setupServer.hpp"
+// #include"setupServer.hpp"
+#include"Box.hpp"
 webServer GlobalConfig;
 
 std::string lastTrim(const std::string& str)
@@ -121,7 +122,7 @@ void fillLocation( std::ifstream& configFile,std::string& line, Server* s)
 
 void fillServer(std::ifstream& configFile)
 {
-    Server *s = new Server;
+    Server s;
     std::string line;
     size_t hint;
     while (std::getline(configFile,line))
@@ -139,29 +140,31 @@ void fillServer(std::ifstream& configFile)
         std::getline(valueOfLocation,word,':');
         std::getline(valueOfLocation,word);
         if (trim(getLine(line)) == "listen")
-            s->setListen(word);
+            s.setListen(word);
         else if (trim(getLine(line)) == "host")
-            s->setHost(word);
+            s.setHost(word);
         else if (trim(getLine(line)) == "root")
-            s->setRoot(word);
+            s.setRoot(word);
         else if (trim(getLine(line)) == "client_max_body_size")
-            s->setMaxBodySize(word);
+            s.setMaxBodySize(word);
         else if(trim(getLine(line)) == "location")
-            fillLocation(configFile,line,s);
+            fillLocation(configFile,line,&s);
         if (line == "server:")
         {
-            GlobalConfig.addServer(s);
+            GlobalConfig.addServer(&s);
             fillServer(configFile);
-            delete s; 
+            // delete s; 
             return ;
         }
     }
-    GlobalConfig.addServer(s);
-    delete s;
+    GlobalConfig.addServer(&s);
+    // delete s;
 }
 
 void loadingData(std::string& nameFile)
 {
+
+    Box loading;
     std::ifstream configFile;
     configFile.open(nameFile.c_str());
     std::string line;
@@ -176,7 +179,7 @@ void loadingData(std::string& nameFile)
             std::cout <<"test" << line << std::endl;
     }
     configFile.close();
-    setupServer(GlobalConfig); 
+    loading.setUpServer(GlobalConfig); 
     // std::vector<Server>:: const_iterator it =  GlobalConfig.getServer().begin();
     // int count = 0;
     // while (it != GlobalConfig.getServer().end())

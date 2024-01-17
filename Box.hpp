@@ -1,19 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setupServer.hpp                                    :+:      :+:    :+:   */
+/*   Box.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/15 11:36:15 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/16 16:10:46 by hlakhal-         ###   ########.fr       */
+/*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
+/*   Updated: 2024/01/17 23:33:23 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SETUPSERVER_HPP
-#define SETUPSERVER_HPP
 #include"webServer.hpp"
-#include"Client.hpp"
 #include <iostream> 
 #include <arpa/inet.h>
 #include <errno.h>
@@ -23,7 +20,19 @@
 #include <unistd.h>
 #include <sys/epoll.h>
 #include <algorithm>
+class Box
+{
+    private:
+        webServer _InfoServer;
+        void parssingRequest(std::string& buffer);
+        void readRequest(int fdRequest, int epollFd);
+    public:
+        Box();
+        Box(const Box& other);
+        void setInfo(const webServer& InfoServer);
+        void setUpServer(webServer& data);
+        void sendRequaset();
+        Box& operator=(const Box& other);
+        ~Box();
+};
 
-void setupServer(webServer& data);
-
-#endif

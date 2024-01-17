@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webServer.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 23:04:20 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/10 22:52:22 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/17 22:21:18 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ Server* webServer::createServer()
     return a;
 }
 
-const std::vector<Server>& webServer::getServer() const
+std::vector<Server> webServer::getServer() const
 {
     return this->servers;
 }

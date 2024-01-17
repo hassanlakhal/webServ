@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:41:04 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/15 18:48:52 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/17 22:22:05 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 // #include "webServer.hpp"
 #include "Location.hpp"
+#include"Client.hpp"
 #include <errno.h>
 #include <stdio.h>
 #include <cstdlib>
@@ -26,6 +27,7 @@ class Server
         u_long      host;
         std::string root;
         std::vector<Location> Locations;
+        std::map<int , Client> clinets;
         int client_max_body_size;
     public:
         Server();
@@ -34,6 +36,7 @@ class Server
         void setHost(std::string& host);
         void setMaxBodySize(std::string& maxBodySize);
         void setRoot(std::string& root);
+        void setClient(std::map<int ,Client> & ClinetData);
         __int16_t getListen() const;
         const std::vector<Location>& getLocation() const;
         std::string getRoot() const;

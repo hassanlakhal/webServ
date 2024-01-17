@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webServer.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 23:05:17 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/10 22:52:09 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/17 22:22:23 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ class webServer
         void loadLocation();
         void addServer(Server *s);
         Server* createServer();
-        const std::vector<Server>& getServer() const;
+        std::vector<Server> getServer() const;
         ~webServer();
 };
 

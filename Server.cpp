@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/15 18:48:33 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/17 22:08:50 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,11 @@ void Server::setHost(std::string& host)
     // u_long ip = ((127 << 24) | (0 << 16) | (0 << 8) | 1)
     // std::cout << host << std::endl;
     this->host = ((number[0] << 24) | (number[1] << 16) | (number[2] << 8) | number[3]);
+}
+
+void Server::setClient(std::map<int , Client>& ClinetData)
+{
+    this->clinets = ClinetData;
 }
 
 u_long Server::getHost() const
