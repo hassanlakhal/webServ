@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:41:04 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/17 22:22:05 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/18 18:56:13 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class Server
         u_long      host;
         std::string root;
         std::vector<Location> Locations;
-        std::map<int , Client> clinets;
+        std::map<int, Client> clinets;
         int client_max_body_size;
     public:
         Server();

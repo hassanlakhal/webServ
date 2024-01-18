@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/17 23:54:45 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/18 21:43:10 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,39 @@ void Box::setInfo(const webServer& InfoServer)
     _InfoServer = InfoServer;
 }
 
+void Box::parssingRequest(std::string& buffer)
+{
+//    int i;
+   std::istringstream iss(buffer);
+   std::string line;
+   while (getline(iss,line))
+   {
+        std::cout << line << std::endl;
+   }
+}
+
 void Box::readRequest(int fdRequest, int epollFd)
 {
-    char buffer[1024];
-    int bytesRead = recv(fdRequest, buffer, sizeof(buffer), 0);
+    char buffer[1024] = {0};
+    int bytesRead = recv(fdRequest, buffer, 1023, 0);
+    std::cout << "FD : " << std::endl;
     if (bytesRead <= 0) 
     {
         std::cout << "Client disconnected." << std::endl;
+        clients[fdRequest].ParsingRequest();
+        std::cout << clients[fdRequest].getMethod() << std::endl;
         close(fdRequest);
         epoll_ctl(epollFd, EPOLL_CTL_DEL, fdRequest, 0);
     }
-    buffer[bytesRead] = '\0';
-    std::string buff(buffer);
+    else
+    {
+        std::string buff(buffer);
+        if (buff.find("\r\n\r\n") != std::string::npos)
+            clients[fdRequest].setRequset(buff);
+            // parssingRequest(buff);
+        // std::cout << buff << std::endl;
+    }
+    
 }
 
 void Box::setUpServer(webServer& data)
@@ -57,6 +78,7 @@ void Box::setUpServer(webServer& data)
     struct sockaddr_in host_add;
     struct sockaddr_in client_addr;
     epoll_event event;
+    epoll_event events[10];
     
     size_t numberOfServer = data.getServer().size();
     socklen_t client_addrlen = sizeof(client_addr);
@@ -78,7 +100,7 @@ void Box::setUpServer(webServer& data)
             throw std::runtime_error("Error\nlistening the socket");
         event.events = EPOLLIN;
         event.data.fd = socket_server;
-        if (epoll_ctl(epollFd,EPOLL_CTL_ADD,socket_server,&event))
+        if (epoll_ctl(epollFd,EPOLL_CTL_ADD,socket_server,&event) == -1)
         {
             close(socket_server);
             close(epollFd);
@@ -86,13 +108,12 @@ void Box::setUpServer(webServer& data)
         }
         fds.push_back(socket_server);
     }
-    epoll_event events[10];
-    std::map<int,Client> clients;
     while (true)
     {
         int client_socket;
         int numEvents = epoll_wait(epollFd, events, 10, -1);
         // signal(SI);
+        bool sing = true;
         for (int i = 0; i < numEvents; i++)
         {
             if ((it = std::find(fds.begin(),fds.end(),events[i].data.fd)) != fds.end())
@@ -105,7 +126,7 @@ void Box::setUpServer(webServer& data)
                 clients[client_socket] = client;
                 data.getServer().at(d).setClient(clients);
                 std::cout << "postion of server  " << d << std::endl;
-                std::cout << "Client connected." << std::endl;
+                std::cout <<  client_socket << " Client connected." << std::endl;
                 event.events = EPOLLIN | EPOLLOUT ;
                 event.data.fd = client_socket;
                 if (epoll_ctl(epollFd, EPOLL_CTL_ADD, client_socket, &event) == -1) 
@@ -114,16 +135,15 @@ void Box::setUpServer(webServer& data)
                     close(client_socket);
                 }
                 // fdServer.push_back(std::pair<>)
-                
             }
             else
             {
                 ssize_t bytesRead = 0;
                 if (events[i].events & EPOLLIN)
                 {
-                    readRequest(events[i].data.fd,epollFd);
+                    readRequest(events[i].data.fd,epollFd); 
                 }
-                else if ((events[i].events & EPOLLOUT))
+                else if ((events[i].events & EPOLLOUT) && !sing)
                 {
                     std::cout << "----------" << std::endl;
                     char resp[] = "HTTP/1.0 200 OK\r\n"
@@ -138,7 +158,7 @@ void Box::setUpServer(webServer& data)
                         perror("Error :");
                         exit(0);
                     }
-                    close(events[i].data.fd);
+                    // close(events[i].data.fd);
                 }
             }
             

@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/17 23:33:23 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/18 17:02:39 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ class Box
 {
     private:
         webServer _InfoServer;
+        std::map<int,Client> clients;
         void parssingRequest(std::string& buffer);
         void readRequest(int fdRequest, int epollFd);
     public:
@@ -31,7 +32,7 @@ class Box
         Box(const Box& other);
         void setInfo(const webServer& InfoServer);
         void setUpServer(webServer& data);
-        void sendRequaset();
+        void sendRequaset(std::map<int ,Client> clinet);
         Box& operator=(const Box& other);
         ~Box();
 };
