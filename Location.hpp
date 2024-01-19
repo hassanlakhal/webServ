@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/11 02:29:27 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/19 12:08:29 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <vector>
 #include <map>
+#include <set>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -28,8 +29,9 @@ class Location
         std::string path;
         std::string auto_index;
         std::string  root;
+        std::string  upload;
         std::vector<std::string> methods;
-        std::vector<std::string> index;
+        std::set<std::string> index;
         std::map<std::string, std::string> cgi_path;
         // long proxy_read_time_out;
     public:

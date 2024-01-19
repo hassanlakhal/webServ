@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/18 21:43:10 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/19 14:07:51 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,20 @@ void Box::parssingRequest(std::string& buffer)
    }
 }
 
+void Box::sendRequest(int fd)
+{
+    (void)fd;
+    std::cout <<"Method =>" << clients[fd].getMethod() << std::endl;
+}
+
 void Box::readRequest(int fdRequest, int epollFd)
 {
     char buffer[1024] = {0};
     int bytesRead = recv(fdRequest, buffer, 1023, 0);
-    std::cout << "FD : " << std::endl;
+    // std::cout << "FD : " << std::endl;
     if (bytesRead <= 0) 
     {
         std::cout << "Client disconnected." << std::endl;
-        clients[fdRequest].ParsingRequest();
-        std::cout << clients[fdRequest].getMethod() << std::endl;
         close(fdRequest);
         epoll_ctl(epollFd, EPOLL_CTL_DEL, fdRequest, 0);
     }
@@ -63,7 +67,11 @@ void Box::readRequest(int fdRequest, int epollFd)
     {
         std::string buff(buffer);
         if (buff.find("\r\n\r\n") != std::string::npos)
+        {
             clients[fdRequest].setRequset(buff);
+            clients[fdRequest].ParsingRequest();
+            sendRequest(fdRequest);
+        }
             // parssingRequest(buff);
         // std::cout << buff << std::endl;
     }
@@ -141,7 +149,7 @@ void Box::setUpServer(webServer& data)
                 ssize_t bytesRead = 0;
                 if (events[i].events & EPOLLIN)
                 {
-                    readRequest(events[i].data.fd,epollFd); 
+                    readRequest(events[i].data.fd,epollFd);
                 }
                 else if ((events[i].events & EPOLLOUT) && !sing)
                 {

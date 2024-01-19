@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/11 16:39:00 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/19 12:22:52 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ Location::ErrorLocation::ErrorLocation(const std::string& message) : std::runtim
 
 Location::Location()
 {
+    this->index.insert("index.html");
+    this->index.insert("index.htm");
 }
 
 Location::~Location()
@@ -52,16 +54,21 @@ std::string Location::getPath() const
 
 void Location::setRoot(std::string& root)
 {
-     if (root[0] != ' ')
-        throw Location::ErrorLocation("Error of line path 3");
+    if (root[0] != ' ')
+    {
+        delete this;
+        throw Location::ErrorLocation("Missing space in line of Location");
+    }
     root = trim(root);
     this->root = root;
-    // std::cout << root << std::endl;
 }
 void Location::setCgi(std::string& path)
 {
     if (path[0] != ' ')
-        throw Location::ErrorLocation("Error of line path 1");
+    {
+        delete this;
+        throw Location::ErrorLocation("Missing space in line of Location");
+    }
     std::vector<std::string> paths;
     paths.push_back(path);
     std::vector<std::string>::iterator it = paths.begin();
@@ -78,9 +85,13 @@ void Location::setCgi(std::string& path)
 
 void Location::setAutoIndex(std::string& AutoIndex)
 {
+    if (AutoIndex[0] != ' ')
+    {
+        delete this;
+        throw Location::ErrorLocation("Missing space in line of Location");
+    }
+    AutoIndex = trim(AutoIndex);
     this->auto_index = AutoIndex;
-    // std::cout << AutoIndex << std::endl;
-    (void)AutoIndex;
 }
 
 std::string Location::getAutoIndex() const
@@ -90,8 +101,11 @@ std::string Location::getAutoIndex() const
 
 void Location::setMethods(std::string& Methods)
 {
-     if (Methods[0] != ' ')
-        throw Location::ErrorLocation("Error of line path 1");
+    if (Methods[0] != ' ')
+    {
+        delete this;
+        throw Location::ErrorLocation("Missing space in line of Location");
+    }
     Methods = trim(Methods);
     std::istringstream iss(Methods);
     std::string line;
@@ -99,18 +113,33 @@ void Location::setMethods(std::string& Methods)
     {
         this->methods.push_back(Methods);
     }
-    
 }
 
 void Location::setIndex(std::string& index)
 {
-    std::cout << index << std::endl;
-    (void)index;
+    std::string line;
+    if (index[0] != ' ')
+    {
+        delete this;
+        throw Location::ErrorLocation("Missing space in line of Location");
+    }
+    index = trim(index);
+    std::istringstream iss(index);
+    while (getline(iss,line,' '))
+    {
+        this->index.insert(line);
+    }
 }
 
 void Location::setUpload(std::string& upload)
 {
-    (void)upload;
+    if (upload[0] != ' ')
+    {
+        delete this;
+        throw Location::ErrorLocation("Missing space in line of Location");
+    }
+    upload = trim(upload);
+    this->upload = upload;
 }
 
 Location* Location::createLocation()

@@ -6,13 +6,13 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/17 14:21:35 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/19 11:48:05 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"parsingFile.hpp"
-// #include"setupServer.hpp"
 #include"Box.hpp"
+
 webServer GlobalConfig;
 
 std::string lastTrim(const std::string& str)
@@ -91,7 +91,10 @@ void fillLocation( std::ifstream& configFile,std::string& line, Server* s)
         if (line.empty() || line[0] == '#')
             continue;
         if(!parsingLocation(line))
+        {
+            delete loc;
             throw std::runtime_error("Error in Location");
+        }
         std::string word = getWordLocation(line,6,false);
         std::istringstream valueOfLocation(word);
         std::getline(valueOfLocation,word,':');
@@ -108,6 +111,8 @@ void fillLocation( std::ifstream& configFile,std::string& line, Server* s)
             loc->setAutoIndex(word);
         else if(trim(getWordLocation(line,6,true)) == "upload")
             loc->setUpload(word);
+        else if(trim(getWordLocation(line,6,true)) == "index")
+            loc->setIndex(word);
         if (trim(getLine(line)) == "location")
         {
             s->addLocation(loc);

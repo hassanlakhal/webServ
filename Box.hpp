@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/18 17:02:39 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/19 13:56:56 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ class Box
         Box(const Box& other);
         void setInfo(const webServer& InfoServer);
         void setUpServer(webServer& data);
-        void sendRequaset(std::map<int ,Client> clinet);
+        void sendRequest(int fd);
         Box& operator=(const Box& other);
         ~Box();
 };

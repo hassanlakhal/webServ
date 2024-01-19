@@ -6,13 +6,13 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/18 23:28:23 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/19 13:59:49 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"Client.hpp"
 
-Client::Client(): loadingHead(true) 
+Client::Client(): loadingHead(true)
 {
 }
 
@@ -56,9 +56,11 @@ void Client::loadingFormation(std::string& line)
     long nb;
     while (getline(iss, key,':') && getline(iss,value))
     {
-        std::cout << key << " ===== "<<  value << "\n";
+      //  std::cout << key << " ===== "<<  value << "\n";
         if (key == "host")
             this->host = value;
+        if(key == "Content-Type")
+            this->type = value;
         if (key == "Transfer-Encoding" && value != "chunked")
             throw std::runtime_error("error 501");
         if(method == "POST" && key == "Content-Length")
@@ -72,9 +74,18 @@ void Client::loadingFormation(std::string& line)
             throw std::runtime_error("error 404");
         if (host.length() + path.length() > 20)
              throw std::runtime_error("error 414");
-        
     }
         
+}
+
+void Client::setBody(std::istringstream& buff)
+{
+    std::string line;
+    while (getline(buff,line) && getline(buff,line,'\r'))
+    {
+        body.append(line);
+    }
+    // std::cout <<"{" << line << "}"<< std::endl;
 }
 
 void Client::ParsingRequest()
@@ -84,15 +95,11 @@ void Client::ParsingRequest()
     if (loadingHead)
     {
         setStartLine(iss);
-        std::cout << "----header: ----" << std::endl;
         while (getline(iss, line) && getline(iss, line, '\r') && !line.empty())
         {
             loadingFormation(line);
-            // std::cout << line << std::endl;
         }
-        // std::cout << method << " ";
-        // std::cout << path << " ";
-        // std::cout << protocal << std::endl; 
+        setBody(iss);
         loadingHead = false;
     }
 }

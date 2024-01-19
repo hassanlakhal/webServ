@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/18 20:52:20 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/19 12:45:13 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ class Client
         std::string method;
         std::string path;
         std::string protocal;
+        std::string type;
         bool loadingHead;
         std::string body;
         // short port;
@@ -33,6 +34,7 @@ class Client
         void setStartLine(std::istringstream& iss);
         const Client& getClinet() const;
         void loadingFormation(std::string& line);
+        void setBody(std::istringstream& buff);
         void ParsingRequest();
         ~Client();
 };
