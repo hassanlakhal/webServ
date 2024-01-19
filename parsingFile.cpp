@@ -6,13 +6,13 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/19 11:48:05 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/19 21:18:12 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"parsingFile.hpp"
 #include"Box.hpp"
-
+#include"errorMessage.hpp"
 webServer GlobalConfig;
 
 std::string lastTrim(const std::string& str)
@@ -59,6 +59,7 @@ bool parsingLocation(const std::string& information)
 {
     size_t hint = 0;
     int ind = numberOfCharacter(information, ' ',hint);
+    std::cout << ind << " " << information << std::endl;
     if(ind == 4)
     {
        if(hint != 4 || information[hint + 1] != ' ')
@@ -69,8 +70,11 @@ bool parsingLocation(const std::string& information)
         if(trim(getLine(information))!= "location")
             return false;
     }
-    else
-        return false;
+    else if (ind == 0)
+    {
+       if(trim(getLine(information))!= "sever")
+            return false; 
+    }
     return true;
 }
 
@@ -93,7 +97,7 @@ void fillLocation( std::ifstream& configFile,std::string& line, Server* s)
         if(!parsingLocation(line))
         {
             delete loc;
-            throw std::runtime_error("Error in Location");
+            throw errorMessage(1,line);
         }
         std::string word = getWordLocation(line,6,false);
         std::istringstream valueOfLocation(word);
@@ -184,6 +188,7 @@ void loadingData(std::string& nameFile)
             std::cout <<"test" << line << std::endl;
     }
     configFile.close();
+    // std::cout << GlobalConfig.getServer()[0].getLocation()[0].getCgiPath().size()<<std::endl;
     loading.setUpServer(GlobalConfig); 
     // std::vector<Server>:: const_iterator it =  GlobalConfig.getServer().begin();
     // int count = 0;

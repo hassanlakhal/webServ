@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/19 12:22:52 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/19 20:28:43 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,11 @@ std::string trim(std::string& word)
         return word;
     size_t last = word.find_last_not_of(" ");
     return word.substr(first, last - first + 1);
+}
+
+const std::map<std::string, std::string>& Location::getCgiPath() const
+{
+    return this->cgi_path;
 }
 
 void Location::setPath(std::string& path)

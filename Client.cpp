@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/19 13:59:49 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/19 19:10:18 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,18 @@ void Client::loadingFormation(std::string& line)
 
 void Client::setBody(std::istringstream& buff)
 {
-    std::string line;
-    while (getline(buff,line) && getline(buff,line,'\r'))
+    body.clear();
+    buff.seekg(0, std::ios::end);
+    std::streamsize length = buff.tellg();
+    buff.seekg(0, std::ios::beg);
+    body.resize(static_cast<size_t>(length));
+    buff.read(&body[0], length);
+    std::cout << " ----> Binary data: " << std::endl;
+    for (size_t i = 0; i < body.size(); ++i) 
     {
-        body.append(line);
+        std::cout <<  static_cast<char>(body[i]) << " ";
     }
-    // std::cout <<"{" << line << "}"<< std::endl;
+    std::cout << std::endl;
 }
 
 void Client::ParsingRequest()
