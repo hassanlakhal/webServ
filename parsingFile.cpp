@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/19 21:18:12 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/20 15:51:30 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ void loadingData(std::string& nameFile)
             std::cout <<"test" << line << std::endl;
     }
     configFile.close();
-    // std::cout << GlobalConfig.getServer()[0].getLocation()[0].getCgiPath().size()<<std::endl;
+    std::cout << GlobalConfig.getServer()[0].getLocation()[0].getCgiPath().size()<<std::endl;
     loading.setUpServer(GlobalConfig); 
     // std::vector<Server>:: const_iterator it =  GlobalConfig.getServer().begin();
     // int count = 0;

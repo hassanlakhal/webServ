@@ -6,18 +6,28 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/19 19:10:18 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/20 15:47:29 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"Client.hpp"
 
-Client::Client(): loadingHead(true)
+Client::Client(): loadingHead(true),serverId(0)
 {
+}
+
+Client::Client(int serverId): loadingHead(true),serverId(serverId)
+{
+    
 }
 
 Client::~Client()
 {
+}
+
+int Client::getServerId() const
+{
+    return this->serverId;
 }
 
 const Client& Client::getClinet() const
@@ -25,10 +35,26 @@ const Client& Client::getClinet() const
     return *this;
 }
 
+Client& Client::operator=(const Client& other) 
+{
+    if (this != &other) 
+    {
+        fullRequset = other.fullRequset;
+        host = other.host;
+        method = other.method;
+        path = other.path;
+        protocal = other.protocal;
+        type = other.type;
+        loadingHead = other.loadingHead;
+        body = other.body;
+        serverId = other.serverId;
+    }
+    return *this;
+}
+
 void Client::setRequset(std::string& buff)
 {
     fullRequset.append(buff);
-    // std::cout << fullRequset << std::endl;
 }
 
 const std::string& Client::getRequset() const
@@ -56,7 +82,6 @@ void Client::loadingFormation(std::string& line)
     long nb;
     while (getline(iss, key,':') && getline(iss,value))
     {
-      //  std::cout << key << " ===== "<<  value << "\n";
         if (key == "host")
             this->host = value;
         if(key == "Content-Type")
@@ -80,24 +105,21 @@ void Client::loadingFormation(std::string& line)
 
 void Client::setBody(std::istringstream& buff)
 {
-    body.clear();
-    buff.seekg(0, std::ios::end);
-    std::streamsize length = buff.tellg();
-    buff.seekg(0, std::ios::beg);
-    body.resize(static_cast<size_t>(length));
-    buff.read(&body[0], length);
-    std::cout << " ----> Binary data: " << std::endl;
-    for (size_t i = 0; i < body.size(); ++i) 
-    {
-        std::cout <<  static_cast<char>(body[i]) << " ";
-    }
-    std::cout << std::endl;
+    std::istreambuf_iterator<char> begin(buff);
+    std::istreambuf_iterator<char> end;
+    body.assign(begin,end);
+}
+
+const std::vector<unsigned char>& Client::getBody() const
+{
+    return this->body;
 }
 
 void Client::ParsingRequest()
 {
-    std::istringstream iss(this->fullRequset);
+    std::istringstream iss(this->fullRequset, std::ios::binary);
     std::string line;
+    // std::cout << this->fullRequset.size() << std::endl;
     if (loadingHead)
     {
         setStartLine(iss);
@@ -107,5 +129,5 @@ void Client::ParsingRequest()
         }
         setBody(iss);
         loadingHead = false;
-    }
+    } 
 }

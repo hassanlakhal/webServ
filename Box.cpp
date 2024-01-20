@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/19 14:07:51 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/20 15:53:24 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,21 @@ void Box::parssingRequest(std::string& buffer)
 
 void Box::sendRequest(int fd)
 {
+
     (void)fd;
-    std::cout <<"Method =>" << clients[fd].getMethod() << std::endl;
+    // for (std::size_t i = 0; i < clients[fd].getBody().size(); ++i) 
+    // {
+    //     std::cout << (clients[fd].getBody()[i]) << "";
+    // }
+    std::cout <<"Method =>" << clients[fd].getServerId() << std::endl;
+    std::cout << _InfoServer.getServer()[clients[fd].getServerId()].getRoot() <<std::endl;
+    // std::cout << std::endl; 
 }
 
 void Box::readRequest(int fdRequest, int epollFd)
 {
     char buffer[1024] = {0};
     int bytesRead = recv(fdRequest, buffer, 1023, 0);
-    // std::cout << "FD : " << std::endl;
     if (bytesRead <= 0) 
     {
         std::cout << "Client disconnected." << std::endl;
@@ -65,15 +71,18 @@ void Box::readRequest(int fdRequest, int epollFd)
     }
     else
     {
-        std::string buff(buffer);
+        std::string buff(buffer,sizeof(buffer));
         if (buff.find("\r\n\r\n") != std::string::npos)
         {
             clients[fdRequest].setRequset(buff);
             clients[fdRequest].ParsingRequest();
-            sendRequest(fdRequest);
         }
-            // parssingRequest(buff);
-        // std::cout << buff << std::endl;
+        else
+        {
+            std::istringstream iss(buff);
+            clients[fdRequest].setBody(iss);
+        }
+        sendRequest(fdRequest);
     }
     
 }
@@ -87,10 +96,11 @@ void Box::setUpServer(webServer& data)
     struct sockaddr_in client_addr;
     epoll_event event;
     epoll_event events[10];
-    
     size_t numberOfServer = data.getServer().size();
     socklen_t client_addrlen = sizeof(client_addr);
     int epollFd = epoll_create(1);
+    _InfoServer = data;
+    
     for (size_t i = 0; i < numberOfServer; i++)
     {
         int socket_server = socket(AF_INET,SOCK_STREAM,0);
@@ -130,9 +140,8 @@ void Box::setUpServer(webServer& data)
                 client_socket = accept(events[i].data.fd, reinterpret_cast<struct sockaddr*>(&client_addr), &client_addrlen);
                 if (client_socket < 0)
                     perror("accept");
-                Client client;
+                Client client(d);
                 clients[client_socket] = client;
-                data.getServer().at(d).setClient(clients);
                 std::cout << "postion of server  " << d << std::endl;
                 std::cout <<  client_socket << " Client connected." << std::endl;
                 event.events = EPOLLIN | EPOLLOUT ;
