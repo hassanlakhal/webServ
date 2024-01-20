@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/20 15:53:24 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/20 22:54:42 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void Box::sendRequest(int fd)
     // {
     //     std::cout << (clients[fd].getBody()[i]) << "";
     // }
-    std::cout <<"Method =>" << clients[fd].getServerId() << std::endl;
+    std::cout <<"Method =>" << clients[fd].getMethod() << std::endl;
     std::cout << _InfoServer.getServer()[clients[fd].getServerId()].getRoot() <<std::endl;
     // std::cout << std::endl; 
 }
@@ -84,7 +84,6 @@ void Box::readRequest(int fdRequest, int epollFd)
         }
         sendRequest(fdRequest);
     }
-    
 }
 
 void Box::setUpServer(webServer& data)
@@ -144,37 +143,64 @@ void Box::setUpServer(webServer& data)
                 clients[client_socket] = client;
                 std::cout << "postion of server  " << d << std::endl;
                 std::cout <<  client_socket << " Client connected." << std::endl;
-                event.events = EPOLLIN | EPOLLOUT ;
+                event.events = EPOLLIN | EPOLLOUT;
                 event.data.fd = client_socket;
                 if (epoll_ctl(epollFd, EPOLL_CTL_ADD, client_socket, &event) == -1) 
                 {
                     std::cerr << "Error adding client socket to epoll." << std::endl;
                     close(client_socket);
                 }
-                // fdServer.push_back(std::pair<>)
             }
             else
             {
-                ssize_t bytesRead = 0;
-                if (events[i].events & EPOLLIN)
+                // ssize_t bytesRead = 0;
+                if (events[i].events & EPOLLIN && sing)
                 {
-                    readRequest(events[i].data.fd,epollFd);
+                    try
+                    {
+                        std::cout << "dakhaaaaaaal hna 1" << std::endl;
+                        readRequest(events[i].data.fd,epollFd);
+                    }
+                    catch(const std::exception& e)
+                    {
+                        std::cerr << e.what() << '\n';
+                        std::string line;
+                        std::ifstream file(e.what());
+                        if (!file.is_open())
+                            throw std::runtime_error("file not exit");
+                        std::string resp = "HTTP/1.0 404 page not fond\r\n"
+                        "Server: webserver-c\r\n"
+                        "Content-type: text/html\r\n\r\n";
+                        while (std::getline(file,line))
+                        {
+                            resp += line;
+                        }
+                        resp += "\r\n"; 
+                        int fd = write(events[i].data.fd,resp.c_str(),strlen(resp.c_str()));
+                        if (fd <= 0)
+                        {
+                            perror("Error :");
+                            exit(0);
+                        }
+                        close(events[i].data.fd);
+                    }
+                    
                 }
                 else if ((events[i].events & EPOLLOUT) && !sing)
                 {
-                    std::cout << "----------" << std::endl;
-                    char resp[] = "HTTP/1.0 200 OK\r\n"
-                    "Server: webserver-c\r\n"
-                    "Content-type: text/html\r\n\r\n"
-                    "<html><div class=\"main\"><h1>Welcome To GFG</h1><h3>Choose Your Gender</h3><form><label>Male<input type=\"radio\" 'name=\"gender\" value=\"male\" /></label><label>Female<input type=\"radio\"name=\"gender\" value=\"female\" /></label></form></div></html>\r\n";
-                    int fd = write(events[i].data.fd,resp,strlen(resp));
-                    std::cout << "EPOLLOUT " << bytesRead << " " << fd << std::endl;
-                    std::cout << "test :"<< events[i].data.fd << std::endl;
-                    if (fd <= 0)
-                    {
-                        perror("Error :");
-                        exit(0);
-                    }
+                    // std::cout << "----------" << std::endl;
+                    // char resp[] = "HTTP/1.0 200 OK\r\n"
+                    // "Server: webserver-c\r\n"
+                    // "Content-type: text/html\r\n\r\n"
+                    // "<html><div class=\"main\"><h1>Welcome To GFG</h1><h3>Choose Your Gender</h3><form><label>Male<input type=\"radio\" 'name=\"gender\" value=\"male\" /></label><label>Female<input type=\"radio\"name=\"gender\" value=\"female\" /></label></form></div></html>\r\n";
+                    // int fd = write(events[i].data.fd,resp,strlen(resp));
+                    // std::cout << "EPOLLOUT " << bytesRead << " " << fd << std::endl;
+                    // std::cout << "test :"<< events[i].data.fd << std::endl;
+                    // if (fd <= 0)
+                    // {
+                    //     perror("Error :");
+                    //     exit(0);
+                    // }
                     // close(events[i].data.fd);
                 }
             }

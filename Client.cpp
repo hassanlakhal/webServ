@@ -6,12 +6,12 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/20 15:47:29 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/20 22:43:54 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"Client.hpp"
-
+#include"errorMessage.hpp"
 Client::Client(): loadingHead(true),serverId(0)
 {
 }
@@ -82,6 +82,7 @@ void Client::loadingFormation(std::string& line)
     long nb;
     while (getline(iss, key,':') && getline(iss,value))
     {
+        std::cout << key << "\n";
         if (key == "host")
             this->host = value;
         if(key == "Content-Type")
@@ -93,7 +94,7 @@ void Client::loadingFormation(std::string& line)
             std::istringstream v(value);
             v >> nb;
             if (nb == 0)
-                throw std::runtime_error("error 400");
+                throw errorMessage(404,"error_page/404.html");
         }
         if (path.find("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~!$&'()*+,;=") != std::string::npos)
             throw std::runtime_error("error 404");
@@ -119,7 +120,6 @@ void Client::ParsingRequest()
 {
     std::istringstream iss(this->fullRequset, std::ios::binary);
     std::string line;
-    // std::cout << this->fullRequset.size() << std::endl;
     if (loadingHead)
     {
         setStartLine(iss);

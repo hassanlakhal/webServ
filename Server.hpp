@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:41:04 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/18 18:56:13 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/20 18:16:34 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ class Server
         __int16_t   listen;
         u_long      host;
         std::string root;
+        std::string pathEroor;
         std::vector<Location> Locations;
         std::map<int, Client> clinets;
         int client_max_body_size;
@@ -37,6 +38,7 @@ class Server
         void setMaxBodySize(std::string& maxBodySize);
         void setRoot(std::string& root);
         void setClient(std::map<int ,Client> & ClinetData);
+        void setPathError(std::string& path);
         __int16_t getListen() const;
         const std::vector<Location>& getLocation() const;
         std::string getRoot() const;

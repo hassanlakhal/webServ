@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/20 15:51:30 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/20 20:56:29 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ bool parsingLocation(const std::string& information)
 {
     size_t hint = 0;
     int ind = numberOfCharacter(information, ' ',hint);
-    std::cout << ind << " " << information << std::endl;
+    // std::cout << ind << " " << information << std::endl;
     if(ind == 4)
     {
        if(hint != 4 || information[hint + 1] != ' ')
@@ -156,6 +156,8 @@ void fillServer(std::ifstream& configFile)
             s.setRoot(word);
         else if (trim(getLine(line)) == "client_max_body_size")
             s.setMaxBodySize(word);
+        else if (trim(getLine(line)) == "error_page")
+            s.setPathError(word);
         else if(trim(getLine(line)) == "location")
             fillLocation(configFile,line,&s);
         if (line == "server:")
