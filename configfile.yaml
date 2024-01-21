@@ -2,7 +2,6 @@ server:
   listen: 8081
   host: 127.0.0.8
   root: www/1
-  error_page: error_page/404.html
 
   location:
     - path: /
@@ -20,6 +19,7 @@ server:
   listen: 8080
   host: 127.0.0.8
   root: www/2
+  error_page: 404 error_page/404.html
 
   location:
     - path: /

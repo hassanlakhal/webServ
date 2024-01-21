@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsingFile.hpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 15:19:17 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/15 11:27:49 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/21 21:34:02 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,5 @@
 #include"webServer.hpp"
 
 void loadingData(std::string& nameFile);
-
+webServer& getMyServer();
 #endif

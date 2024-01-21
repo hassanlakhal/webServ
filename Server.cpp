@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/20 18:27:00 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/21 22:18:38 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,41 @@
 
 Server::Server()
 {
+    
+    // std::map<int , std::string>::iterator it = eroorPage.begin();
+    eroorPage[400] = "error_page/400.html";
+    eroorPage[404] = "error_page/404.html";
+    
 }
 
-Server::~Server()
+Server::~Server() throw()
 {
+}
+
+Server::Server(const Server& other)
+{
+    listen = other.listen;
+    host = other.host ;
+    root = other.root;
+    eroorPage = other.eroorPage;
+    Locations = other.Locations;
+    clinets = other.clinets;
+    client_max_body_size = other.client_max_body_size;
+}
+
+Server& Server::operator=(const Server& other)
+{
+    if (this == &other)
+    {
+        listen = other.listen;
+        host = other.host ;
+        root = other.root;
+        eroorPage = other.eroorPage;
+        Locations = other.Locations;
+        clinets = other.clinets;
+        client_max_body_size = other.client_max_body_size;
+    }
+    return *this;
 }
 
 void Server::addLocation(Location *location)
@@ -64,6 +95,15 @@ void Server::setHost(std::string& host)
     this->host = ((number[0] << 24) | (number[1] << 16) | (number[2] << 8) | number[3]);
 }
 
+std::string Server::trim(std::string& word)
+{
+    size_t first = word.find_first_not_of(" ");
+    if (first == std::string::npos)
+        return word;
+    size_t last = word.find_last_not_of(" ");
+    return word.substr(first, last - first + 1);
+}
+
 void Server::setClient(std::map<int , Client>& ClinetData)
 {
     this->clinets = ClinetData;
@@ -85,6 +125,11 @@ std::string Server::getRoot() const
     return root;
 }
 
+const std::map<int , std::string>& Server::getErrorPath() const
+{
+    return this->eroorPage;
+}
+
 const std::vector<Location>& Server::getLocation() const
 {
     return this->Locations;
@@ -94,7 +139,32 @@ void Server::setPathError(std::string& path)
 {
     if (path[0] != ' ')
         throw std::runtime_error("error line path");
-    this->pathEroor = path;
+    path = trim(path);
+    std::string key , value;
+    long nb;
+    std::vector<std::string> paths;
+    paths.push_back(path);
+    std::vector<std::string>::iterator it = paths.begin();
+    while (it != paths.end())
+    {
+        std::istringstream iss(*it);
+        getline(iss,key,' ');
+        getline(iss,value);
+        std::istringstream number(key);
+        number >> nb;
+        if (nb >= 100 && nb < 599)
+        {
+            this->eroorPage[nb] = value;
+            std::cout << nb << " ------------ "  << value<< std::endl;
+        }
+        else
+        {
+            std::cout << nb << " ------------ "  << value<< std::endl;
+            throw std::runtime_error("out of range");
+        }
+        it++;
+    }
+    
 }
 
 void Server::setMaxBodySize(std::string& maxBodySize)

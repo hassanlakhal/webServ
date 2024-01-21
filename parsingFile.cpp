@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/20 20:56:29 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/21 21:59:31 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 #include"errorMessage.hpp"
 webServer GlobalConfig;
 
+webServer& getMyServer()
+{
+    return GlobalConfig;
+}
 std::string lastTrim(const std::string& str)
 {
     size_t last  = str.find_last_not_of(" \t");
@@ -97,7 +101,7 @@ void fillLocation( std::ifstream& configFile,std::string& line, Server* s)
         if(!parsingLocation(line))
         {
             delete loc;
-            throw errorMessage(1,line);
+            throw errorMessage(1,0);
         }
         std::string word = getWordLocation(line,6,false);
         std::istringstream valueOfLocation(word);

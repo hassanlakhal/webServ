@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/20 22:43:54 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/21 22:22:42 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,26 +82,24 @@ void Client::loadingFormation(std::string& line)
     long nb;
     while (getline(iss, key,':') && getline(iss,value))
     {
-        std::cout << key << "\n";
         if (key == "host")
             this->host = value;
         if(key == "Content-Type")
             this->type = value;
         if (key == "Transfer-Encoding" && value != "chunked")
-            throw std::runtime_error("error 501");
+              throw errorMessage(501,serverId);
         if(method == "POST" && key == "Content-Length")
         {
             std::istringstream v(value);
             v >> nb;
             if (nb == 0)
-                throw errorMessage(404,"error_page/404.html");
+                throw errorMessage(400,serverId);
         }
         if (path.find("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~!$&'()*+,;=") != std::string::npos)
-            throw std::runtime_error("error 404");
-        if (host.length() + path.length() > 20)
-             throw std::runtime_error("error 414");
+            throw  errorMessage(400,serverId);
+        if (host.length() + path.length() > 2048)
+               throw errorMessage(414,serverId);
     }
-        
 }
 
 void Client::setBody(std::istringstream& buff)
