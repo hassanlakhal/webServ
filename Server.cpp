@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/21 22:18:38 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/21 22:25:17 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 Server::Server()
 {
-    
-    // std::map<int , std::string>::iterator it = eroorPage.begin();
     eroorPage[400] = "error_page/400.html";
     eroorPage[404] = "error_page/404.html";
     
