@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/20 22:54:42 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/22 10:57:55 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void Box::sendRequest(int fd)
     //     std::cout << (clients[fd].getBody()[i]) << "";
     // }
     std::cout <<"Method =>" << clients[fd].getMethod() << std::endl;
-    std::cout << _InfoServer.getServer()[clients[fd].getServerId()].getRoot() <<std::endl;
+    // std::cout << _InfoServer.getServer()[clients[fd].getServerId()].getRoot() <<std::endl;
     // std::cout << std::endl; 
 }
 
@@ -72,11 +72,9 @@ void Box::readRequest(int fdRequest, int epollFd)
     else
     {
         std::string buff(buffer,sizeof(buffer));
+        clients[fdRequest].setRequset(buff);
         if (buff.find("\r\n\r\n") != std::string::npos)
-        {
-            clients[fdRequest].setRequset(buff);
             clients[fdRequest].ParsingRequest();
-        }
         else
         {
             std::istringstream iss(buff);

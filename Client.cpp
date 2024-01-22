@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/21 22:22:42 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/22 10:17:49 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void Client::loadingFormation(std::string& line)
     long nb;
     while (getline(iss, key,':') && getline(iss,value))
     {
+        std::cout <<  host.length() + path.length() << std::endl;
         if (key == "host")
             this->host = value;
         if(key == "Content-Type")
