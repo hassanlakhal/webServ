@@ -6,13 +6,12 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/21 21:59:31 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:34:07 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"parsingFile.hpp"
 #include"Box.hpp"
-#include"errorMessage.hpp"
 webServer GlobalConfig;
 
 webServer& getMyServer()

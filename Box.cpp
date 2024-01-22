@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/22 10:57:55 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/22 20:45:54 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,45 @@ void Box::parssingRequest(std::string& buffer)
 void Box::sendRequest(int fd)
 {
 
-    (void)fd;
+    (void)fd;  
     // for (std::size_t i = 0; i < clients[fd].getBody().size(); ++i) 
     // {
     //     std::cout << (clients[fd].getBody()[i]) << "";
     // }
-    std::cout <<"Method =>" << clients[fd].getMethod() << std::endl;
+    std::cout <<"Method => " << clients[fd].getMethod() << std::endl;
     // std::cout << _InfoServer.getServer()[clients[fd].getServerId()].getRoot() <<std::endl;
     // std::cout << std::endl; 
+}
+
+int findKey(const mapR& myMap, const std::string& value) 
+{
+    mapR::const_iterator it;
+    for (it = myMap.begin(); it != myMap.end(); ++it) 
+    {
+        if (it->second == value) 
+            return it->first;
+    }
+    return 200;
+}
+
+std::string Box::makeRepence(std::string& cont, int fd, std::string value)
+{
+    std::string start_line ,header ,body ,result ,name_server;
+    mapR errorMap = _InfoServer.getServer()[clients[fd].getServerId()].getErrorPath();
+    int number = findKey(errorMap,value);
+    if(number != 200)
+    {
+        std::stringstream ss;
+        ss << number;
+        result = ss.str();
+    }
+    else
+        result = "200";
+    name_server = "test";
+    start_line = "HTTP/1.0 " + result + " error" + "\r\n";
+    header = "Server: " + name_server + "\r\n" + "Content-type: text/html\r\n\r\n";
+    body = cont + "\r\n";
+    return (start_line + header + body);
 }
 
 void Box::readRequest(int fdRequest, int epollFd)
@@ -73,14 +104,17 @@ void Box::readRequest(int fdRequest, int epollFd)
     {
         std::string buff(buffer,sizeof(buffer));
         clients[fdRequest].setRequset(buff);
-        if (buff.find("\r\n\r\n") != std::string::npos)
-            clients[fdRequest].ParsingRequest();
-        else
+        if (clients[fdRequest].getfullRequset().find("\r\n\r\n") != std::string::npos)
         {
-            std::istringstream iss(buff);
-            clients[fdRequest].setBody(iss);
+            if (clients[fdRequest].getLoadingHeader())
+                clients[fdRequest].ParsingRequest();
+            else
+            {
+                std::istringstream iss(buff);
+                clients[fdRequest].setBody(iss);
+            }
+            sendRequest(fdRequest);
         }
-        sendRequest(fdRequest);
     }
 }
 
@@ -151,30 +185,23 @@ void Box::setUpServer(webServer& data)
             }
             else
             {
-                // ssize_t bytesRead = 0;
                 if (events[i].events & EPOLLIN && sing)
                 {
                     try
                     {
-                        std::cout << "dakhaaaaaaal hna 1" << std::endl;
                         readRequest(events[i].data.fd,epollFd);
                     }
-                    catch(const std::exception& e)
+                    catch(const errorMessage& e)
                     {
-                        std::cerr << e.what() << '\n';
                         std::string line;
                         std::ifstream file(e.what());
                         if (!file.is_open())
                             throw std::runtime_error("file not exit");
-                        std::string resp = "HTTP/1.0 404 page not fond\r\n"
-                        "Server: webserver-c\r\n"
-                        "Content-type: text/html\r\n\r\n";
+                        std::string resp;
                         while (std::getline(file,line))
-                        {
-                            resp += line;
-                        }
-                        resp += "\r\n"; 
-                        int fd = write(events[i].data.fd,resp.c_str(),strlen(resp.c_str()));
+                            resp.append(line);
+                        std::string res = makeRepence(resp,events[i].data.fd,e.what());
+                        int fd = write(events[i].data.fd,res.c_str(),strlen(res.c_str()));
                         if (fd <= 0)
                         {
                             perror("Error :");
@@ -182,7 +209,6 @@ void Box::setUpServer(webServer& data)
                         }
                         close(events[i].data.fd);
                     }
-                    
                 }
                 else if ((events[i].events & EPOLLOUT) && !sing)
                 {

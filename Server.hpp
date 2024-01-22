@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:41:04 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/21 22:01:51 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/22 21:47:38 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ class Server
         std::map<int,std::string > eroorPage;
         std::vector<Location> Locations;
         std::map<int, Client> clinets;
-        int client_max_body_size;
+        long long client_max_body_size;
     public:
         Server();
         Server(const Server& other);
@@ -48,6 +48,7 @@ class Server
         u_long getHost() const;
         const std::map<int , std::string>& getErrorPath() const;
         Server* createServer();
+        long long getMaxBodySize() const;
         std::string trim(std::string& word);
         virtual ~Server() throw();
 };

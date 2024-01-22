@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/22 09:47:07 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/22 22:08:14 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ Server::Server()
     eroorPage[404] = "error_page/404.html";
     eroorPage[414] = "error_page/414.html";
     eroorPage[413] = "error_page/413.html";
+    client_max_body_size = 2147483648;
     // eroorPage[404] = "error_page/404.html";
     
 }
@@ -153,7 +154,7 @@ void Server::setPathError(std::string& path)
         getline(iss,value);
         std::istringstream number(key);
         number >> nb;
-        if (nb >= 100 && nb < 599)
+        if (nb >= 400 && nb < 599)
         {
             this->eroorPage[nb] = value;
             std::cout << nb << " ------------ "  << value<< std::endl;
@@ -170,6 +171,38 @@ void Server::setPathError(std::string& path)
 
 void Server::setMaxBodySize(std::string& maxBodySize)
 {
-    (void)maxBodySize;
-    // this->client_max_body_size = maxBodySize;
+    if (maxBodySize[0] != ' ')
+        throw std::runtime_error("error line client_max_body_size");
+    std::string size;
+    if (maxBodySize[maxBodySize.length() - 1] == 'K') 
+    {
+        size = maxBodySize.substr(0, maxBodySize.length() - 1);
+        std::istringstream iss(size);
+        long long nb;
+        iss >> nb;
+        this->client_max_body_size = nb * 1024;
+    }
+    else if (maxBodySize[maxBodySize.length() - 1] == 'M') 
+    {
+        size = maxBodySize.substr(0, maxBodySize.length() - 1);
+        std::istringstream iss(size);
+        long long nb;
+        iss >> nb;
+        this->client_max_body_size = nb * 1024 * 1024;
+    } 
+    else if (maxBodySize[maxBodySize.length() - 1] == 'G') 
+    {
+        size = maxBodySize.substr(0, maxBodySize.length() - 1);
+        std::istringstream iss(size);
+        long long nb;
+        iss >> nb;
+        this->client_max_body_size = nb * 1024 * 1024 * 1024;
+    }
+    else
+        std::runtime_error("error line client_max_body_size");
+}
+
+long long Server::getMaxBodySize() const
+{
+    return this->client_max_body_size;
 }

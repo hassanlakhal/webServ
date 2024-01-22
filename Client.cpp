@@ -6,12 +6,13 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/22 10:17:49 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/22 22:34:02 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"Client.hpp"
 #include"errorMessage.hpp"
+#include"parsingFile.hpp"
 Client::Client(): loadingHead(true),serverId(0)
 {
 }
@@ -57,6 +58,11 @@ void Client::setRequset(std::string& buff)
     fullRequset.append(buff);
 }
 
+std::string Client::getfullRequset() const 
+{
+    return this->fullRequset;
+}
+
 const std::string& Client::getRequset() const
 {
     return this->fullRequset;
@@ -71,6 +77,7 @@ const std::string& Client::getMethod() const
 void Client::setStartLine(std::istringstream& iss)
 {
     getline(iss,method,' ');
+    std::cout << "M =====> " << method << std::endl;
     getline(iss,path,' ');
     getline(iss,protocal, '\n');
 }
@@ -79,20 +86,24 @@ void Client::loadingFormation(std::string& line)
 {
     std::istringstream iss(line);
     std::string key ,value;
-    long nb;
+    webServer wserv = getMyServer();
+    long long nb = 0;
+    // std::cout <<  wserv.getServer()[serverId].getMaxBodySize() << std::endl;  
     while (getline(iss, key,':') && getline(iss,value))
     {
-        std::cout <<  host.length() + path.length() << std::endl;
         if (key == "host")
             this->host = value;
         if(key == "Content-Type")
             this->type = value;
+        if (key == "Content-Length")
+        {
+            std::istringstream v(value);
+            v >> nb;
+        }
         if (key == "Transfer-Encoding" && value != "chunked")
               throw errorMessage(501,serverId);
         if(method == "POST" && key == "Content-Length")
         {
-            std::istringstream v(value);
-            v >> nb;
             if (nb == 0)
                 throw errorMessage(400,serverId);
         }
@@ -100,6 +111,8 @@ void Client::loadingFormation(std::string& line)
             throw  errorMessage(400,serverId);
         if (host.length() + path.length() > 2048)
                throw errorMessage(414,serverId);
+        if (nb > wserv.getServer()[serverId].getMaxBodySize())
+            throw errorMessage(413,serverId);
     }
 }
 
@@ -108,6 +121,11 @@ void Client::setBody(std::istringstream& buff)
     std::istreambuf_iterator<char> begin(buff);
     std::istreambuf_iterator<char> end;
     body.assign(begin,end);
+}
+
+bool Client::getLoadingHeader() const
+{
+    return this->loadingHead;
 }
 
 const std::vector<unsigned char>& Client::getBody() const

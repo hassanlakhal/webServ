@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/20 15:52:50 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:33:24 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 #include <unistd.h>
 #include <sys/epoll.h>
 #include <algorithm>
+#include"errorMessage.hpp"
+typedef  std::map<int , std::string> mapR;
 class Box
 {
     private:
@@ -33,6 +35,7 @@ class Box
         void setInfo(const webServer& InfoServer);
         void setUpServer(webServer& data);
         void sendRequest(int fd);
+        std::string makeRepence(std::string& cont, int fd, std::string value);
         Box& operator=(const Box& other);
         ~Box();
 };
