@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/22 19:33:24 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:41:57 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ class Box
         void setInfo(const webServer& InfoServer);
         void setUpServer(webServer& data);
         void sendRequest(int fd);
-        std::string makeRepence(std::string& cont, int fd, std::string value);
+        int matchLocation(std::vector<Location>& loc, std::string path, int fd);
+        std::string makeRepence(int fd, std::string value);
         Box& operator=(const Box& other);
         ~Box();
 };

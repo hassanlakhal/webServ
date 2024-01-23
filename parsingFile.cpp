@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/23 10:35:02 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/23 19:02:45 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,15 +89,15 @@ std::string getWordLocation(std::string& word, int pos, bool type)
     return word.substr(pos,word.length() + 1);
 }
 
-bool isV(int value) 
-{
-    for (int i = PATH; i <= INDEX; ++i) 
-    {
-        if (i == value) 
-            return true;
-    }
-    return false;
-}
+// bool isV(int value) 
+// {
+//     for (int i = PATH; i <= INDEX; ++i) 
+//     {
+//         if (i == value) 
+//             return true;
+//     }
+//     return false;
+// }
 
 void fillLocation( std::ifstream& configFile,std::string& line, Server* s)
 {
@@ -126,8 +126,10 @@ void fillLocation( std::ifstream& configFile,std::string& line, Server* s)
             loc.setUpload(word);
         else if(trim(getWordLocation(line,6,true)) == "index")
             loc.setIndex(word);
-        else
-            throw Location::ErrorLocation(trim(getWordLocation(line,6,true)) + " is not allowd config");
+        else if(trim(getWordLocation(line,6,true)) == "return")
+            loc.setRedirect(word);
+        // else
+        //     throw Location::ErrorLocation(trim(getWordLocation(line,6,true)) + " is not allowd config");
         if (trim(getLine(line)) == "location")
         {
             s->addLocation(&loc);

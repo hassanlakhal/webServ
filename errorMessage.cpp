@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:25:10 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/22 16:01:09 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:31:56 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,16 @@ errorMessage::errorMessage()
 {
     
 }
+
+errorMessage::errorMessage(int status, int ind, int posLocation) throw()
+{
+    webServer wserv = getMyServer();
+    std::ostringstream oss;
+    if (status == 301)
+        oss << wserv.getServer()[ind].getLocation()[posLocation].getRediract();
+    this->message = oss.str();
+}
+
 
 errorMessage::errorMessage(int status, int ind) throw() 
 {

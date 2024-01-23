@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/22 22:54:27 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/23 18:37:24 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,19 @@ void Location::setCgi(std::string& path)
         cgi_path[trim(key)] = trim(value);
         it++;
     }
+}
+
+void Location::setRedirect(std::string& path)
+{
+    if (path[0] != ' ')
+        throw Location::ErrorLocation("Missing space in line of Location");
+    path = trim(path);
+    this->redirectPath = path;
+}
+
+std::string Location::getRediract() const 
+{
+    return this->redirectPath;
 }
 
 void Location::setAutoIndex(std::string& AutoIndex)

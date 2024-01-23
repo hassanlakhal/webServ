@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/19 20:28:24 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/23 18:36:32 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ class Location
         std::vector<std::string> methods;
         std::set<std::string> index;
         std::map<std::string, std::string> cgi_path;
+        std::string  redirectPath;
         // long proxy_read_time_out;
     public:
         Location();
@@ -49,10 +50,12 @@ class Location
         void setIndex(std::string& index);
         void setCgi(std::string& CgiPath);
         void setRoot(std::string& root);
+        void setRedirect(std::string& path);
         void setUpload(std::string& upload);
         const std::map<std::string, std::string>& getCgiPath() const;
         std::string getPath() const;
         std::string getAutoIndex() const;
+        std::string getRediract() const;
         // void setLocation(const std::vector<std::pair<std::string, std::string> >& pairs);
         ~Location();
 };

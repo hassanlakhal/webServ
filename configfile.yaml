@@ -5,15 +5,27 @@ server:
   client_max_body_size: 1G
 
   location:
-    - path: /
+    - path: /test
     - root:  www
-    - upload: on  
+    - upload: on
     - autoindex: on
     - methods: GET
     - index:  index.html
     - cgi_path: .py, /usr/bin/python3
     - cgi_path: .php, /usr/bin/php-cgi
     - cgi_path: .sh, /usr/bin/bash
+    - return: /home
+  location:
+    - path: /home
+    - root:  www
+    - upload: on
+    - autoindex: on
+    - methods: GET
+    - index:  index.html
+    - cgi_path: .py, /usr/bin/python3
+    - cgi_path: .php, /usr/bin/php-cgi
+    - cgi_path: .sh, /usr/bin/bash
+    - return: https://www.youtube.com/
 
 server:
   listen: 8080

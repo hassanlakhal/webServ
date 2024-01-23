@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/22 23:19:24 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/23 11:19:41 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,11 @@ bool Client::getLoadingHeader() const
 const std::vector<unsigned char>& Client::getBody() const
 {
     return this->body;
+}
+
+std::string Client::getPath() const
+{
+    return this->path;
 }
 
 void Client::ParsingRequest()

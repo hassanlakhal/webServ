@@ -6,9 +6,13 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:27:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/21 22:07:42 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/23 17:38:29 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
+#ifndef ERROR_MESSAGE_HPP
+#define ERROR_MESSAGE_HPP
 
 #include <iostream>
 #include <stdexcept>
@@ -19,10 +23,13 @@ class errorMessage : public std::exception
 {
     public:
         errorMessage();
-        errorMessage(int satus,int ind) throw();
+        errorMessage(int status, int ind) throw();
+        errorMessage(int status, int ind, int posLocation) throw();
         virtual const char* what() const throw();
         virtual ~errorMessage() throw();
+
     protected:
         std::string message;
-        std::map<int , std::string> error;
+        std::map<int, std::string> error;
 };
+#endif

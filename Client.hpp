@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/22 21:31:23 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/23 11:18:41 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ class Client
         void setStartLine(std::istringstream& iss);
         const Client& getClinet() const;
         bool getLoadingHeader() const;
+        std::string getPath() const;
         void loadingFormation(std::string& line);
         void setBody(std::istringstream& buff);
         Client& operator=(const Client& other);
