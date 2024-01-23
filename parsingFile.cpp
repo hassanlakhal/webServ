@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/22 19:34:07 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/23 10:35:02 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,47 +89,53 @@ std::string getWordLocation(std::string& word, int pos, bool type)
     return word.substr(pos,word.length() + 1);
 }
 
+bool isV(int value) 
+{
+    for (int i = PATH; i <= INDEX; ++i) 
+    {
+        if (i == value) 
+            return true;
+    }
+    return false;
+}
 
 void fillLocation( std::ifstream& configFile,std::string& line, Server* s)
 {
-    Location *loc = new Location;
+    Location loc;
     while (std::getline(configFile,line) &&  ((line = lastTrim(line)) != "server:"))
     {
         if (line.empty() || line[0] == '#')
             continue;
         if(!parsingLocation(line))
-        {
-            delete loc;
             throw errorMessage(1,0);
-        }
         std::string word = getWordLocation(line,6,false);
         std::istringstream valueOfLocation(word);
         std::getline(valueOfLocation,word,':');
         std::getline(valueOfLocation,word);
         if(trim(getWordLocation(line,6,true)) == "path")
-            loc->setPath(word);
+            loc.setPath(word);
         else if(trim(getWordLocation(line,6,true)) == "root")
-            loc->setRoot(word);
+            loc.setRoot(word);
         else if(trim(getWordLocation(line,6,true)) == "cgi_path")
-            loc->setCgi(word);
+            loc.setCgi(word);
         else if(trim(getWordLocation(line,6,true)) == "methods")
-            loc->setMethods(word);
+            loc.setMethods(word);
         else if(trim(getWordLocation(line,6,true)) == "autoindex")
-            loc->setAutoIndex(word);
+            loc.setAutoIndex(word);
         else if(trim(getWordLocation(line,6,true)) == "upload")
-            loc->setUpload(word);
+            loc.setUpload(word);
         else if(trim(getWordLocation(line,6,true)) == "index")
-            loc->setIndex(word);
+            loc.setIndex(word);
+        else
+            throw Location::ErrorLocation(trim(getWordLocation(line,6,true)) + " is not allowd config");
         if (trim(getLine(line)) == "location")
         {
-            s->addLocation(loc);
+            s->addLocation(&loc);
             fillLocation(configFile,line,s);
-            delete loc;
             return ;
         }
     }
-    s->addLocation(loc);
-    delete loc;
+    s->addLocation(&loc);
 }
 
 void fillServer(std::ifstream& configFile)

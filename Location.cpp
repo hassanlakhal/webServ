@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/19 20:28:43 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/22 22:54:27 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,20 +60,14 @@ std::string Location::getPath() const
 void Location::setRoot(std::string& root)
 {
     if (root[0] != ' ')
-    {
-        delete this;
         throw Location::ErrorLocation("Missing space in line of Location");
-    }
     root = trim(root);
     this->root = root;
 }
 void Location::setCgi(std::string& path)
 {
     if (path[0] != ' ')
-    {
-        delete this;
         throw Location::ErrorLocation("Missing space in line of Location");
-    }
     std::vector<std::string> paths;
     paths.push_back(path);
     std::vector<std::string>::iterator it = paths.begin();
@@ -91,10 +85,7 @@ void Location::setCgi(std::string& path)
 void Location::setAutoIndex(std::string& AutoIndex)
 {
     if (AutoIndex[0] != ' ')
-    {
-        delete this;
         throw Location::ErrorLocation("Missing space in line of Location");
-    }
     AutoIndex = trim(AutoIndex);
     this->auto_index = AutoIndex;
 }
@@ -107,10 +98,7 @@ std::string Location::getAutoIndex() const
 void Location::setMethods(std::string& Methods)
 {
     if (Methods[0] != ' ')
-    {
-        delete this;
         throw Location::ErrorLocation("Missing space in line of Location");
-    }
     Methods = trim(Methods);
     std::istringstream iss(Methods);
     std::string line;
@@ -124,10 +112,7 @@ void Location::setIndex(std::string& index)
 {
     std::string line;
     if (index[0] != ' ')
-    {
-        delete this;
         throw Location::ErrorLocation("Missing space in line of Location");
-    }
     index = trim(index);
     std::istringstream iss(index);
     while (getline(iss,line,' '))
@@ -139,10 +124,7 @@ void Location::setIndex(std::string& index)
 void Location::setUpload(std::string& upload)
 {
     if (upload[0] != ' ')
-    {
-        delete this;
         throw Location::ErrorLocation("Missing space in line of Location");
-    }
     upload = trim(upload);
     this->upload = upload;
 }

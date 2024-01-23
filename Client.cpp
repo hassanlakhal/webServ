@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/22 22:34:02 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/22 23:19:24 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ const std::string& Client::getMethod() const
 void Client::setStartLine(std::istringstream& iss)
 {
     getline(iss,method,' ');
-    std::cout << "M =====> " << method << std::endl;
     getline(iss,path,' ');
     getline(iss,protocal, '\n');
 }
@@ -87,8 +86,7 @@ void Client::loadingFormation(std::string& line)
     std::istringstream iss(line);
     std::string key ,value;
     webServer wserv = getMyServer();
-    long long nb = 0;
-    // std::cout <<  wserv.getServer()[serverId].getMaxBodySize() << std::endl;  
+    long long nb = 0; 
     while (getline(iss, key,':') && getline(iss,value))
     {
         if (key == "host")
