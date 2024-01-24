@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/23 18:37:24 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/24 10:02:16 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,11 @@ void Location::setMethods(std::string& Methods)
     {
         this->methods.push_back(Methods);
     }
+}
+
+const std::vector<std::string>& Location::getMethods() const
+{
+    return this->methods;
 }
 
 void Location::setIndex(std::string& index)

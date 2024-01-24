@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/23 21:00:47 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/24 10:06:43 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,26 @@ int Box::matchLocation(std::vector<Location>& loc, std::string path, int id)
     throw errorMessage(404,id);
 }
 
+void Box::methodAllowd(std::vector<std::string>& methods, const std::string& method, int id)
+{
+    for (std::vector<std::string>::iterator it = methods.begin(); it != methods.end(); ++it)
+    {
+        std::cout << "==> "<< *it <<" "<< method << std::endl;
+        if (*it == method)
+            return;
+    }
+    throw errorMessage(405,id);
+}
+
 void Box::sendRequest(int fd)
 {
     std::vector<Location> loc = _InfoServer.getServer()[clients[fd].getServerId()].getLocation();
     int ind = matchLocation(loc,clients[fd].getPath(),clients[fd].getServerId());    
     if (!(_InfoServer.getServer()[clients[fd].getServerId()].getLocation()[ind].getRediract().empty()))
        throw errorMessage(301,clients[fd].getServerId(),ind);
+    std::vector<std::string> methods = _InfoServer.getServer()[clients[fd].getServerId()]\
+                                        .getLocation()[ind].getMethods();
+    methodAllowd(methods,clients[fd].getMethod(),clients[fd].getServerId());
     // for (std::size_t i = 0; i < clients[fd].getBody().size(); ++i) 
     // {
     //     std::cout << (clients[fd].getBody()[i]) << "";

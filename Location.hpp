@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/23 18:36:32 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/24 10:02:30 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ class Location
         std::string getPath() const;
         std::string getAutoIndex() const;
         std::string getRediract() const;
+        const std::vector<std::string>& getMethods() const;
         // void setLocation(const std::vector<std::pair<std::string, std::string> >& pairs);
         ~Location();
 };

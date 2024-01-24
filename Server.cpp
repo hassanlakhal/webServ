@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/22 22:08:14 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/24 10:10:00 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ Server::Server()
     eroorPage[404] = "error_page/404.html";
     eroorPage[414] = "error_page/414.html";
     eroorPage[413] = "error_page/413.html";
+    eroorPage[405] = "error_page/405.html";
     client_max_body_size = 2147483648;
     // eroorPage[404] = "error_page/404.html";
     

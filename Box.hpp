@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/23 17:41:57 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/24 10:04:24 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class Box
         void sendRequest(int fd);
         int matchLocation(std::vector<Location>& loc, std::string path, int fd);
         std::string makeRepence(int fd, std::string value);
+        void methodAllowd(std::vector<std::string>& methods, const std::string& method, int id);
         Box& operator=(const Box& other);
         ~Box();
 };
