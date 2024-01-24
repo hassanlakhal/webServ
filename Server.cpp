@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/24 10:10:00 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/24 23:33:39 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ Server::Server()
     eroorPage[413] = "error_page/413.html";
     eroorPage[405] = "error_page/405.html";
     client_max_body_size = 2147483648;
+    this->host = 0;
     // eroorPage[404] = "error_page/404.html";
     
 }
@@ -84,17 +85,23 @@ __int16_t Server::getListen() const
 
 void Server::setHost(std::string& host)
 {
-    std::istringstream iss(host);
-    std::string line;
+    std::string segment;
     u_long number[4];
-    int i = 0;
-    while (getline(iss, line, '.') && i < 4)
+    int count = 0;
+    host = trim(host);
+    std::istringstream iss(host);
+    while (std::getline(iss, segment, '.') && count < 4) 
     {
-        if(line.length() > 4)
-            exit(0);
-        number[i] = atoi(line.c_str());
-        i++;
+        if (segment.empty() || segment.find_first_not_of("0123456789") != std::string::npos 
+                            || segment.length() >= 4)
+            throw std::runtime_error("The IP address is not valid.");
+        number[count] = atoi(segment.c_str());
+        if (number[count] > static_cast<u_long>(255)) 
+            throw std::runtime_error("The IP address is not valid.");
+        count++;
     }
+    if (count != 4)
+        throw std::runtime_error("Error");
     this->host = ((number[0] << 24) | (number[1] << 16) | (number[2] << 8) | number[3]);
 }
 
@@ -157,8 +164,9 @@ void Server::setPathError(std::string& path)
         number >> nb;
         if (nb >= 400 && nb < 599)
         {
-            this->eroorPage[nb] = value;
-            std::cout << nb << " ------------ "  << value<< std::endl;
+            std::ifstream file(value.c_str());
+            if (file.is_open())
+                eroorPage[nb] = value;
         }
         else
         {

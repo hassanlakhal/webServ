@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/24 12:04:24 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:45:28 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ void Location::setAutoIndex(std::string& AutoIndex)
     if (AutoIndex[0] != ' ')
         throw Location::ErrorLocation("Missing space in line of Location");
     AutoIndex = trim(AutoIndex);
+    if (AutoIndex != "on" && AutoIndex != "off")
+        throw Location::ErrorLocation("Error: Invalid value '" + AutoIndex + "' for autoindex. Expected 'on' or 'off'.");
     this->auto_index = AutoIndex;
 }
 
@@ -115,8 +117,10 @@ void Location::setMethods(std::string& Methods)
     Methods = trim(Methods);
     std::istringstream iss(Methods);
     std::string line;
+    std::cout << "***********" << std::endl;
     while (getline(iss,line,' '))
     {
+        std::cout << line << std::endl;
         this->methods.push_back(line);
     }
 }

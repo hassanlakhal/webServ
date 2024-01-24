@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/24 12:05:30 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/24 23:38:10 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,25 @@ int Box::matchLocation(std::vector<Location>& loc, std::string path, int id)
 
 void Box::methodAllowd(std::vector<std::string>& methods, const std::string& method, int id)
 {
-    std::vector<std::string>::iterator it = find(methods.begin(),methods.end(),method);
-    if (it != methods.end())
-        return ;
-    throw errorMessage(405,id);
+    std::vector<std::string> temV;
+    temV.push_back("POST");
+    temV.push_back("GET");
+    temV.push_back("DELETE");
+    std::vector<std::string>::iterator it1 = find(temV.begin(),temV.end(),method);
+    if (it1 != temV.end())
+    {
+        std::vector<std::string>::iterator it = find(methods.begin(),methods.end(),method);
+        if (it != methods.end())
+            return ;
+    }
+    throw errorMessage(405,id);  
 }
 
 void Box::sendRequest(int fd)
 {
     std::vector<Location> loc = _InfoServer.getServer()[clients[fd].getServerId()].getLocation();
     int ind = matchLocation(loc,clients[fd].getPath(),clients[fd].getServerId());    
-    if (!(_InfoServer.getServer()[clients[fd].getServerId()].getLocation()[ind].getRediract().empty()))
+    if (!(_InfoServer.getServer()[clients[fd].getServerId()].getLocation()[ind].getRediract().empty()))  
        throw errorMessage(301,clients[fd].getServerId(),ind);
     std::vector<std::string> methods = _InfoServer.getServer()[clients[fd].getServerId()]\
                                         .getLocation()[ind].getMethods();
@@ -177,7 +185,10 @@ void Box::setUpServer(webServer& data)
         std::cout << "Create Socket \n";
         host_add.sin_family = AF_INET;
         host_add.sin_port = htons(data.getServer().at(i).getListen());
-        host_add.sin_addr.s_addr = htonl(data.getServer().at(i).getHost());
+        if (data.getServer().at(i).getHost())
+            host_add.sin_addr.s_addr = htonl(data.getServer().at(i).getHost());
+        else
+            host_add.sin_addr.s_addr = htonl(INADDR_ANY);
         if (bind(socket_server,reinterpret_cast<struct sockaddr*>(&host_add),sizeof(host_add)) < 0)
             throw std::runtime_error("Error\nbinding the socket");
         if (listen(socket_server,SOMAXCONN) == -1)
@@ -236,7 +247,6 @@ void Box::setUpServer(webServer& data)
                             exit(0);
                         }
                         close(events[i].data.fd);
-                        // exit(0);
                     }
                 }
                 else if ((events[i].events & EPOLLOUT) && !sing)

@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/23 19:02:45 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/24 17:59:24 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void fillLocation( std::ifstream& configFile,std::string& line, Server* s)
         if (line.empty() || line[0] == '#')
             continue;
         if(!parsingLocation(line))
-            throw errorMessage(1,0);
+            throw Location::ErrorLocation("Error: Missing space in this line.");
         std::string word = getWordLocation(line,6,false);
         std::istringstream valueOfLocation(word);
         std::getline(valueOfLocation,word,':');
@@ -128,14 +128,16 @@ void fillLocation( std::ifstream& configFile,std::string& line, Server* s)
             loc.setIndex(word);
         else if(trim(getWordLocation(line,6,true)) == "return")
             loc.setRedirect(word);
-        // else
-        //     throw Location::ErrorLocation(trim(getWordLocation(line,6,true)) + " is not allowd config");
-        if (trim(getLine(line)) == "location")
+        else if (trim(getLine(line)) == "location")
         {
             s->addLocation(&loc);
             fillLocation(configFile,line,s);
             return ;
         }
+        else
+            throw Location::ErrorLocation("Error: '" + \
+            trim(getWordLocation(line, 6, true)) +\
+             "' is not allowed in the configuration or exist more space");
     }
     s->addLocation(&loc);
 }
@@ -154,7 +156,7 @@ void fillServer(std::ifstream& configFile)
         if (ind == 2)
             line = trim(line);
         else
-            throw std::runtime_error("Missing space");
+           throw std::runtime_error("Error: Syntax error in the configuration.");
         std::string word = getWordLocation(line,2,false);
         std::istringstream valueOfLocation(word);
         std::getline(valueOfLocation,word,':');
@@ -175,12 +177,10 @@ void fillServer(std::ifstream& configFile)
         {
             GlobalConfig.addServer(&s);
             fillServer(configFile);
-            // delete s; 
             return ;
         }
     }
     GlobalConfig.addServer(&s);
-    // delete s;
 }
 
 void loadingData(std::string& nameFile)
