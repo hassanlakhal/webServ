@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/24 10:06:43 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/24 12:05:30 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,9 @@ int Box::matchLocation(std::vector<Location>& loc, std::string path, int id)
 
 void Box::methodAllowd(std::vector<std::string>& methods, const std::string& method, int id)
 {
-    for (std::vector<std::string>::iterator it = methods.begin(); it != methods.end(); ++it)
-    {
-        std::cout << "==> "<< *it <<" "<< method << std::endl;
-        if (*it == method)
-            return;
-    }
+    std::vector<std::string>::iterator it = find(methods.begin(),methods.end(),method);
+    if (it != methods.end())
+        return ;
     throw errorMessage(405,id);
 }
 

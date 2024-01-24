@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/24 10:02:16 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/24 12:04:24 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void Location::setMethods(std::string& Methods)
     std::string line;
     while (getline(iss,line,' '))
     {
-        this->methods.push_back(Methods);
+        this->methods.push_back(line);
     }
 }
 
