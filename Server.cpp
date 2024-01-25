@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/24 23:33:39 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:31:25 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ Server& Server::operator=(const Server& other)
 void Server::addLocation(Location *location)
 {
     Locations.push_back(*location);
+    // std::cout << "***>"<< Locations.at(0).getRoot() << std::endl;
+    // std::cout << location << std::endl;
 }
 
 Server* Server::createServer()
@@ -71,14 +73,19 @@ void Server::setListen(std::string& listen)
 {
     if (listen[0] != ' ')
         throw std::runtime_error("error line listen");
+    listen = trim(listen);
     std::istringstream iss(listen);
+    if (listen.empty() || listen.find_first_not_of("0123456789") != std::string::npos)
+        throw std::runtime_error("Error: Missing 'listen' value. Please provide a" \
+                        "valid value for 'listen'.");
     long nb;
     iss >> nb;
+    if (nb > std::numeric_limits<__uint16_t>::max())
+        throw std::runtime_error("Error : out of range of 'listen' value.");
     this->listen = nb;
-    // this->listen = listen;
 }
 
-__int16_t Server::getListen() const
+__uint16_t Server::getListen() const
 {
     return this->listen;
 }
@@ -127,10 +134,11 @@ void Server::setRoot(std::string& root)
 {
     if (root[0] != ' ')
         throw std::runtime_error("error line root");
+    root = trim(root);
     this->root =  root;
 }
 
-std::string Server::getRoot() const
+const std::string& Server::getRoot() const
 {
     return root;
 }
