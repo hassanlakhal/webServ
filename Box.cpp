@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/24 23:38:10 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/25 23:46:40 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,9 +172,10 @@ void Box::setUpServer(webServer& data)
     epoll_event events[10];
     size_t numberOfServer = data.getServer().size();
     socklen_t client_addrlen = sizeof(client_addr);
+    Repence rep;
     int epollFd = epoll_create(1);
+      std::string res;
     _InfoServer = data;
-    
     for (size_t i = 0; i < numberOfServer; i++)
     {
         int socket_server = socket(AF_INET,SOCK_STREAM,0);
@@ -207,8 +208,7 @@ void Box::setUpServer(webServer& data)
     {
         int client_socket;
         int numEvents = epoll_wait(epollFd, events, 10, -1);
-        // signal(SI);
-        bool sing = true;
+        // signal(SIG_PIP);
         for (int i = 0; i < numEvents; i++)
         {
             if ((it = std::find(fds.begin(),fds.end(),events[i].data.fd)) != fds.end())
@@ -219,6 +219,7 @@ void Box::setUpServer(webServer& data)
                     perror("accept");
                 Client client(d);
                 clients[client_socket] = client;
+                clients[events[i].data.fd].setRepence(rep);
                 std::cout << "postion of server  " << d << std::endl;
                 std::cout <<  client_socket << " Client connected." << std::endl;
                 event.events = EPOLLIN | EPOLLOUT;
@@ -231,41 +232,56 @@ void Box::setUpServer(webServer& data)
             }
             else
             {
-                if (events[i].events & EPOLLIN)
+                bool status = clients[events[i].data.fd].getRepence().getStatusRepence();
+                if (events[i].events & EPOLLIN && status)
                 {
+                    std::cout << "test===>" << std::endl;
                     try
                     {
-                        readRequest(events[i].data.fd,epollFd);
+                        readRequest(events[i].data.fd, epollFd);
                     }
-                    catch(const errorMessage& e)
+                    catch (const errorMessage& e)
                     {
-                        std::string res = makeRepence(events[i].data.fd,e.what());
-                        int fd = write(events[i].data.fd,res.c_str(),strlen(res.c_str()));
-                        if (fd <= 0)
-                        {
-                            perror("Error :");
-                            exit(0);
-                        }
-                        close(events[i].data.fd);
+                        rep.setValues(false,events[i].data.fd,e.getStatusCode(),e.what());
+                        clients[events[i].data.fd].setRepence(rep);
+                        res = makeRepence(events[i].data.fd, e.what());
+                        
+                        // std::cout << "--->"<< e.getStatusCode() << std::endl;
                     }
                 }
-                else if ((events[i].events & EPOLLOUT) && !sing)
+                else if ((events[i].events & EPOLLOUT) && !status)
                 {
-                    // std::cout << "----------" << std::endl;
-                    // char resp[] = "HTTP/1.0 200 OK\r\n"
-                    // "Server: webserver-c\r\n"
-                    // "Content-type: text/html\r\n\r\n"
-                    // "<html><div class=\"main\"><h1>Welcome To GFG</h1><h3>Choose Your Gender</h3><form><label>Male<input type=\"radio\" 'name=\"gender\" value=\"male\" /></label><label>Female<input type=\"radio\"name=\"gender\" value=\"female\" /></label></form></div></html>\r\n";
-                    // int fd = write(events[i].data.fd,resp,strlen(resp));
-                    // std::cout << "EPOLLOUT " << bytesRead << " " << fd << std::endl;
-                    // std::cout << "test :"<< events[i].data.fd << std::endl;
-                    // if (fd <= 0)
+                    // std::cout <<"*************+++++++++++++++" <<std::endl;
+                    // const char* responsePtr = res.c_str();
+                    // size_t responseLength = strlen(responsePtr);
+                    // size_t totalWritten = 0;
+                    // while (totalWritten < responseLength)
                     // {
-                    //     perror("Error :");
-                    //     exit(0);
+                        
+                        rep.sendRepence(events[i].data.fd);
+                        
+                    //     size_t chunkSize = std::min(responseLength - totalWritten, static_cast<size_t>(1024));
+                        // int written = write(events[i].data.fd, responsePtr, responseLength);
+                        // std::cout << "==" << written<< std::endl; 
+                        // if (written <= 0)
+                        // {
+                        //     // perror("Error writing to socket:");
+                        //     close(events[i].data.fd);
+                        //     break;
+                        // }
+                        // else if (written == 0)
+                        // {
+                        close(events[i].data.fd);
+                        //     break;
+                        // }
+                        // else
+                        // {
+                        //     totalWritten += static_cast<size_t>(written);
+                        //     std::cout << totalWritten << std::endl;   
+                        // }
                     // }
-                    // close(events[i].data.fd);
                 }
+
             }
             
         }

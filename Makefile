@@ -6,14 +6,14 @@
 #    By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 01:05:23 by hlakhal-          #+#    #+#              #
-#    Updated: 2024/01/20 11:54:34 by hlakhal-         ###   ########.fr        #
+#    Updated: 2024/01/25 21:12:49 by hlakhal-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = webserver
 
 SRC =  Location.cpp  Server.cpp webServer.cpp main.cpp parsingFile.cpp\
-		Client.cpp Box.cpp errorMessage.cpp
+		Client.cpp Box.cpp errorMessage.cpp Repence.cpp
 
 CXX = c++ -std=c++98 -fsanitize=address -g3
 

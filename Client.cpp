@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/23 11:19:41 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/25 21:42:14 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,19 @@ Client& Client::operator=(const Client& other)
         loadingHead = other.loadingHead;
         body = other.body;
         serverId = other.serverId;
+        repence = other.repence;
     }
     return *this;
+}
+
+void Client::setRepence(const Repence& rep)
+{
+    this->repence = rep;
+}
+
+const Repence& Client::getRepence() const
+{
+    return this->repence;
 }
 
 void Client::setRequset(std::string& buff)

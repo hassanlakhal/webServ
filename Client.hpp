@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/23 11:18:41 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/25 21:41:22 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <string>
 #include <map>
 #include<vector>
+#include"Repence.hpp"
 // #include"parsingFile.hpp"
 class Client
 {
@@ -30,6 +31,7 @@ class Client
         bool loadingHead;
         int serverId;
         std::vector<unsigned char> body;
+        Repence repence;
         // short port;
     public:
         Client();
@@ -47,6 +49,8 @@ class Client
         Client& operator=(const Client& other);
         std::string getfullRequset() const ;
         const std::vector<unsigned char>& getBody() const;
+        void setRepence(const Repence& rep);
+        const Repence& getRepence() const;
         void ParsingRequest();
         ~Client();
 };
