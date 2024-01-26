@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/24 17:59:24 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/26 22:14:39 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,10 +153,13 @@ void fillServer(std::ifstream& configFile)
         if (line.empty() || trim(line)[0] == '#')
             continue;
         int ind = numberOfCharacter(line, ' ',hint);
-        if (ind == 2)
-            line = trim(line);
-        else
-           throw std::runtime_error("Error: Syntax error in the configuration.");
+        if (line != "server:")
+        {
+            if (ind == 2)
+                line = trim(line);
+            else
+                throw std::runtime_error("Error: Syntax error in the configuration.");
+        }
         std::string word = getWordLocation(line,2,false);
         std::istringstream valueOfLocation(word);
         std::getline(valueOfLocation,word,':');
@@ -201,7 +204,7 @@ void loadingData(std::string& nameFile)
             std::cout <<"test" << line << std::endl;
     }
     configFile.close();
-    std::cout << GlobalConfig.getServer()[0].getLocation()[0].getCgiPath().size()<<std::endl;
+    // std::cout << GlobalConfig.getServer()[0].getLocation()[0].getCgiPath().size()<<std::endl;
     loading.setUpServer(GlobalConfig); 
     // std::vector<Server>:: const_iterator it =  GlobalConfig.getServer().begin();
     // int count = 0;
