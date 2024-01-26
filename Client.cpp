@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/25 21:42:14 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:56:44 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,20 @@ int Client::getServerId() const
 const Client& Client::getClinet() const
 {
     return *this;
+}
+
+Client::Client(const Client& other) 
+{
+    fullRequset = other.fullRequset;
+    host = other.host;
+    method = other.method;
+    path = other.path;
+    protocal = other.protocal;
+    type = other.type;
+    loadingHead = other.loadingHead;
+    body = other.body;
+    serverId = other.serverId;
+    repence = other.repence;
 }
 
 Client& Client::operator=(const Client& other) 

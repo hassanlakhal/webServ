@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/25 23:46:40 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/26 20:53:12 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,7 +235,6 @@ void Box::setUpServer(webServer& data)
                 bool status = clients[events[i].data.fd].getRepence().getStatusRepence();
                 if (events[i].events & EPOLLIN && status)
                 {
-                    std::cout << "test===>" << std::endl;
                     try
                     {
                         readRequest(events[i].data.fd, epollFd);
@@ -243,43 +242,15 @@ void Box::setUpServer(webServer& data)
                     catch (const errorMessage& e)
                     {
                         rep.setValues(false,events[i].data.fd,e.getStatusCode(),e.what());
+                        std::cout << "fd : "<< events[i].data.fd << std::endl;
+                        // std::cout << e.what() << std::endl;
                         clients[events[i].data.fd].setRepence(rep);
-                        res = makeRepence(events[i].data.fd, e.what());
-                        
-                        // std::cout << "--->"<< e.getStatusCode() << std::endl;
                     }
                 }
                 else if ((events[i].events & EPOLLOUT) && !status)
                 {
-                    // std::cout <<"*************+++++++++++++++" <<std::endl;
-                    // const char* responsePtr = res.c_str();
-                    // size_t responseLength = strlen(responsePtr);
-                    // size_t totalWritten = 0;
-                    // while (totalWritten < responseLength)
-                    // {
-                        
+                        // std::cout << "fd : "<< events[i].data.fd << std::endl;
                         rep.sendRepence(events[i].data.fd);
-                        
-                    //     size_t chunkSize = std::min(responseLength - totalWritten, static_cast<size_t>(1024));
-                        // int written = write(events[i].data.fd, responsePtr, responseLength);
-                        // std::cout << "==" << written<< std::endl; 
-                        // if (written <= 0)
-                        // {
-                        //     // perror("Error writing to socket:");
-                        //     close(events[i].data.fd);
-                        //     break;
-                        // }
-                        // else if (written == 0)
-                        // {
-                        close(events[i].data.fd);
-                        //     break;
-                        // }
-                        // else
-                        // {
-                        //     totalWritten += static_cast<size_t>(written);
-                        //     std::cout << totalWritten << std::endl;   
-                        // }
-                    // }
                 }
 
             }

@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:34:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/25 23:52:30 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/26 20:56:29 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,47 @@ Repence::Repence(bool status,int fd, int status_code, std::string path)
     this->fd = fd;
 }
 
+bool Repence::getStatusClinet() const
+{
+    return this->status_close;
+}
+
 void Repence::sendRepence(int fd)
 {
-    signal(SIGPIPE,SIG_IGN);
     const int bufferSize = 1024;
     char buffer[bufferSize] = {0};
-    std::ifstream file(path.c_str(), std::ios::binary);
-    std::cout << fd << std::endl;
-    while (file.read(buffer, bufferSize - 1)) 
+    std::string start_line, header, result, name_server, location;
+    signal(SIGPIPE,SIG_IGN);
+    std::stringstream ss;
+    ss << this->status_code;
+    result = ss.str();
+    if (status_header)
     {
-        if (int a = write(fd,buffer, file.gcount()))
+        name_server = "test";
+        if (result == "301")
+            location = "Location: " + this->path + "\r\n";
+        start_line = "HTTP/1.0 " + result + " error" + "\r\n";
+        header = "Server: " + name_server + "\r\n" + "Content-type: text/html\r\n" + location + "\r\n";
+        status_header = false;
+    }
+    if (result != "200")
+    {
+        file.read(buffer, bufferSize);
+        std::string body(buffer, sizeof(buffer));
+        std::string buff = start_line + header + body;
+        write(fd, buff.c_str(), strlen(buff.c_str()));
+        if (file.eof())
         {
-            // break ;
-            // exit(12);
+            close(fd);
+            file.close();
+            body.clear();
         }
     }
-    write(fd,buffer, file.gcount());
-    file.close();
+}
+
+void Repence::closeFile() 
+{
+    this->file.close();
 }
 
 void Repence::setValues(bool status,int fd, int status_code, std::string path)
@@ -50,7 +74,9 @@ void Repence::setValues(bool status,int fd, int status_code, std::string path)
     this->status_code = status_code;
     this->path = path;
     this->fd = fd;
-    // std::ifstream file(path.c_str(), std::ios::binary);
+    this->file.open(path.c_str(), std::ios::binary);
+    this->status_header = true;
+    // this->file = file;
     // opening path  
 }
 

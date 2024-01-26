@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/25 21:41:22 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/26 18:56:19 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ class Client
     public:
         Client();
         Client(int serverId);
+        Client(const Client& other); 
         void setRequset(std::string& buff);
         const std::string& getRequset() const;
         const std::string& getMethod() const;
