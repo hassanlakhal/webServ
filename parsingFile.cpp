@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/26 22:14:39 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/27 12:53:34 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,8 @@ void fillLocation( std::ifstream& configFile,std::string& line, Server* s)
             loc.setIndex(word);
         else if(trim(getWordLocation(line,6,true)) == "return")
             loc.setRedirect(word);
+        else if(trim(getWordLocation(line,6,true)) == "listing_dir")
+            loc.setListingDir(word);
         else if (trim(getLine(line)) == "location")
         {
             s->addLocation(&loc);
@@ -204,7 +206,7 @@ void loadingData(std::string& nameFile)
             std::cout <<"test" << line << std::endl;
     }
     configFile.close();
-    // std::cout << GlobalConfig.getServer()[0].getLocation()[0].getCgiPath().size()<<std::endl;
+    std::cout << "root location : "<< GlobalConfig.getServer()[0].getLocation()[0].getRoot() <<std::endl;
     loading.setUpServer(GlobalConfig); 
     // std::vector<Server>:: const_iterator it =  GlobalConfig.getServer().begin();
     // int count = 0;

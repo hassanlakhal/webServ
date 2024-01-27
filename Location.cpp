@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/24 18:45:28 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/27 14:13:58 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,21 @@ void Location::setUpload(std::string& upload)
         throw Location::ErrorLocation("Missing space in line of Location");
     upload = trim(upload);
     this->upload = upload;
+}
+
+void Location::setListingDir(std::string& listing)
+{
+    if (listing[0] != ' ')
+        throw Location::ErrorLocation("Missing space in line of Location");
+    listing = trim(listing);
+    if (listing != "on" && listing != "off")
+        throw Location::ErrorLocation("Error: Invalid value '" + listing + "' for listingDir. Expected 'on' or 'off'.");
+    this->listingDir = listing;
+}
+
+std::string Location::getRoot() const
+{
+    return this->root;
 }
 
 Location* Location::createLocation()

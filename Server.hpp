@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:41:04 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/25 17:32:22 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/27 14:08:51 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,23 @@
 // #include "webServer.hpp"
 // #include"errorMessage.hpp"
 #include "Location.hpp"
+#include"Server.hpp"
 #include"Client.hpp"
 #include <errno.h>
 #include <stdio.h>
 #include <cstdlib>
 #include <cstring>
 #include <limits>
+
+class Location;
+
 class Server
 {
     protected:
+        std::string root;
+    private:
         __uint16_t   listen;
         u_long      host;
-        std::string root;
         std::map<int,std::string > eroorPage;
         std::vector<Location> Locations;
         std::map<int, Client> clinets;

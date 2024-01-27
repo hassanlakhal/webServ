@@ -6,7 +6,7 @@ server:
 
   location:
     - path: /
-    - root:  www
+    - listing_dir: on
     - upload: on
     - autoindex: off 
     - methods:  POST
