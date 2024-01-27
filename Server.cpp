@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/27 14:09:05 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/27 22:32:40 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,14 @@ __uint16_t Server::getListen() const
     return this->listen;
 }
 
+void Server::setServerName(std::string& serverName)
+{
+    if (serverName[0] != ' ')
+        throw std::runtime_error("error line serverName");
+    serverName = trim(serverName);
+    this->name = serverName;
+}
+
 void Server::setHost(std::string& host)
 {
     std::string segment;
@@ -97,19 +105,22 @@ void Server::setHost(std::string& host)
     int count = 0;
     host = trim(host);
     std::istringstream iss(host);
-    while (std::getline(iss, segment, '.') && count < 4) 
+    if (host != "localhost")
     {
-        if (segment.empty() || segment.find_first_not_of("0123456789") != std::string::npos 
-                            || segment.length() >= 4)
-            throw std::runtime_error("The IP address is not valid.");
-        number[count] = atoi(segment.c_str());
-        if (number[count] > static_cast<u_long>(255)) 
-            throw std::runtime_error("The IP address is not valid.");
-        count++;
+        while (std::getline(iss, segment, '.') && count < 4) 
+        {
+            if (segment.empty() || segment.find_first_not_of("0123456789") != std::string::npos 
+                                || segment.length() >= 4)
+                throw std::runtime_error("The IP address is not valid.");
+            number[count] = atoi(segment.c_str());
+            if (number[count] > static_cast<u_long>(255)) 
+                throw std::runtime_error("The IP address is not valid.");
+            count++;
+        }
+        if (count != 4)
+            throw std::runtime_error("Error");
+        this->host = ((number[0] << 24) | (number[1] << 16) | (number[2] << 8) | number[3]); 
     }
-    if (count != 4)
-        throw std::runtime_error("Error");
-    this->host = ((number[0] << 24) | (number[1] << 16) | (number[2] << 8) | number[3]);
 }
 
 std::string Server::trim(std::string& word)

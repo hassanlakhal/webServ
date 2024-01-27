@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/27 15:21:46 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/27 22:35:12 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,8 @@ void fillServer(std::ifstream& configFile)
             s.setMaxBodySize(word);
         else if (trim(getLine(line)) == "error_page")
             s.setPathError(word);
+        else if (trim(getLine(line)) == "server_name")
+            s.setServerName(word);
         else if(trim(getLine(line)) == "location")
             fillLocation(configFile,line,&s);
         if (line == "server:")

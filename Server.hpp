@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:41:04 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/27 14:08:51 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/27 22:28:57 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ class Location;
 
 class Server
 {
-    protected:
-        std::string root;
     private:
         __uint16_t   listen;
         u_long      host;
+        std::string root;
         std::map<int,std::string > eroorPage;
         std::vector<Location> Locations;
         std::map<int, Client> clinets;
         long long client_max_body_size;
+        std::string name;
     public:
         Server();
         Server(const Server& other);
@@ -47,6 +47,7 @@ class Server
         void setRoot(std::string& root);
         void setClient(std::map<int ,Client> & ClinetData);
         void setPathError(std::string& path);
+        void setServerName(std::string& serverName);
         Server& operator=(const Server& other);
         __uint16_t getListen() const;
         const std::vector<Location>& getLocation() const;

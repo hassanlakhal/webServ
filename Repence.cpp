@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:34:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/27 15:32:27 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/27 22:55:35 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void Repence::sendRepence(int fd)
         header = "Server: " + name_server + "\r\n" + "Content-type: text/html\r\n" + location + "\r\n";
         status_header = false;
     }
-    if (result != "200")
+    if (result != "301")
     {
         file.read(buffer, bufferSize);
         std::string body(buffer, sizeof(buffer));
@@ -60,6 +60,13 @@ void Repence::sendRepence(int fd)
             file.close();
             body.clear();
         }
+    }
+    else if (result == "301")
+    {
+        std::string buff = start_line + header;
+        write(fd, buff.c_str(), strlen(buff.c_str()));
+        file.close();
+        close(fd);
     }
 }
 
