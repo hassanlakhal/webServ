@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/27 12:53:34 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/27 15:21:46 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ std::string getWordLocation(std::string& word, int pos, bool type)
 
 void fillLocation( std::ifstream& configFile,std::string& line, Server* s)
 {
-    Location loc;
+    Location loc(s->getRoot());
     while (std::getline(configFile,line) &&  ((line = lastTrim(line)) != "server:"))
     {
         if (line.empty() || line[0] == '#')

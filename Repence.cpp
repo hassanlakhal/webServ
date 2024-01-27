@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:34:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/26 20:56:29 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/27 15:32:27 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void Repence::sendRepence(int fd)
         name_server = "test";
         if (result == "301")
             location = "Location: " + this->path + "\r\n";
-        start_line = "HTTP/1.0 " + result + " error" + "\r\n";
+        start_line = "HTTP/1.0 " + result + " error " + "\r\n";
         header = "Server: " + name_server + "\r\n" + "Content-type: text/html\r\n" + location + "\r\n";
         status_header = false;
     }

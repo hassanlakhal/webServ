@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/27 14:12:15 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/27 15:02:35 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class Location
         // long proxy_read_time_out;
     public:
         Location();
+        Location(std::string root);
         const Location& getLocation() const;
         Location* createLocation();
         class ErrorLocation: public std::runtime_error

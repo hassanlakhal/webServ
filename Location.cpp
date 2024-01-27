@@ -6,18 +6,25 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/27 14:13:58 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/27 15:42:30 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"Location.hpp"
-
+#include"parsingFile.hpp"
 Location::ErrorLocation::ErrorLocation(const std::string& message) : std::runtime_error(message)
 {
 }
 
 Location::Location()
 {
+    this->index.insert("index.html");
+    this->index.insert("index.htm");
+}
+
+Location::Location(std::string root)
+{
+    this->root = root;
     this->index.insert("index.html");
     this->index.insert("index.htm");
 }
