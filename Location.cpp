@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/27 15:42:30 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/28 23:08:16 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,10 @@ void Location::setMethods(std::string& Methods)
     Methods = trim(Methods);
     std::istringstream iss(Methods);
     std::string line;
-    std::cout << "***********" << std::endl;
+    // std::cout << "***********" << std::endl;
     while (getline(iss,line,' '))
     {
-        std::cout << line << std::endl;
+        // std::cout << line << std::endl;
         this->methods.push_back(line);
     }
 }

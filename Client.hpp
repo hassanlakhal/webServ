@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/27 22:09:58 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/28 21:13:36 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include<algorithm>
 #include"Repence.hpp"
 // #include"parsingFile.hpp"
+typedef std::map<std::string, std::string> infoMap;
 class Client
 {
     private:
@@ -32,7 +33,7 @@ class Client
         bool loadingHead;
         int serverId;
         std::vector<unsigned char> body;
-        std::map<std::string, std::string> Map;
+        infoMap Map;
         Repence repence;
         // short port;
     public:
@@ -54,6 +55,8 @@ class Client
         const std::vector<unsigned char>& getBody() const;
         void setRepence(const Repence& rep);
         const Repence& getRepence() const;
+        const infoMap getInfoMap() const;
+        std::string trim(std::string& word);
         void ParsingRequest();
         ~Client();
 };

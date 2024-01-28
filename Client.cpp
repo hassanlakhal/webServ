@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/27 22:15:31 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/28 22:28:35 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ Client& Client::operator=(const Client& other)
         body = other.body;
         serverId = other.serverId;
         repence = other.repence;
+        Map = other.Map;
     }
     return *this;
 }
@@ -112,7 +113,7 @@ void Client::loadingFormation(std::string& line)
     std::string key ,value;
     while (getline(iss, key,':') && getline(iss,value))
     {
-        Map[key] = value;
+        Map[key] = trim(value);
     }
 }
 
@@ -138,6 +139,20 @@ std::string Client::getPath() const
     return this->path;
 }
 
+std::string Client::trim(std::string& word)
+{
+    size_t first = word.find_first_not_of(" ");
+    if (first == std::string::npos)
+        return word;
+    size_t last = word.find_last_not_of(" ");
+    return word.substr(first, last - first + 1);
+}
+
+const infoMap Client::getInfoMap() const
+{
+    return this->Map;
+}
+
 void Client::ParsingRequest()
 {
     std::istringstream iss(this->fullRequset, std::ios::binary);
@@ -152,14 +167,16 @@ void Client::ParsingRequest()
         {
             loadingFormation(line);
         }
+        setBody(iss);
         std::istringstream iss(Map["Content-Length"]);
         iss >> nb;
+        // std::cout << "Content-Length " << nb << std::endl;
         if (method == "POST")
         {
-            if(Map["Content-Length"] == " 0" || Map["Content-Length"].empty())
+            if(Map["Content-Length"] == "0" || Map["Content-Length"].empty())
                 throw errorMessage(400,serverId);
         }
-        if (!Map["Transfer-Encoding"].empty() && Map["Transfer-Encoding"] != " chunked")
+        if (!Map["Transfer-Encoding"].empty() && Map["Transfer-Encoding"] != "chunked")
               throw errorMessage(501,serverId);
         if (path.find("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~!$&'()*+,;=") != std::string::npos)
             throw  errorMessage(400,serverId);
@@ -167,7 +184,6 @@ void Client::ParsingRequest()
                throw errorMessage(414,serverId);
         if (nb > wserv.getServer()[serverId].getMaxBodySize())
             throw errorMessage(413,serverId);
-        setBody(iss);
         loadingHead = false;
     } 
 }

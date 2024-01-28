@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:41:04 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/27 22:28:57 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/28 20:47:42 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ class Server
         const std::map<int , std::string>& getErrorPath() const;
         Server* createServer();
         long long getMaxBodySize() const;
+        const std::string& getServerName() const;
         std::string trim(std::string& word);
         virtual ~Server() throw();
 };

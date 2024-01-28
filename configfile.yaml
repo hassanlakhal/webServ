@@ -1,12 +1,12 @@
 server:
-  listen: 8081
+  listen: 8080
   host: localhost
   root: www/1
   client_max_body_size: 1G
   server_name: example.com
 
   location:
-    - path: /
+    - path: /about
     - listing_dir: on
     - upload: on
     - autoindex: off 
@@ -28,17 +28,18 @@ server:
     - cgi_path: .sh, /usr/bin/bash
 
 server:
-  listen: 8080
-  host: 127.0.0.8
+  listen: 8081
+  host: localhost
   root: www/2
   client_max_body_size: 1G
+  server_name: test
 
   location:
     - path: /about
     - root:   www
     - upload: on  
     - autoindex: on
-    - methods: POST
+    - methods: GET
   location:
     - path: /home
     - root:  www

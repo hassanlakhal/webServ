@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/27 22:32:40 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/28 21:03:39 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ Server::Server(const Server& other)
     Locations = other.Locations;
     clinets = other.clinets;
     client_max_body_size = other.client_max_body_size;
+    name = other.name;
 }
 
 Server& Server::operator=(const Server& other)
@@ -52,6 +53,7 @@ Server& Server::operator=(const Server& other)
         Locations = other.Locations;
         clinets = other.clinets;
         client_max_body_size = other.client_max_body_size;
+        name = other.name;
     }
     return *this;
 }
@@ -121,6 +123,11 @@ void Server::setHost(std::string& host)
             throw std::runtime_error("Error");
         this->host = ((number[0] << 24) | (number[1] << 16) | (number[2] << 8) | number[3]); 
     }
+}
+
+const std::string& Server::getServerName() const 
+{
+    return this->name;
 }
 
 std::string Server::trim(std::string& word)
