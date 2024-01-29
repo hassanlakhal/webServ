@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:34:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/29 15:08:47 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/29 23:43:20 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void Repence::sendRepence(int fd)
             location = "Location: " + this->path + "\r\n";
         start_line = "HTTP/1.0 " + result + " error " + "\r\n";
         // cache = "Cache-Control: max-age=3600, public\r\n";
-        header = "Server: " + name_server + "\r\n" + "Content-type: text/html\r\n" + location + "\r\n";
+        header = "Server: " + name_server + "\r\n" + "Content-type: " + type + "\r\n" + location + "\r\n";
         status_header = false;
     }
     if (result != "301")
@@ -79,7 +79,7 @@ void Repence::closeFile()
     this->file.close();
 }
 
-void Repence::setValues(bool status,int fd, int status_code, std::string path)
+void Repence::setValues(bool status,int fd, int status_code, std::string path, std::string type)
 {
     this->status = status;
     this->status_code = status_code;
@@ -87,6 +87,7 @@ void Repence::setValues(bool status,int fd, int status_code, std::string path)
     this->fd = fd;
     this->file.open(path.c_str(), std::ios::binary);
     this->status_header = true;
+    this->type = type;
     // this->file = file;
     // opening path  
 }
@@ -115,6 +116,7 @@ Repence& Repence::operator=(const Repence& other)
         status_code = other.status_code;
         header = other.header;
         body = other.body;
+        type = other.type;
     }
     return *this;
 }
@@ -126,4 +128,5 @@ Repence::Repence(const Repence& other)
     status_code = other.status_code;
     header = other.header;
     body = other.body;
+    type = other.type;
 }

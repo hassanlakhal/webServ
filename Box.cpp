@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/29 15:47:38 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/29 23:13:30 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,8 @@ void Box::sendRequest(int fd)
     std::vector<std::string> methods = _InfoServer.getServer()[idOfServer]\
                                         .getLocation()[ind].getMethods();
     methodAllowd(methods,clients[fd].getMethod(),idOfServer);
+    
+    
     // std::cout <<"size of body " << clients[fd].getBody().size() << std::endl;
     // for (std::size_t i = 0; i < clients[fd].getBody().size(); ++i) 
     // {
@@ -296,7 +298,7 @@ void Box::setUpServer(webServer& data)
                     }
                     catch (const errorMessage& e)
                     {
-                        rep.setValues(false,events[i].data.fd,e.getStatusCode(),e.what());
+                        rep.setValues(false,events[i].data.fd,e.getStatusCode(),e.what(),e.getType());
                         std::cout << "fd : "<< events[i].data.fd << std::endl;
                         // std::cout << e.what() << std::endl;
                         clients[events[i].data.fd].setRepence(rep);
