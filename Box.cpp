@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/28 23:07:09 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/29 15:47:38 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,18 @@ void Box::readRequest(int fdRequest, int epollFd)
     }
 }
 
+void Box::makeSocketNonBlocking(int sockfd) 
+{
+    int flags = fcntl(sockfd, F_GETFL, 0);
+    if (flags == -1)
+    {
+        perror("fcntl");
+        return;
+    }
+    if (fcntl(sockfd, F_SETFL, flags | O_NONBLOCK) == -1) 
+        perror("fcntl");
+}
+
 void Box::setUpServer(webServer& data)
 {
     std::vector<int>::iterator it;
@@ -215,6 +227,7 @@ void Box::setUpServer(webServer& data)
     for (size_t i = 0; i < numberOfServer; i++)
     {
         int socket_server = socket(AF_INET,SOCK_STREAM,0);
+        makeSocketNonBlocking(socket_server);
         if (socket_server < 0)
             throw std::runtime_error("Error\ncan not open this socket");
         int reuseaddr = 1;

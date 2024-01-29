@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/28 23:08:16 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/29 18:00:11 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ Location::Location()
 Location::Location(std::string root)
 {
     this->root = root;
+    this->path = "/";
     this->index.insert("index.html");
     this->index.insert("index.htm");
 }

@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:34:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/27 22:55:35 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/29 15:08:47 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void Repence::sendRepence(int fd)
 {
     const int bufferSize = 1024;
     char buffer[bufferSize] = {0};
-    std::string start_line, header, result, name_server, location;
+    std::string start_line, header, result,cache, name_server, location;
     signal(SIGPIPE,SIG_IGN);
     std::stringstream ss;
     ss << this->status_code;
@@ -45,15 +45,19 @@ void Repence::sendRepence(int fd)
         if (result == "301")
             location = "Location: " + this->path + "\r\n";
         start_line = "HTTP/1.0 " + result + " error " + "\r\n";
+        // cache = "Cache-Control: max-age=3600, public\r\n";
         header = "Server: " + name_server + "\r\n" + "Content-type: text/html\r\n" + location + "\r\n";
         status_header = false;
     }
     if (result != "301")
     {
         file.read(buffer, bufferSize);
-        std::string body(buffer, sizeof(buffer));
-        std::string buff = start_line + header + body;
-        write(fd, buff.c_str(), strlen(buff.c_str()));
+        std::streamsize bytesRead = this->file.gcount();
+        std::string body(buffer, bytesRead);
+        std::string buff = start_line + header + cache + body;
+        body.clear();
+        send(fd, buff.c_str(), strlen(buff.c_str()), 0);
+        // write(fd, buff.c_str(), strlen(buff.c_str()));
         if (file.eof())
         {
             close(fd);

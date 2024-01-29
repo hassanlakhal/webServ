@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:34:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/26 18:45:53 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/29 15:09:29 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <csignal>
 #include <sstream>
 #include <fcntl.h>
+#include <sys/socket.h>
 
 class Repence
 {

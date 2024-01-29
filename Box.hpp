@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/28 22:43:27 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/29 15:56:50 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ class Box
         void methodAllowd(std::vector<std::string>& methods, const std::string& method, int id);
         Box& operator=(const Box& other);
         bool checkDup(const std::vector<Server>& sr);
-        bool checkName(const std::vector<Server>& sr, std::string name, size_t  &i); 
+        bool checkName(const std::vector<Server>& sr, std::string name, size_t  &i);
+        void makeSocketNonBlocking(int sockfd);  
         ~Box();
 };
 
