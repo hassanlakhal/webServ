@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/31 10:54:06 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/01/31 11:11:02 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -346,7 +346,7 @@ void Box::setUpServer(webServer& data)
                     }
                     catch (const errorMessage& e)
                     {
-                        rep.setValues(false,events[i].data.fd,e.getStatusCode(),e.what(),e.getType());
+                        rep.setValues(false,events[i].data.fd,e.getStatusCode(),e.what(),e.getType(),e.getBody());
                         std::cout << "fd : "<< events[i].data.fd << std::endl;
                         // std::cout << e.what() << std::endl;
                         clients[events[i].data.fd].setRepence(rep);

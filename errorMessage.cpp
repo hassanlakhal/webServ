@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:25:10 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/29 23:41:57 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/31 11:12:01 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 errorMessage::errorMessage()
 {
     
+}
+
+errorMessage::errorMessage(int status, std::string& body) throw()
+{
+    std::ostringstream oss;
+    oss << body;
+    this->status_code = status;
+    this->type = "text/html";
+    this->body = oss.str();
 }
 
 errorMessage::errorMessage(int status, std::string& path, std::string& type) throw()
@@ -48,6 +57,12 @@ int errorMessage::getStatusCode() const
 {
     return this->status_code;
 }
+
+const std::string& errorMessage::getBody() const
+{
+    return this->body;
+}
+
 errorMessage::errorMessage(int status, int ind, const std::string& type) throw() 
 {
     webServer wserv = getMyServer();

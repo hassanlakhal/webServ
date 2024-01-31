@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Get.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:59:17 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/01/31 10:48:32 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/01/31 11:16:10 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void listing_dir(int fd, Location myLocation){
 	// {
 	// 	/* code */
 	// }
-
+	throw errorMessage(200,codeHTML);
 	// write(fd, codeHTML.c_str(), codeHTML.length());
 }
 

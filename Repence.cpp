@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:34:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/29 23:43:20 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/31 11:15:05 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void Repence::sendRepence(int fd)
         header = "Server: " + name_server + "\r\n" + "Content-type: " + type + "\r\n" + location + "\r\n";
         status_header = false;
     }
-    if (result != "301")
+    if (result != "301" && result != "200")
     {
         file.read(buffer, bufferSize);
         std::streamsize bytesRead = this->file.gcount();
@@ -72,6 +72,14 @@ void Repence::sendRepence(int fd)
         file.close();
         close(fd);
     }
+    else if (result == "200")
+    {
+        std::string buff = start_line + header + body;
+        write(fd, buff.c_str(), strlen(buff.c_str()));
+        file.close();
+        close(fd);
+    }
+    
 }
 
 void Repence::closeFile() 
@@ -79,7 +87,7 @@ void Repence::closeFile()
     this->file.close();
 }
 
-void Repence::setValues(bool status,int fd, int status_code, std::string path, std::string type)
+void Repence::setValues(bool status,int fd, int status_code, std::string path, std::string type,std::string content)
 {
     this->status = status;
     this->status_code = status_code;
@@ -88,6 +96,7 @@ void Repence::setValues(bool status,int fd, int status_code, std::string path, s
     this->file.open(path.c_str(), std::ios::binary);
     this->status_header = true;
     this->type = type;
+    this->body = content;
     // this->file = file;
     // opening path  
 }

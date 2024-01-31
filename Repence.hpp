@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:34:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/29 23:07:51 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/31 11:08:33 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ class Repence
         Repence(bool status,int fd, int status_code, std::string path);
         Repence& operator=(const Repence& other);
         Repence(const Repence& other);
-        void setValues(bool status,int fd, int status_code, std::string path, std::string type);
+        void setValues(bool status,int fd, int status_code, std::string path, std::string type,std::string content);
         void sendRepence(int fd);
         void closeFile(); 
         bool getStatusRepence() const;
