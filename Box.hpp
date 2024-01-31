@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/31 10:54:41 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/01/31 22:16:21 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ class Box
     private:
         webServer _InfoServer;
         std::map<int,Client> clients;
+        std::string QueryString;
         void parssingRequest(std::string& buffer);
         void readRequest(int fdRequest, int epollFd);
     public:
@@ -48,6 +49,8 @@ class Box
         void makeSocketNonBlocking(int sockfd);
         std::map<int,Client> &getClients() ;
         std::string removeSlach(std::string& str);
+        const std::string& getQueryString() const;
+        std::string FullQueryString(std::string& path);
         webServer& getWebServer() ;
         ~Box();
 };

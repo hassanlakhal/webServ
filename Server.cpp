@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/28 21:03:39 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/31 21:25:06 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ Server::Server()
     eroorPage[414] = "error_page/414.html";
     eroorPage[413] = "error_page/413.html";
     eroorPage[405] = "error_page/405.html";
+    eroorPage[500] = "error_page/500.html";
+    eroorPage[504] = "error_page/504.html";
     client_max_body_size = 2147483648;
     this->host = 0;
     // eroorPage[404] = "error_page/404.html";
-    
+
 }
 
 Server::~Server() throw()
@@ -109,23 +111,23 @@ void Server::setHost(std::string& host)
     std::istringstream iss(host);
     if (host != "localhost")
     {
-        while (std::getline(iss, segment, '.') && count < 4) 
+        while (std::getline(iss, segment, '.') && count < 4)
         {
-            if (segment.empty() || segment.find_first_not_of("0123456789") != std::string::npos 
+            if (segment.empty() || segment.find_first_not_of("0123456789") != std::string::npos
                                 || segment.length() >= 4)
                 throw std::runtime_error("The IP address is not valid.");
             number[count] = atoi(segment.c_str());
-            if (number[count] > static_cast<u_long>(255)) 
+            if (number[count] > static_cast<u_long>(255))
                 throw std::runtime_error("The IP address is not valid.");
             count++;
         }
         if (count != 4)
             throw std::runtime_error("Error");
-        this->host = ((number[0] << 24) | (number[1] << 16) | (number[2] << 8) | number[3]); 
+        this->host = ((number[0] << 24) | (number[1] << 16) | (number[2] << 8) | number[3]);
     }
 }
 
-const std::string& Server::getServerName() const 
+const std::string& Server::getServerName() const
 {
     return this->name;
 }
@@ -201,7 +203,7 @@ void Server::setPathError(std::string& path)
         }
         it++;
     }
-    
+
 }
 
 void Server::setMaxBodySize(std::string& maxBodySize)
@@ -209,7 +211,7 @@ void Server::setMaxBodySize(std::string& maxBodySize)
     if (maxBodySize[0] != ' ')
         throw std::runtime_error("error line client_max_body_size");
     std::string size;
-    if (maxBodySize[maxBodySize.length() - 1] == 'K') 
+    if (maxBodySize[maxBodySize.length() - 1] == 'K')
     {
         size = maxBodySize.substr(0, maxBodySize.length() - 1);
         std::istringstream iss(size);
@@ -217,15 +219,15 @@ void Server::setMaxBodySize(std::string& maxBodySize)
         iss >> nb;
         this->client_max_body_size = nb * 1024;
     }
-    else if (maxBodySize[maxBodySize.length() - 1] == 'M') 
+    else if (maxBodySize[maxBodySize.length() - 1] == 'M')
     {
         size = maxBodySize.substr(0, maxBodySize.length() - 1);
         std::istringstream iss(size);
         long long nb;
         iss >> nb;
         this->client_max_body_size = nb * 1024 * 1024;
-    } 
-    else if (maxBodySize[maxBodySize.length() - 1] == 'G') 
+    }
+    else if (maxBodySize[maxBodySize.length() - 1] == 'G')
     {
         size = maxBodySize.substr(0, maxBodySize.length() - 1);
         std::istringstream iss(size);

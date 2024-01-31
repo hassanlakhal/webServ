@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/31 11:11:02 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/31 22:17:04 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int Box::matchLocation(std::vector<Location>& loc, std::string path, int id)
     // ?
     // std::cout << "befor " << path <<std::endl;
     path = removeSlach(path);
+    path = FullQueryString(path);
     // std::cout << " after " << path <<std::endl;
     for (std::vector<Location>::iterator it = loc.begin(); it != loc.end(); ++it)
     {
@@ -347,7 +348,7 @@ void Box::setUpServer(webServer& data)
                     catch (const errorMessage& e)
                     {
                         rep.setValues(false,events[i].data.fd,e.getStatusCode(),e.what(),e.getType(),e.getBody());
-                        std::cout << "fd : "<< events[i].data.fd << std::endl;
+                        // std::cout << "fd : "<< events[i].data.fd << std::endl;
                         // std::cout << e.what() << std::endl;
                         clients[events[i].data.fd].setRepence(rep);
                     }
@@ -375,4 +376,21 @@ std::map<int,Client>& Box::getClients() {
 
 webServer& Box::getWebServer() {
     return this->_InfoServer;
+}
+
+const std::string& Box::getQueryString() const
+{
+    return this->QueryString;
+}
+
+std::string Box::FullQueryString(std::string& path)
+{
+    size_t a = path.find_last_of('?');
+    if (a != std::string::npos)
+    {
+        QueryString = path.substr(a + 1, path.length());
+        std::cout << " QueryString " << QueryString << std::endl;
+        return path.substr(0,a);
+    }
+    return path;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Repence.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:34:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/31 11:15:05 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/31 20:52:14 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,17 +72,33 @@ void Repence::sendRepence(int fd)
         file.close();
         close(fd);
     }
-    else if (result == "200")
+    else if (result == "200" && file.is_open())
+    {
+        file.read(buffer, bufferSize);
+        std::streamsize bytesRead = this->file.gcount();
+        std::string body(buffer, bytesRead);
+        std::string buff = start_line + header + cache + body;
+        body.clear();
+        send(fd, buff.c_str(), strlen(buff.c_str()), 0);
+        // write(fd, buff.c_str(), strlen(buff.c_str()));
+        if (file.eof())
+        {
+            close(fd);
+            file.close();
+            body.clear();
+        }
+    }
+    else if (result == "200" && !body.empty())
     {
         std::string buff = start_line + header + body;
         write(fd, buff.c_str(), strlen(buff.c_str()));
         file.close();
         close(fd);
     }
-    
+
 }
 
-void Repence::closeFile() 
+void Repence::closeFile()
 {
     this->file.close();
 }
@@ -98,12 +114,12 @@ void Repence::setValues(bool status,int fd, int status_code, std::string path, s
     this->type = type;
     this->body = content;
     // this->file = file;
-    // opening path  
+    // opening path
 }
 
 // std::ifstream Repence::getFile() const
 // {
-   
+
 //     return file;
 // }
 
