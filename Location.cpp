@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/29 18:00:11 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/31 09:58:19 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ Location::Location(std::string root)
 {
     this->root = root;
     this->path = "/";
+    this->listingDir = "off";
+    this->auto_index  = "off";
+    this->upload = "off";
     this->index.insert("index.html");
     this->index.insert("index.htm");
 }
@@ -50,6 +53,10 @@ std::string trim(std::string& word)
 const std::map<std::string, std::string>& Location::getCgiPath() const
 {
     return this->cgi_path;
+}
+
+const std::set<std::string>& Location::getIndexes() const{
+    return this->index;
 }
 
 void Location::setPath(std::string& path)
@@ -98,7 +105,7 @@ void Location::setRedirect(std::string& path)
     this->redirectPath = path;
 }
 
-std::string Location::getRediract() const 
+std::string Location::getRediract() const
 {
     return this->redirectPath;
 }
@@ -116,6 +123,10 @@ void Location::setAutoIndex(std::string& AutoIndex)
 std::string Location::getAutoIndex() const
 {
     return this->auto_index;
+}
+
+const std::string& Location::getListingDir() const{
+    return this->listingDir;
 }
 
 void Location::setMethods(std::string& Methods)

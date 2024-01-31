@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/27 15:02:35 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/31 09:58:40 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,11 @@ class Location
         void setListingDir(std::string& linting);
         const std::map<std::string, std::string>& getCgiPath() const;
         std::string getPath() const;
+        const std::set<std::string>& getIndexes() const;
         std::string getAutoIndex() const;
         std::string getRediract() const;
         std::string getRoot() const;
+        const std::string& getListingDir() const;
         const std::vector<std::string>& getMethods() const;
         // void setLocation(const std::vector<std::pair<std::string, std::string> >& pairs);
         ~Location();

@@ -4,13 +4,12 @@ server:
   root: www/1
   client_max_body_size: 1G
   server_name: example.com
-  error_page: 404 index.html
 
   location:
-    - path: /about
+    - path: /about/gf
     - listing_dir: on
     - upload: on
-    - autoindex: off 
+    - autoindex: off
     - methods:  POST
     - index:  index.html
     - cgi_path: .py, /usr/bin/python3
@@ -19,6 +18,17 @@ server:
     - return: https://www.google.com
   location:
     - path: /home
+    - root:  www
+    - upload: on
+    - listing_dir: on
+    - autoindex: off
+    - methods: POST PUT GET DELETE
+    - index:  index.html
+    - cgi_path: .py, /usr/bin/python3
+    - cgi_path: .php, /usr/bin/php-cgi
+    - cgi_path: .sh, /usr/bin/bash
+   location:
+    - path: /
     - root:  www
     - upload: on
     - autoindex: on
@@ -38,7 +48,7 @@ server:
   location:
     - path: /about
     - root:   www
-    - upload: on  
+    - upload: on
     - autoindex: on
     - methods: GET
   location:

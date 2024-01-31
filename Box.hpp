@@ -3,15 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   Box.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/29 15:56:50 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/31 10:54:41 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef BOX_HPP
+#define BOX_HPP
+
 #include"webServer.hpp"
-#include <iostream> 
+#include"methods/methods.hpp"
+#include <iostream>
 #include <arpa/inet.h>
 #include <errno.h>
 #include <stdio.h>
@@ -41,7 +45,11 @@ class Box
         Box& operator=(const Box& other);
         bool checkDup(const std::vector<Server>& sr);
         bool checkName(const std::vector<Server>& sr, std::string name, size_t  &i);
-        void makeSocketNonBlocking(int sockfd);  
+        void makeSocketNonBlocking(int sockfd);
+        std::map<int,Client> &getClients() ;
+        std::string removeSlach(std::string& str);
+        webServer& getWebServer() ;
         ~Box();
 };
 
+#endif

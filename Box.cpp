@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/29 23:13:30 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/01/31 10:54:06 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,56 @@ void Box::parssingRequest(std::string& buffer)
    }
 }
 
+std::string  Box::removeSlach(std::string& str)
+{
+    size_t pos = str.find_first_not_of('/');
+    str.erase(0, pos);
+    pos = str.find_last_not_of('/');
+    if (pos != std::string::npos)
+        str.erase(pos + 1);
+    std::vector<std::string> result;
+    std::size_t start = 0;
+    std::size_t end = str.find('/');
+    while (end != std::string::npos)
+    {
+        std::string temp = str.substr(start, end - start);
+        if (!temp.empty())
+            result.push_back("/" + temp);
+        start = end + 1;
+        end = str.find('/', start);
+    }
+    result.push_back("/" + str.substr(start));
+    std::string path;
+    std::vector<std::string>::iterator it = result.begin();
+    for (; it != result.end(); it++)
+    {
+        path.append(*it);
+    }
+    return path;
+}
+
 int Box::matchLocation(std::vector<Location>& loc, std::string path, int id)
 {
+
     int i = 0;
+    std::string foundPath;
+    // path : ///
+    // ?
+    // std::cout << "befor " << path <<std::endl;
+    path = removeSlach(path);
+    // std::cout << " after " << path <<std::endl;
     for (std::vector<Location>::iterator it = loc.begin(); it != loc.end(); ++it)
     {
-        if (it->getPath() == path)
+        size_t a = path.find_last_of("/");
+        std::string temp = path.substr(0,a);
+        std::string temp2 = path.substr(a + 1);
+        //check cases of the position of .
+        if(temp2.find('.') == std::string::npos)
+            temp += "/" + temp2;
+        std::cout << temp << std::endl;
+        if (it->getPath() == temp)
+            return i;
+        else if (a == 0 && temp.empty() && it->getPath() == "/")
             return i;
         i++;
     }
@@ -71,10 +115,10 @@ void Box::methodAllowd(std::vector<std::string>& methods, const std::string& met
         if (it != methods.end())
             return ;
     }
-    throw errorMessage(405,id);  
+    throw errorMessage(405,id);
 }
 
-bool Box::checkDup(const std::vector<Server>& sr) 
+bool Box::checkDup(const std::vector<Server>& sr)
 {
     for (size_t i = 0; i < sr.size() - 1; ++i)
     {
@@ -88,7 +132,7 @@ bool Box::checkDup(const std::vector<Server>& sr)
 }
 
 
-bool Box::checkName(const std::vector<Server>& sr, std::string name, size_t  &i) 
+bool Box::checkName(const std::vector<Server>& sr, std::string name, size_t  &i)
 {
     (void)name;
     for (; i < sr.size(); ++i)
@@ -114,28 +158,32 @@ void Box::sendRequest(int fd)
         idOfServer = clients[fd].getServerId();
     std::cout << "name server : " << _InfoServer.getServer()[idOfServer].getServerName() <<std::endl;
     std::vector<Location> loc = _InfoServer.getServer()[idOfServer].getLocation();
-    int ind = matchLocation(loc,clients[fd].getPath(),idOfServer);    
-    if (!(_InfoServer.getServer()[idOfServer].getLocation()[ind].getRediract().empty()))  
+    int ind = matchLocation(loc,clients[fd].getPath(),idOfServer);
+    if (!(_InfoServer.getServer()[idOfServer].getLocation()[ind].getRediract().empty()))
        throw errorMessage(301,idOfServer,ind);
     std::vector<std::string> methods = _InfoServer.getServer()[idOfServer]\
                                         .getLocation()[ind].getMethods();
     methodAllowd(methods,clients[fd].getMethod(),idOfServer);
-    
-    
+    if(clients[fd].getMethod() == "GET")
+        get(*this, ind, fd);
+    else if(clients[fd].getMethod() == "POST")
+        post(*this, ind, fd);
+    else if(clients[fd].getMethod() == "DELETE")
+        deleteM(*this, ind, fd);
     // std::cout <<"size of body " << clients[fd].getBody().size() << std::endl;
-    // for (std::size_t i = 0; i < clients[fd].getBody().size(); ++i) 
+    // for (std::size_t i = 0; i < clients[fd].getBody().size(); ++i)
     // {
     //     std::cout << (clients[fd].getBody()[i]) << "";
     // }
-    // std::cout << std::endl; 
+    // std::cout << std::endl;
 }
 
-int findKey(const mapR& myMap, const std::string& value) 
+int findKey(const mapR& myMap, const std::string& value)
 {
     mapR::const_iterator it;
-    for (it = myMap.begin(); it != myMap.end(); ++it) 
+    for (it = myMap.begin(); it != myMap.end(); ++it)
     {
-        if (it->second == value) 
+        if (it->second == value)
             return it->first;
     }
     if(!value.empty())
@@ -175,7 +223,7 @@ void Box::readRequest(int fdRequest, int epollFd)
 {
     char buffer[1024] = {0};
     int bytesRead = recv(fdRequest, buffer, 1023, 0);
-    if (bytesRead <= 0) 
+    if (bytesRead <= 0)
     {
         std::cout << "Client disconnected." << std::endl;
         close(fdRequest);
@@ -199,7 +247,7 @@ void Box::readRequest(int fdRequest, int epollFd)
     }
 }
 
-void Box::makeSocketNonBlocking(int sockfd) 
+void Box::makeSocketNonBlocking(int sockfd)
 {
     int flags = fcntl(sockfd, F_GETFL, 0);
     if (flags == -1)
@@ -207,7 +255,7 @@ void Box::makeSocketNonBlocking(int sockfd)
         perror("fcntl");
         return;
     }
-    if (fcntl(sockfd, F_SETFL, flags | O_NONBLOCK) == -1) 
+    if (fcntl(sockfd, F_SETFL, flags | O_NONBLOCK) == -1)
         perror("fcntl");
 }
 
@@ -233,7 +281,7 @@ void Box::setUpServer(webServer& data)
         if (socket_server < 0)
             throw std::runtime_error("Error\ncan not open this socket");
         int reuseaddr = 1;
-        if (setsockopt(socket_server, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &reuseaddr, sizeof(int)) < 0) 
+        if (setsockopt(socket_server, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &reuseaddr, sizeof(int)) < 0)
         {
             throw std::runtime_error("Error\nsetting SO_REUSEADDR option");
         }
@@ -248,7 +296,7 @@ void Box::setUpServer(webServer& data)
         {
             perror("error : ");
             throw std::runtime_error("Error\nbinding the socket");
-        }   
+        }
         if (listen(socket_server,SOMAXCONN) == -1)
             throw std::runtime_error("Error\nlistening the socket");
         event.events = EPOLLIN;
@@ -281,7 +329,7 @@ void Box::setUpServer(webServer& data)
                 std::cout <<  client_socket << " Client connected." << std::endl;
                 event.events = EPOLLIN | EPOLLOUT;
                 event.data.fd = client_socket;
-                if (epoll_ctl(epollFd, EPOLL_CTL_ADD, client_socket, &event) == -1) 
+                if (epoll_ctl(epollFd, EPOLL_CTL_ADD, client_socket, &event) == -1)
                 {
                     std::cerr << "Error adding client socket to epoll." << std::endl;
                     close(client_socket);
@@ -311,11 +359,20 @@ void Box::setUpServer(webServer& data)
                 }
 
             }
-            
+
         }
     }
 }
 
 Box::~Box()
 {
+}
+
+std::map<int,Client>& Box::getClients() {
+    return this->clients;
+}
+
+
+webServer& Box::getWebServer() {
+    return this->_InfoServer;
 }
