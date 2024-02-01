@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/28 21:13:36 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:35:49 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ class Client
         std::string path;
         std::string protocal;
         std::string type;
+        std::string stringBody;
+        FILE* outfile;
+        bool outfileOpened;
         bool loadingHead;
         int serverId;
         std::vector<unsigned char> body;
@@ -39,7 +42,7 @@ class Client
     public:
         Client();
         Client(int serverId);
-        Client(const Client& other); 
+        Client(const Client& other);
         void setRequset(std::string& buff);
         const std::string& getRequset() const;
         const std::string& getMethod() const;
@@ -53,9 +56,13 @@ class Client
         Client& operator=(const Client& other);
         std::string getfullRequset() const ;
         const std::vector<unsigned char>& getBody() const;
+        const std::string& getStringBody() const;
         void setRepence(const Repence& rep);
         const Repence& getRepence() const;
+        void openFile(std::string file);
         const infoMap getInfoMap() const;
+        FILE * getOutFile() const;
+        bool getOutFileOpened() const;
         std::string trim(std::string& word);
         void ParsingRequest();
         ~Client();

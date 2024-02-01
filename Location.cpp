@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/31 09:58:19 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/01 12:49:56 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,10 @@ void Location::setPath(std::string& path)
 std::string Location::getPath() const
 {
     return path;
+}
+
+const std::string& Location::getUpload() const{
+    return this->upload;
 }
 
 void Location::setRoot(std::string& root)

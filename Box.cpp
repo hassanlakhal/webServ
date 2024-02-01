@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/31 22:17:04 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/01 16:33:33 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,10 +172,7 @@ void Box::sendRequest(int fd)
     else if(clients[fd].getMethod() == "DELETE")
         deleteM(*this, ind, fd);
     // std::cout <<"size of body " << clients[fd].getBody().size() << std::endl;
-    // for (std::size_t i = 0; i < clients[fd].getBody().size(); ++i)
-    // {
-    //     std::cout << (clients[fd].getBody()[i]) << "";
-    // }
+
     // std::cout << std::endl;
 }
 
@@ -222,8 +219,8 @@ std::string Box::makeRepence(int fd, std::string value)
 
 void Box::readRequest(int fdRequest, int epollFd)
 {
-    char buffer[1024] = {0};
-    int bytesRead = recv(fdRequest, buffer, 1023, 0);
+    char buffer[2048] = {0};
+    int bytesRead = recv(fdRequest, buffer, 2047, 0);
     if (bytesRead <= 0)
     {
         std::cout << "Client disconnected." << std::endl;

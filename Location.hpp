@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/31 09:58:40 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/01 12:49:20 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ class Location
         std::string getAutoIndex() const;
         std::string getRediract() const;
         std::string getRoot() const;
+        const std::string& getUpload() const;
         const std::string& getListingDir() const;
         const std::vector<std::string>& getMethods() const;
         // void setLocation(const std::vector<std::pair<std::string, std::string> >& pairs);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/29 23:26:38 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/01 18:06:49 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ Client::Client(): loadingHead(true),serverId(0)
 
 Client::Client(int serverId): loadingHead(true),serverId(serverId)
 {
-    
+    this->outfileOpened = false;
 }
 
 Client::~Client()
@@ -36,7 +36,7 @@ const Client& Client::getClinet() const
     return *this;
 }
 
-Client::Client(const Client& other) 
+Client::Client(const Client& other)
 {
     fullRequset = other.fullRequset;
     host = other.host;
@@ -48,11 +48,12 @@ Client::Client(const Client& other)
     body = other.body;
     serverId = other.serverId;
     repence = other.repence;
+    this->outfileOpened = other.outfileOpened;
 }
 
-Client& Client::operator=(const Client& other) 
+Client& Client::operator=(const Client& other)
 {
-    if (this != &other) 
+    if (this != &other)
     {
         fullRequset = other.fullRequset;
         host = other.host;
@@ -64,6 +65,7 @@ Client& Client::operator=(const Client& other)
         body = other.body;
         serverId = other.serverId;
         repence = other.repence;
+        this->outfileOpened = other.outfileOpened;
         Map = other.Map;
     }
     return *this;
@@ -84,7 +86,7 @@ void Client::setRequset(std::string& buff)
     fullRequset.append(buff);
 }
 
-std::string Client::getfullRequset() const 
+std::string Client::getfullRequset() const
 {
     return this->fullRequset;
 }
@@ -92,7 +94,7 @@ std::string Client::getfullRequset() const
 const std::string& Client::getRequset() const
 {
     return this->fullRequset;
-} 
+}
 
 const std::string& Client::getMethod() const
 {
@@ -119,6 +121,7 @@ void Client::loadingFormation(std::string& line)
 
 void Client::setBody(std::istringstream& buff)
 {
+    // this->stringBody = buff.str();
     std::istreambuf_iterator<char> begin(buff);
     std::istreambuf_iterator<char> end;
     body.assign(begin,end);
@@ -137,6 +140,10 @@ const std::vector<unsigned char>& Client::getBody() const
 std::string Client::getPath() const
 {
     return this->path;
+}
+
+const std::string& Client::getStringBody() const{
+    return this->stringBody;
 }
 
 std::string Client::trim(std::string& word)
@@ -185,5 +192,23 @@ void Client::ParsingRequest()
         if (nb > wserv.getServer()[serverId].getMaxBodySize())
             throw errorMessage(413,serverId);
         loadingHead = false;
-    } 
+    }
 }
+
+
+void Client::openFile(std::string file){
+    FILE* outfile = std::fopen(file.c_str() , "a+");
+    if(!outfile){
+        //throw
+    }
+    this->outfileOpened = true;
+    this->outfile = outfile;
+}
+
+FILE * Client::getOutFile() const{
+    return this->outfile;
+}
+bool Client::getOutFileOpened() const{
+    return this->outfileOpened;
+}
+

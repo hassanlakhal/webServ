@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/01/31 22:18:30 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:08:52 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 
 void cgi(Location& myLocation, std::string reqPath, std::string file, int serverID){
-	std::cout << "path : " << reqPath << "-------" << file << "------" << file.substr(file.find('.') + 1) << std::endl;
 	std::string extention = file.substr(file.find('.'));
 	bool cgiExist = false;
 	std::string tem;
@@ -42,10 +41,8 @@ void cgi(Location& myLocation, std::string reqPath, std::string file, int server
 				fileDel = iss.str();
 				FILE* outfile = std::fopen(fileDel.c_str(), "w");
 				if(!outfile)
-				{
-					std::cout << "test" << std::endl;
 					throw errorMessage(500, serverID);
-				}
+
 				clock_t start_time;
 				start_time = clock();
 				int pid = fork();
@@ -97,10 +94,10 @@ void cgi(Location& myLocation, std::string reqPath, std::string file, int server
 		}
 		if(!cgiExist)
 		{
-			std::string temp = "text/html";
+			// std::string temp = "text/html";
 			std::ifstream file(reqPath.c_str());
 			if (file.is_open())
-				throw errorMessage(200, reqPath, temp);
+				throw errorMessage(200, reqPath, extention);
 			throw errorMessage(404,serverID);
 		}
 
