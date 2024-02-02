@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/02 02:37:01 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/02 02:48:46 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void post(Box &box, int ind, int fd){
 				std::cout << "vvvvvvvvvvvvvvvvvvvvvvvv" << std::endl;
 				std::fclose(box.getClients()[fd].getOutFile());
 				body.clear();
-				throw errorMessage(301,box.getClients()[fd].getServerId(),ind);
+				// throw errorMessage(301,box.getClients()[fd].getServerId(),ind);
 			}
 		}
 		else if(mapInfo["Transfer-Encoding"] == "chunked"){
