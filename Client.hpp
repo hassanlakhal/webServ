@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/01 17:35:49 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/02 02:23:57 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class Client
         int serverId;
         std::vector<unsigned char> body;
         infoMap Map;
+        size_t size;
         Repence repence;
         // short port;
     public:
@@ -63,6 +64,7 @@ class Client
         const infoMap getInfoMap() const;
         FILE * getOutFile() const;
         bool getOutFileOpened() const;
+        size_t getSizeBody() const;
         std::string trim(std::string& word);
         void ParsingRequest();
         ~Client();

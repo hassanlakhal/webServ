@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/01 18:06:49 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/02 02:25:30 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ Client::Client(): loadingHead(true),serverId(0)
 Client::Client(int serverId): loadingHead(true),serverId(serverId)
 {
     this->outfileOpened = false;
+    this->size = 0;
 }
 
 Client::~Client()
@@ -49,6 +50,7 @@ Client::Client(const Client& other)
     serverId = other.serverId;
     repence = other.repence;
     this->outfileOpened = other.outfileOpened;
+    this->size = other.size;
 }
 
 Client& Client::operator=(const Client& other)
@@ -67,6 +69,7 @@ Client& Client::operator=(const Client& other)
         repence = other.repence;
         this->outfileOpened = other.outfileOpened;
         Map = other.Map;
+        this->size = other.size;
     }
     return *this;
 }
@@ -119,12 +122,18 @@ void Client::loadingFormation(std::string& line)
     }
 }
 
+size_t Client::getSizeBody() const
+{
+    return this->size;
+}
+
 void Client::setBody(std::istringstream& buff)
 {
     // this->stringBody = buff.str();
     std::istreambuf_iterator<char> begin(buff);
     std::istreambuf_iterator<char> end;
     body.assign(begin,end);
+    size += body.size();
 }
 
 bool Client::getLoadingHeader() const

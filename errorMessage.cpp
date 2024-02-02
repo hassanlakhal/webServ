@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:25:10 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/31 11:12:01 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/02 02:06:20 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ errorMessage::errorMessage(int status, int ind, int posLocation) throw()
         oss << wserv.getServer()[ind].getLocation()[posLocation].getRediract();
     }
     this->message = oss.str();
+    this->type = "text/html";
 }
 
 int errorMessage::getStatusCode() const

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Post.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/01 18:17:06 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/02 02:37:01 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,18 @@ void post(Box &box, int ind, int fd){
 			// std::string contentFile;
 			// write(fileno(outfile), , )
 
-			static size_t size;
-			size += body.size();
-			std::cout << "size : " << size << std::endl;
+			// static size_t size;
+			// size += body.size();
+			std::cout << "size : " << box.getClients()[fd].getSizeBody() << std::endl;
+			std::cout << "test : " << static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str())) << std::endl;
 			// fwrite(&(bodyString.c_str())[0], sizeof(char), bodyString.size(), box.getClients()[fd].getOutFile());
 			fwrite(&body[0], sizeof(char), body.size(), box.getClients()[fd].getOutFile());
-			if(size == static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str()))){
+			if(box.getClients()[fd].getSizeBody() == static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str()))){
 
 				std::cout << "vvvvvvvvvvvvvvvvvvvvvvvv" << std::endl;
 				std::fclose(box.getClients()[fd].getOutFile());
+				body.clear();
+				throw errorMessage(301,box.getClients()[fd].getServerId(),ind);
 			}
 		}
 		else if(mapInfo["Transfer-Encoding"] == "chunked"){
