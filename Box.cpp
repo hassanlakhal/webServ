@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/01 16:33:33 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/02 15:54:43 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,8 +219,8 @@ std::string Box::makeRepence(int fd, std::string value)
 
 void Box::readRequest(int fdRequest, int epollFd)
 {
-    char buffer[2048] = {0};
-    int bytesRead = recv(fdRequest, buffer, 2047, 0);
+    char buffer[1000000] = {0};
+    int bytesRead = recv(fdRequest, buffer, 1000000, 0);
     if (bytesRead <= 0)
     {
         std::cout << "Client disconnected." << std::endl;
