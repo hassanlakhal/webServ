@@ -6,24 +6,59 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/01 13:08:52 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/03 11:56:37 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "methods.hpp"
 
 
-void cgi(Location& myLocation, std::string reqPath, std::string file, int serverID){
+std::string fillMapType(std::string extention){
+	std::map<std::string, std::string> myMap;
+	std::map<std::string, std::string>::iterator it;
+	myMap["html"] = "text";
+	myMap["htm"] = "text";
+	myMap["csv"] = "text";
+	myMap["css"] = "text";
+	myMap["mp4"] = "video";
+	myMap["mpeg"] = "video";
+	myMap["png"] = "image";
+	myMap["jpeg"] = "image";
+	myMap["gif"] = "image";
+	myMap["jpg"] = "image";
+	myMap["aac"] = "audio";
+	myMap["json"] = "application";
+	it = myMap.begin();
+	for (; it != myMap.end(); it++)
+	{
+		if(extention == it->first)
+			return it->second;
+	}
+	return "text";
+}
+
+
+int cgi(Location& myLocation, std::string reqPath, std::string file, int serverID){
 	std::string extention = file.substr(file.find('.'));
 	bool cgiExist = false;
 	std::string tem;
 	std::string fileDel;
+	reqPath =  myLocation.getRoot() + "/" + reqPath;
+	FILE * tmpfile = std::fopen((reqPath + "/" + file).c_str(), "r");
+	if(!tmpfile){
+		return 0;
+	}
+	else
+		std::fclose(tmpfile);
 	if(!myLocation.getCgiPath().size())
 	{
+		reqPath += "/" + file;
 		tem = "text/" + extention.substr(1);
 		throw errorMessage(200, reqPath, tem);
 	}
-	else{
+	else
+	{
+
 		std::map<std::string, std::string>::const_iterator it;
 		it = myLocation.getCgiPath().begin();
 		for (; it != myLocation.getCgiPath().end(); it++)
@@ -41,7 +76,9 @@ void cgi(Location& myLocation, std::string reqPath, std::string file, int server
 				fileDel = iss.str();
 				FILE* outfile = std::fopen(fileDel.c_str(), "w");
 				if(!outfile)
+				{
 					throw errorMessage(500, serverID);
+				}
 
 				clock_t start_time;
 				start_time = clock();
@@ -49,12 +86,16 @@ void cgi(Location& myLocation, std::string reqPath, std::string file, int server
 
 				if(pid == 0){
 					std::cout << "fffffff" << fileno(outfile) << std::endl;
+					std::string arg2 = reqPath + "/" + file;
+					char *arg[] = {(char*)it->second.c_str(), (char*)(arg2.c_str()), NULL};
+					std::cout << "arg[0] : " << arg[0] << std::endl;
+					std::cout << "arg[1] : " << arg[1] << std::endl;
 					if(dup2(fileno(outfile), 1) == -1)
 						perror("dup2 fail ");
-					char *arg[] = {(char*)it->second.c_str(), (char*)reqPath.c_str(), NULL};
 					execve(arg[0],arg , NULL);
 					exit(48);
 				}
+				std::fclose(outfile);
 				while(1){
 					if (waitpid(pid, &status, WNOHANG) > 0)
 						break;
@@ -72,7 +113,6 @@ void cgi(Location& myLocation, std::string reqPath, std::string file, int server
 						throw errorMessage(500, serverID);
 					throw errorMessage(500, serverID);
 				}
-				std::fclose(outfile);
 				FILE* infile = std::fopen(fileDel.c_str(), "r");
 				if(!infile){
 					if(unlink(fileDel.c_str()) == -1)
@@ -94,12 +134,23 @@ void cgi(Location& myLocation, std::string reqPath, std::string file, int server
 		}
 		if(!cgiExist)
 		{
-			// std::string temp = "text/html";
-			std::ifstream file(reqPath.c_str());
-			if (file.is_open())
-				throw errorMessage(200, reqPath, extention);
+			std::string formatType = fillMapType(extention);
+			std::string tmpFile = reqPath + "/" + file;
+	// std::cout << "fpath : " << reqPath << " file : " << tmpFile << std::endl;
+			std::ifstream file(tmpFile.c_str());
+			if (file.is_open()){
+			{
+
+				std::cout << "file to open : " << tmpFile << std::endl;
+				std::string tem = formatType + "/" + extention.substr(1);
+				std::cout << "format type : " << tem <<std::endl;
+				throw errorMessage(200, tmpFile, tem);
+			}
+
+			}
 			throw errorMessage(404,serverID);
 		}
 
 	}
+	return 1;
 }

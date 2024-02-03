@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:59:17 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/01/31 22:17:49 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/02 23:13:48 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,22 @@ void listing_dir(int fd, Location myLocation){
 	(void)fd;
 	DIR *dir;
 	struct dirent *dent;
+	std::string reqPath = myLocation.getRoot() + "/" + myLocation.getPath().substr(1);
+	std::cout << "root : " << reqPath << std::endl;
 	std::string codeHTML = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Document</title></head><body><ul>";
-	if((dir = opendir(myLocation.getPath().substr(1).c_str())) != NULL){
+	if((dir = opendir(reqPath.c_str())) != NULL){
 		while ((dent = readdir(dir)) != NULL)
 		{
 			if(strcmp(dent->d_name, ".") && strcmp(dent->d_name, ".."))
 				codeHTML += "<li><a href=\"" + myLocation.getPath() + "/" + dent->d_name + "\">" + dent->d_name + "</a></li>";
 		}
-
 	}
 	codeHTML += "</ul></body></html>";
 	closedir(dir);
+	// std::cout << "code : " << codeHTML << std::endl;
 	throw errorMessage(200,codeHTML);
 }
+
 
 void get(Box &box, int ind, int fd){
 	Location myLocation = box.getWebServer().getServer()[box.getClients()[fd].getServerId()].getLocation()[ind];
@@ -38,15 +41,22 @@ void get(Box &box, int ind, int fd){
 	reqPath = box.removeSlach(reqPath);
 	reqPath = box.FullQueryString(reqPath);
 	std::string file = reqPath.substr(1);
-	if(file.find_last_of('/') != std::string::npos)
+	if(file.find_last_of('/') != std::string::npos && file.find('.') != std::string::npos)
 		file = file.substr(file.find_last_of('/') + 1);
 	else
 		file = "";
-
+	// std::cout << "file : " << file << std::endl;
 	if(!file.empty()){
+	// std::cout << "dddddddddddddddddddddddd" << std::endl;
+
+		// reqPath = reqPath.substr(1);
+		reqPath = reqPath.substr(0, reqPath.find_last_of('/'));
+		// std::cout << "my path : " << reqPath << std::endl;
 		cgi(myLocation, reqPath.substr(1), file, serverID);
 	}
-	else{
+	else
+	{
+
 		if(myLocation.getAutoIndex() == "on")
 		{
 			std::set<std::string>::iterator it;
@@ -54,24 +64,31 @@ void get(Box &box, int ind, int fd){
 				it = myLocation.getIndexes().begin();
 				for (size_t i = 2; i < myLocation.getIndexes().size(); i++, it++)
 				{
-					file = myLocation.getPath() + "/" + *it;
-					cgi(myLocation, reqPath.substr(1), file, serverID);
+					file =  *it;
+					if(!cgi(myLocation, reqPath.substr(1), file, serverID))
+						continue;
 				}
 			}else{
 				it = myLocation.getIndexes().begin();
 				for (size_t i = 0; i < 2; i++, it++)
 				{
-					file = myLocation.getPath() + "/" + *it;
-					cgi(myLocation, reqPath.substr(1), file, serverID);
+					file = *it;
 
+					if(!cgi(myLocation, reqPath.substr(1), file, serverID)){
+						continue;
+					}
 
 				}
 			}
-		}else if(myLocation.getListingDir() == "on"){
+		}
+		if(myLocation.getListingDir() == "on"){
+
 			listing_dir(fd, myLocation);
 		}
-		else
+		else{
+
 			throw errorMessage(403, box.getClients()[fd].getServerId());
+		}
 	}
 
 

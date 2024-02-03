@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsingFile.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/27 22:35:12 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/02 22:35:53 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ bool parsingLocation(const std::string& information)
     else if (ind == 0)
     {
        if(trim(getLine(information))!= "sever")
-            return false; 
+            return false;
     }
     return true;
 }
@@ -89,11 +89,11 @@ std::string getWordLocation(std::string& word, int pos, bool type)
     return word.substr(pos,word.length() + 1);
 }
 
-// bool isV(int value) 
+// bool isV(int value)
 // {
-//     for (int i = PATH; i <= INDEX; ++i) 
+//     for (int i = PATH; i <= INDEX; ++i)
 //     {
-//         if (i == value) 
+//         if (i == value)
 //             return true;
 //     }
 //     return false;
@@ -208,8 +208,8 @@ void loadingData(std::string& nameFile)
             std::cout <<"test" << line << std::endl;
     }
     configFile.close();
-    std::cout << "root location : "<< GlobalConfig.getServer()[0].getLocation()[0].getRoot() <<std::endl;
-    loading.setUpServer(GlobalConfig); 
+    // std::cout << "root location : "<< GlobalConfig.getServer()[0].getLocation()[0].getRoot() <<std::endl;
+    loading.setUpServer(GlobalConfig);
     // std::vector<Server>:: const_iterator it =  GlobalConfig.getServer().begin();
     // int count = 0;
     // while (it != GlobalConfig.getServer().end())

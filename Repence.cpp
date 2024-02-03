@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:34:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/31 20:52:14 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/03 11:57:15 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ void Repence::sendRepence(int fd)
         std::string body(buffer, bytesRead);
         std::string buff = start_line + header + cache + body;
         body.clear();
-        send(fd, buff.c_str(), strlen(buff.c_str()), 0);
-        // write(fd, buff.c_str(), strlen(buff.c_str()));
+        send(fd, buff.c_str(), buff.length(), 0);
         if (file.eof())
         {
             close(fd);
@@ -68,7 +67,7 @@ void Repence::sendRepence(int fd)
     else if (result == "301")
     {
         std::string buff = start_line + header;
-        write(fd, buff.c_str(), strlen(buff.c_str()));
+        write(fd, buff.c_str(), buff.length());
         file.close();
         close(fd);
     }
@@ -79,11 +78,13 @@ void Repence::sendRepence(int fd)
         std::string body(buffer, bytesRead);
         std::string buff = start_line + header + cache + body;
         body.clear();
-        send(fd, buff.c_str(), strlen(buff.c_str()), 0);
-        // write(fd, buff.c_str(), strlen(buff.c_str()));
+        // std::cout <<  buff.length() << "   " << strlen(buff.c_str()) << std::endl;
+        // write(fd, buff.c_str(), buff.length());
+        send(fd, buff.c_str(), buff.length(), 0);
         if (file.eof())
         {
             close(fd);
+            status_header = true;
             file.close();
             body.clear();
         }

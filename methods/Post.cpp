@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Post.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/02 02:48:46 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/02 16:50:10 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void post(Box &box, int ind, int fd){
 			}
 		}
 		else if(mapInfo["Transfer-Encoding"] == "chunked"){
-
+			std::cout << box.getClients()[fd].getfullRequset();
 		}
 	}
 }

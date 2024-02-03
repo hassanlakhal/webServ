@@ -1,7 +1,7 @@
 server:
   listen: 8080
   host: localhost
-  root: www/1
+  root: www
   client_max_body_size: 1G
   server_name: example.com
 
@@ -10,12 +10,11 @@ server:
     - listing_dir: on
     - upload: on
     - autoindex: off
-    - methods:  POST
+    - methods:  POST GET
     - index:  index.html
     - cgi_path: .py, /usr/bin/python3
     - cgi_path: .php, /usr/bin/php-cgi
     - cgi_path: .sh, /usr/bin/bash
-    - return: https://www.google.com
   location:
     - path: /home
     - root:  www
@@ -41,7 +40,7 @@ server:
 server:
   listen: 8081
   host: localhost
-  root: www/2
+  root: www
   client_max_body_size: 1G
   server_name: test
 
@@ -50,6 +49,7 @@ server:
     - root:   www
     - upload: on
     - autoindex: on
+    - listing_dir: on
     - methods: GET
   location:
     - path: /home
