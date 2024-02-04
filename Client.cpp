@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/02 02:25:30 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/04 13:06:12 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void Client::setRepence(const Repence& rep)
     this->repence = rep;
 }
 
-const Repence& Client::getRepence() const
+Repence& Client::getRepence()
 {
     return this->repence;
 }

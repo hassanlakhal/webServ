@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/02 02:23:57 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/04 13:06:05 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ class Client
         const std::vector<unsigned char>& getBody() const;
         const std::string& getStringBody() const;
         void setRepence(const Repence& rep);
-        const Repence& getRepence() const;
+        Repence& getRepence();
         void openFile(std::string file);
         const infoMap getInfoMap() const;
         FILE * getOutFile() const;

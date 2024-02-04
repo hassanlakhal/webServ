@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Post.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/02 16:50:10 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/04 18:21:33 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ void post(Box &box, int ind, int fd){
 				std::cout << "vvvvvvvvvvvvvvvvvvvvvvvv" << std::endl;
 				std::fclose(box.getClients()[fd].getOutFile());
 				body.clear();
-				// throw errorMessage(301,box.getClients()[fd].getServerId(),ind);
+				std::string path_page = "error_page/201.html";
+				std::string type = "txt/html";
+				throw errorMessage(201,path_page,type);
 			}
 		}
 		else if(mapInfo["Transfer-Encoding"] == "chunked"){

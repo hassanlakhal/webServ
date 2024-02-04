@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/02 23:43:08 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/04 16:55:38 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,8 +219,8 @@ std::string Box::makeRepence(int fd, std::string value)
 
 void Box::readRequest(int fdRequest, int epollFd)
 {
-	char buffer[1000000] = {0};
-	int bytesRead = recv(fdRequest, buffer, 1000000, 0);
+	char buffer[2048] = {0};
+	int bytesRead = recv(fdRequest, buffer, 2047, 0);
 	if (bytesRead <= 0)
 	{
 		std::cout << "Client disconnected." << std::endl;
@@ -230,7 +230,8 @@ void Box::readRequest(int fdRequest, int epollFd)
 	else
 	{
 		std::string buff(buffer ,bytesRead);
-		clients[fdRequest].setRequset(buff);
+		if (clients[fdRequest].getLoadingHeader())
+			clients[fdRequest].setRequset(buff);
 		if (clients[fdRequest].getfullRequset().find("\r\n\r\n") != std::string::npos)
 		{
 			if (clients[fdRequest].getLoadingHeader())
@@ -243,6 +244,46 @@ void Box::readRequest(int fdRequest, int epollFd)
 			sendRequest(fdRequest);
 		}
 	}
+}
+
+void Box::sendResponse(int fd)
+{
+	signal(SIGPIPE,SIG_IGN);
+	std::string countent;
+	Repence &a = clients[fd].getRepence();
+	const int bufferSize = 1024;
+    char buffer[bufferSize] = {0};
+	if (!a.getStatusHeader())
+	{
+		countent = a.getHeader();
+		a.openFile(a.getPathFile());
+		a.setStatusHeader(true);
+		send(fd,countent.c_str(),countent.length(),0);
+	}
+	if (a.getFile().is_open())
+	{
+		a.getFile().read(buffer, bufferSize - 1);
+		std::streamsize bytesRead = a.getFile().gcount();
+		if (bytesRead > 0)
+		{
+			std::string body(buffer, bytesRead);
+			send(fd, body.c_str(), body.length(), 0);
+		}
+		if (a.getFile().eof())
+		{
+			close(fd);
+			std::cout << "close fd " << fd  << std::endl;
+			a.getFile().close();
+		}
+	}
+	else if (!a.getBody().empty())
+	{
+		std::string body = a.getBody();
+		send(fd, body.c_str(), body.length(), 0);
+		close(fd);
+		a.getFile().close();
+	}
+	clients[fd].setRepence(a);
 }
 
 void Box::makeSocketNonBlocking(int sockfd)
@@ -322,7 +363,7 @@ void Box::setUpServer(webServer& data)
 					perror("accept");
 				Client client(d);
 				clients[client_socket] = client;
-				clients[events[i].data.fd].setRepence(rep);
+				clients[client_socket].setRepence(rep);
 				// std::cout << "postion of server  " << d << std::endl;
 				std::cout <<  client_socket << " Client connected." << std::endl;
 				event.events = EPOLLIN | EPOLLOUT;
@@ -335,8 +376,7 @@ void Box::setUpServer(webServer& data)
 			}
 			else
 			{
-				bool status = clients[events[i].data.fd].getRepence().getStatusRepence();
-				if (events[i].events & EPOLLIN && status)
+				if (events[i].events & EPOLLIN && clients[events[i].data.fd].getRepence().getStatusRepence())
 				{
 					try
 					{
@@ -344,20 +384,19 @@ void Box::setUpServer(webServer& data)
 					}
 					catch (const errorMessage& e)
 					{
-						rep.setValues(false,events[i].data.fd,e.getStatusCode(),e.what(),e.getType(),e.getBody());
-						// std::cout << "fd : "<< events[i].data.fd << std::endl;
-						// std::cout << e.what() << std::endl;
-						clients[events[i].data.fd].setRepence(rep);
+						clients[events[i].data.fd].getRepence().\
+						setValues(false,events[i].data.fd,\
+						e.getStatusCode(),\
+						e.what(),\
+						e.getType(),\
+						e.getBody());
 					}
 				}
-				else if ((events[i].events & EPOLLOUT) && !status)
+				else if ((events[i].events & EPOLLOUT) && !clients[events[i].data.fd].getRepence().getStatusRepence())
 				{
-					// std::cout << "fd : "<< events[i].data.fd << std::endl;
-					rep.sendRepence(events[i].data.fd);
+					sendResponse(events[i].data.fd);
 				}
-
 			}
-
 		}
 	}
 }

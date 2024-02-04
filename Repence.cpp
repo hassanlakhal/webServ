@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Repence.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:34:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/03 11:57:15 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/04 18:25:47 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 Repence::Repence()
 {
+    this->status_header = false;
     this->status = true;
 }
 
 Repence::Repence(bool status,int fd, int status_code, std::string path)
 {
+    this->status_header = false;
     this->status = status;
     this->status_code = status_code;
     this->path = path;
@@ -30,73 +32,29 @@ bool Repence::getStatusClinet() const
     return this->status_close;
 }
 
-void Repence::sendRepence(int fd)
+void Repence::setStatusHeader(bool status_header)
 {
-    const int bufferSize = 1024;
-    char buffer[bufferSize] = {0};
-    std::string start_line, header, result,cache, name_server, location;
-    signal(SIGPIPE,SIG_IGN);
-    std::stringstream ss;
-    ss << this->status_code;
-    result = ss.str();
-    if (status_header)
-    {
-        name_server = "test";
-        if (result == "301")
-            location = "Location: " + this->path + "\r\n";
-        start_line = "HTTP/1.0 " + result + " error " + "\r\n";
-        // cache = "Cache-Control: max-age=3600, public\r\n";
-        header = "Server: " + name_server + "\r\n" + "Content-type: " + type + "\r\n" + location + "\r\n";
-        status_header = false;
-    }
-    if (result != "301" && result != "200")
-    {
-        file.read(buffer, bufferSize);
-        std::streamsize bytesRead = this->file.gcount();
-        std::string body(buffer, bytesRead);
-        std::string buff = start_line + header + cache + body;
-        body.clear();
-        send(fd, buff.c_str(), buff.length(), 0);
-        if (file.eof())
-        {
-            close(fd);
-            file.close();
-            body.clear();
-        }
-    }
-    else if (result == "301")
-    {
-        std::string buff = start_line + header;
-        write(fd, buff.c_str(), buff.length());
-        file.close();
-        close(fd);
-    }
-    else if (result == "200" && file.is_open())
-    {
-        file.read(buffer, bufferSize);
-        std::streamsize bytesRead = this->file.gcount();
-        std::string body(buffer, bytesRead);
-        std::string buff = start_line + header + cache + body;
-        body.clear();
-        // std::cout <<  buff.length() << "   " << strlen(buff.c_str()) << std::endl;
-        // write(fd, buff.c_str(), buff.length());
-        send(fd, buff.c_str(), buff.length(), 0);
-        if (file.eof())
-        {
-            close(fd);
-            status_header = true;
-            file.close();
-            body.clear();
-        }
-    }
-    else if (result == "200" && !body.empty())
-    {
-        std::string buff = start_line + header + body;
-        write(fd, buff.c_str(), strlen(buff.c_str()));
-        file.close();
-        close(fd);
-    }
+    this->status_header = status_header;
+}
 
+const std::string& Repence::getPathFile()
+{
+    return this->path;
+}
+
+void Repence::openFile(const std::string& path)
+{
+    file.open(path.c_str(), std::ios::in | std::ios::binary);
+}
+
+std::ifstream& Repence::getFile() 
+{
+    return this->file;
+}
+
+std::string Repence::getBody()
+{
+    return this->body;
 }
 
 void Repence::closeFile()
@@ -110,19 +68,9 @@ void Repence::setValues(bool status,int fd, int status_code, std::string path, s
     this->status_code = status_code;
     this->path = path;
     this->fd = fd;
-    this->file.open(path.c_str(), std::ios::binary);
-    this->status_header = true;
     this->type = type;
     this->body = content;
-    // this->file = file;
-    // opening path
 }
-
-// std::ifstream Repence::getFile() const
-// {
-
-//     return file;
-// }
 
 bool Repence::getStatusRepence() const
 {
@@ -133,6 +81,21 @@ Repence::~Repence()
 {
 }
 
+std::string Repence::getHeader()
+{
+    std::string start_line, header, result,cache, name_server, location;
+    std::stringstream ss;
+    ss << this->status_code;
+    result = ss.str();
+    name_server = "test";
+    if (result == "301" || result == "201")
+        location =  "\r\nLocation: " + this->path;
+    start_line = "HTTP/1.1 " + result + " OK" + "\r\n";
+    header = "Server: " + name_server + "\r\n" + "Content-Type: " + type + location  + "\r\n\r\n";
+    start_line += header;
+    return start_line;
+}
+
 Repence& Repence::operator=(const Repence& other)
 {
     if (this != &other)
@@ -140,11 +103,23 @@ Repence& Repence::operator=(const Repence& other)
         status = other.status;
         fd = other.fd;
         status_code = other.status_code;
+        status_close = other.status_close;
         header = other.header;
         body = other.body;
+        path = other.path;
         type = other.type;
+        status_header = other.status_header;
+        if (file.is_open())
+            file.close();
+        if (other.file.is_open())
+            file.open(other.path.c_str(), std::ios::in | std::ios::binary);
     }
     return *this;
+}
+
+bool Repence::getStatusHeader() const
+{
+    return this->status_header;
 }
 
 Repence::Repence(const Repence& other)
@@ -152,7 +127,14 @@ Repence::Repence(const Repence& other)
     status = other.status;
     fd = other.fd;
     status_code = other.status_code;
+    status_close = other.status_close;
     header = other.header;
     body = other.body;
+    path = other.path;
     type = other.type;
+    status_header = other.status_header;
+    if (file.is_open())
+        file.close();
+    if (other.file.is_open())
+        file.open(other.path.c_str(), std::ios::in | std::ios::binary);
 }

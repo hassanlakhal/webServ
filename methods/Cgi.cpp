@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/03 11:56:37 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/04 17:49:24 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ std::string fillMapType(std::string extention){
 	myMap["jpg"] = "image";
 	myMap["aac"] = "audio";
 	myMap["json"] = "application";
+	myMap["x-www-form-urlencoded"] = "application";
 	it = myMap.begin();
 	for (; it != myMap.end(); it++)
 	{
@@ -53,7 +54,9 @@ int cgi(Location& myLocation, std::string reqPath, std::string file, int serverI
 	if(!myLocation.getCgiPath().size())
 	{
 		reqPath += "/" + file;
-		tem = "text/" + extention.substr(1);
+		std::string formatType = fillMapType(extention.substr(1));
+		std::string tem = formatType + "/" + extention.substr(1);
+		std::cout << "format type : " << tem <<std::endl;
 		throw errorMessage(200, reqPath, tem);
 	}
 	else
