@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/04 13:06:05 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/04 19:56:54 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define CLIENT_HPP
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <string>
 #include <map>
 #include<vector>
@@ -31,13 +32,16 @@ class Client
         std::string protocal;
         std::string type;
         std::string stringBody;
-        FILE* outfile;
+        std::ofstream outfile;
         bool outfileOpened;
+        bool EnteredfirstTime;
         bool loadingHead;
         int serverId;
+        unsigned long ChunkSizee;
         std::vector<unsigned char> body;
         infoMap Map;
         size_t size;
+        size_t sizeAppended;
         Repence repence;
         // short port;
     public:
@@ -58,13 +62,20 @@ class Client
         std::string getfullRequset() const ;
         const std::vector<unsigned char>& getBody() const;
         const std::string& getStringBody() const;
+        unsigned long getChunkSizee() const;
+        void setChunkSizee(unsigned long s);
+        void setStringBody(char c, std::string str);
         void setRepence(const Repence& rep);
         Repence& getRepence();
         void openFile(std::string file);
         const infoMap getInfoMap() const;
-        FILE * getOutFile() const;
+        std::ofstream& getOutFile();
         bool getOutFileOpened() const;
+        bool getEnteredfirstTime() const;
+        void setEnteredfirstTime(bool b);
         size_t getSizeBody() const;
+        size_t getSizeAppended() const;
+        void setSizeAppended(size_t s);
         std::string trim(std::string& word);
         void ParsingRequest();
         ~Client();

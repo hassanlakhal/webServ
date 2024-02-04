@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:02:58 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/02 19:07:45 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/03 16:38:26 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 #include <dirent.h>
 #include <vector>
 #include <sys/wait.h>
+#include <string>
+
 # define BUFFER_SIZE 1024
 
 class Box;

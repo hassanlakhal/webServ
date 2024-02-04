@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/04 17:49:24 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/04 20:20:07 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 std::string fillMapType(std::string extention){
 	std::map<std::string, std::string> myMap;
 	std::map<std::string, std::string>::iterator it;
+	std::cout << "extention entred : " << extention << std::endl;
 	myMap["html"] = "text";
 	myMap["htm"] = "text";
 	myMap["csv"] = "text";
@@ -32,8 +33,10 @@ std::string fillMapType(std::string extention){
 	it = myMap.begin();
 	for (; it != myMap.end(); it++)
 	{
-		if(extention == it->first)
+		if(extention == it->first){
+			std::cout << it->second << std::endl;
 			return it->second;
+		}
 	}
 	return "text";
 }
@@ -54,7 +57,7 @@ int cgi(Location& myLocation, std::string reqPath, std::string file, int serverI
 	if(!myLocation.getCgiPath().size())
 	{
 		reqPath += "/" + file;
-		std::string formatType = fillMapType(extention.substr(1));
+		std::string formatType = fillMapType(extention);
 		std::string tem = formatType + "/" + extention.substr(1);
 		std::cout << "format type : " << tem <<std::endl;
 		throw errorMessage(200, reqPath, tem);
@@ -137,7 +140,7 @@ int cgi(Location& myLocation, std::string reqPath, std::string file, int serverI
 		}
 		if(!cgiExist)
 		{
-			std::string formatType = fillMapType(extention);
+			std::string formatType = fillMapType(extention.substr(1));
 			std::string tmpFile = reqPath + "/" + file;
 	// std::cout << "fpath : " << reqPath << " file : " << tmpFile << std::endl;
 			std::ifstream file(tmpFile.c_str());

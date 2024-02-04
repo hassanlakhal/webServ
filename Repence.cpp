@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Repence.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 19:34:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/04 18:25:47 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/04 19:54:45 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void Repence::openFile(const std::string& path)
     file.open(path.c_str(), std::ios::in | std::ios::binary);
 }
 
-std::ifstream& Repence::getFile() 
+std::ifstream& Repence::getFile()
 {
     return this->file;
 }
