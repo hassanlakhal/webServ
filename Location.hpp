@@ -58,7 +58,7 @@ class Location
         std::string getPath() const;
         const std::set<std::string>& getIndexes() const;
         std::string getAutoIndex() const;
-        std::string getRediract() const;
+        std::string getRedirect() const;
         std::string getRoot() const;
         const std::string& getUpload() const;
         const std::string& getListingDir() const;

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Repence.cpp                                        :+:      :+:    :+:   */
+/*   Response.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,15 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"Repence.hpp"
+#include"Response.hpp"
 
-Repence::Repence()
+Response::Response()
 {
     this->status_header = false;
     this->status = true;
 }
 
-Repence::Repence(bool status,int fd, int status_code, std::string path)
+Response::Response(bool status,int fd, int status_code, std::string path)
 {
     this->status_header = false;
     this->status = status;
@@ -27,42 +27,42 @@ Repence::Repence(bool status,int fd, int status_code, std::string path)
     this->fd = fd;
 }
 
-bool Repence::getStatusClinet() const
+bool Response::getStatusClinet() const
 {
     return this->status_close;
 }
 
-void Repence::setStatusHeader(bool status_header)
+void Response::setStatusHeader(bool status_header)
 {
     this->status_header = status_header;
 }
 
-const std::string& Repence::getPathFile()
+const std::string& Response::getPathFile()
 {
     return this->path;
 }
 
-void Repence::openFile(const std::string& path)
+void Response::openFile(const std::string& path)
 {
     file.open(path.c_str(), std::ios::in | std::ios::binary);
 }
 
-std::ifstream& Repence::getFile()
+std::ifstream& Response::getFile()
 {
     return this->file;
 }
 
-std::string Repence::getBody()
+std::string Response::getBody()
 {
     return this->body;
 }
 
-void Repence::closeFile()
+void Response::closeFile()
 {
     this->file.close();
 }
 
-void Repence::setValues(bool status,int fd, int status_code, std::string path, std::string type,std::string content)
+void Response::setValues(bool status,int fd, int status_code, std::string path, std::string type,std::string content)
 {
     this->status = status;
     this->status_code = status_code;
@@ -72,16 +72,16 @@ void Repence::setValues(bool status,int fd, int status_code, std::string path, s
     this->body = content;
 }
 
-bool Repence::getStatusRepence() const
+bool Response::getStatusResponse() const
 {
     return this->status;
 }
 
-Repence::~Repence()
+Response::~Response()
 {
 }
 
-std::string Repence::getHeader()
+std::string Response::getHeader()
 {
     std::string start_line, header, result,cache, name_server, location;
     std::stringstream ss;
@@ -96,7 +96,7 @@ std::string Repence::getHeader()
     return start_line;
 }
 
-Repence& Repence::operator=(const Repence& other)
+Response& Response::operator=(const Response& other)
 {
     if (this != &other)
     {
@@ -117,12 +117,12 @@ Repence& Repence::operator=(const Repence& other)
     return *this;
 }
 
-bool Repence::getStatusHeader() const
+bool Response::getStatusHeader() const
 {
     return this->status_header;
 }
 
-Repence::Repence(const Repence& other)
+Response::Response(const Response& other)
 {
     status = other.status;
     fd = other.fd;

@@ -18,9 +18,9 @@
 #include <string>
 #include <map>
 #include<vector>
-#include<algorithm>
-#include"Repence.hpp"
-// #include"parsingFile.hpp"
+#include <algorithm>
+#include "Response.hpp"
+
 typedef std::map<std::string, std::string> infoMap;
 class Client
 {
@@ -42,7 +42,7 @@ class Client
         infoMap Map;
         size_t size;
         size_t sizeAppended;
-        Repence repence;
+        Response response;
         // short port;
     public:
         Client();
@@ -65,8 +65,8 @@ class Client
         unsigned long getChunkSizee() const;
         void setChunkSizee(unsigned long s);
         void setStringBody(char c, std::string str);
-        void setRepence(const Repence& rep);
-        Repence& getRepence();
+        void setResponse(const Response& rep);
+        Response& getResponse();
         void openFile(std::string file);
         const infoMap getInfoMap() const;
         FILE * getOutFile();

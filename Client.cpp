@@ -52,7 +52,7 @@ Client::Client(const Client& other)
 	loadingHead = other.loadingHead;
 	body = other.body;
 	serverId = other.serverId;
-	repence = other.repence;
+	response = other.response;
 	this->outfileOpened = other.outfileOpened;
 	this->EnteredfirstTime = other.EnteredfirstTime;
 	this->size = other.size;
@@ -72,7 +72,7 @@ Client& Client::operator=(const Client& other)
 		loadingHead = other.loadingHead;
 		body = other.body;
 		serverId = other.serverId;
-		repence = other.repence;
+		response = other.response;
 		this->EnteredfirstTime = other.EnteredfirstTime;
 		Map = other.Map;
 		this->size = other.size;
@@ -81,14 +81,14 @@ Client& Client::operator=(const Client& other)
 	return *this;
 }
 
-void Client::setRepence(const Repence& rep)
+void Client::setResponse(const Response& rep)
 {
-	this->repence = rep;
+	this->response = rep;
 }
 
-Repence& Client::getRepence()
+Response& Client::getResponse()
 {
-	return this->repence;
+	return this->response;
 }
 
 void Client::setRequset(std::string& buff)

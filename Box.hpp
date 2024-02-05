@@ -41,7 +41,7 @@ class Box
         void setUpServer(webServer& data);
         void sendRequest(int fd);
         int matchLocation(std::vector<Location>& loc, std::string path, int fd);
-        std::string makeRepence(int fd, std::string value);
+        std::string makeResponse(int fd, std::string value);
         void methodAllowd(std::vector<std::string>& methods, const std::string& method, int id);
         Box& operator=(const Box& other);
         bool checkDup(const std::vector<Server>& sr);

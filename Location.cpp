@@ -109,7 +109,7 @@ void Location::setRedirect(std::string& path)
     this->redirectPath = path;
 }
 
-std::string Location::getRediract() const
+std::string Location::getRedirect() const
 {
     return this->redirectPath;
 }

@@ -160,7 +160,7 @@ void Box::sendRequest(int fd)
 	std::cout << "name server : " << _InfoServer.getServer()[idOfServer].getServerName() <<std::endl;
 	std::vector<Location> loc = _InfoServer.getServer()[idOfServer].getLocation();
 	int ind = matchLocation(loc,clients[fd].getPath(),idOfServer);
-	if (!(_InfoServer.getServer()[idOfServer].getLocation()[ind].getRediract().empty()))
+	if (!(_InfoServer.getServer()[idOfServer].getLocation()[ind].getRedirect().empty()))
 	   throw errorMessage(301,idOfServer,ind);
 	std::vector<std::string> methods = _InfoServer.getServer()[idOfServer]\
 										.getLocation()[ind].getMethods();
@@ -189,7 +189,7 @@ int findKey(const mapR& myMap, const std::string& value)
 	return 200;
 }
 
-std::string Box::makeRepence(int fd, std::string value)
+std::string Box::makeResponse(int fd, std::string value)
 {
 	std::string start_line ,header ,body ,result ,name_server, location;
 	mapR errorMap = _InfoServer.getServer()[clients[fd].getServerId()].getErrorPath();
@@ -250,7 +250,7 @@ void Box::sendResponse(int fd)
 {
 	signal(SIGPIPE,SIG_IGN);
 	std::string countent;
-	Repence &a = clients[fd].getRepence();
+	Response &a = clients[fd].getResponse();
 	const int bufferSize = 1024;
     char buffer[bufferSize] = {0};
 	if (!a.getStatusHeader())
@@ -283,7 +283,7 @@ void Box::sendResponse(int fd)
 		close(fd);
 		a.getFile().close();
 	}
-	clients[fd].setRepence(a);
+	clients[fd].setResponse(a);
 }
 
 void Box::makeSocketNonBlocking(int sockfd)
@@ -309,7 +309,7 @@ void Box::setUpServer(webServer& data)
 	epoll_event events[10];
 	size_t numberOfServer = data.getServer().size();
 	socklen_t client_addrlen = sizeof(client_addr);
-	Repence rep;
+	Response rep;
 	int epollFd = epoll_create(1);
 	  std::string res;
 	_InfoServer = data;
@@ -363,7 +363,7 @@ void Box::setUpServer(webServer& data)
 					perror("accept");
 				Client client(d);
 				clients[client_socket] = client;
-				clients[client_socket].setRepence(rep);
+				clients[client_socket].setResponse(rep);
 				// std::cout << "postion of server  " << d << std::endl;
 				std::cout <<  client_socket << " Client connected." << std::endl;
 				event.events = EPOLLIN | EPOLLOUT;
@@ -376,7 +376,7 @@ void Box::setUpServer(webServer& data)
 			}
 			else
 			{
-				if (events[i].events & EPOLLIN && clients[events[i].data.fd].getRepence().getStatusRepence())
+				if (events[i].events & EPOLLIN && clients[events[i].data.fd].getResponse().getStatusResponse())
 				{
 					try
 					{
@@ -384,7 +384,7 @@ void Box::setUpServer(webServer& data)
 					}
 					catch (const errorMessage& e)
 					{
-						clients[events[i].data.fd].getRepence().\
+						clients[events[i].data.fd].getResponse().\
 						setValues(false,events[i].data.fd,\
 						e.getStatusCode(),\
 						e.what(),\
@@ -392,7 +392,7 @@ void Box::setUpServer(webServer& data)
 						e.getBody());
 					}
 				}
-				else if ((events[i].events & EPOLLOUT) && !clients[events[i].data.fd].getRepence().getStatusRepence())
+				else if ((events[i].events & EPOLLOUT) && !clients[events[i].data.fd].getResponse().getStatusResponse())
 				{
 					sendResponse(events[i].data.fd);
 				}

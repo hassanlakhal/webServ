@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Repence.hpp                                        :+:      :+:    :+:   */
+/*   Response.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -9,6 +9,9 @@
 /*   Updated: 2024/02/04 19:54:25 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef RESPONSE_HPP
+#define RESPONSE_HPP
 
 #include <iostream>
 #include <fstream>
@@ -21,7 +24,7 @@
 #include <fcntl.h>
 #include <sys/socket.h>
 
-class Repence
+class Response
 {
     private:
         bool status;
@@ -35,13 +38,13 @@ class Repence
         std::ifstream file;
         bool status_header;
     public:
-        Repence();
-        Repence(bool status,int fd, int status_code, std::string path);
-        Repence& operator=(const Repence& other);
-        Repence(const Repence& other);
+        Response();
+        Response(bool status,int fd, int status_code, std::string path);
+        Response& operator=(const Response& other);
+        Response(const Response& other);
         void setValues(bool status,int fd, int status_code, std::string path, std::string type,std::string content);
         void closeFile();
-        bool getStatusRepence() const;
+        bool getStatusResponse() const;
         void setStatusHeader(bool status_header);
         bool getStatusHeader() const;
         bool getStatusClinet() const;
@@ -51,8 +54,9 @@ class Repence
         const std::string& getPathFile();
         void openFile(const std::string& path);
         // std::ifstream getFile() const;
-        ~Repence();
+        ~Response();
 
 };
 
+#endif
 

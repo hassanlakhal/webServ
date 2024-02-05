@@ -48,7 +48,7 @@ errorMessage::errorMessage(int status, int ind, int posLocation) throw()
     if (status == 301)
     {
         this->status_code = status;
-        oss << wserv.getServer()[ind].getLocation()[posLocation].getRediract();
+        oss << wserv.getServer()[ind].getLocation()[posLocation].getRedirect();
     }
     this->message = oss.str();
     this->type = "text/html";

@@ -13,7 +13,7 @@
 NAME = webserver
 
 SRC =  Location.cpp  Server.cpp webServer.cpp main.cpp parsingFile.cpp\
-		Client.cpp Box.cpp errorMessage.cpp Repence.cpp methods/Get.cpp\
+		Client.cpp Box.cpp errorMessage.cpp Response.cpp methods/Get.cpp\
 		methods/Post.cpp methods/Cgi.cpp methods/Delete.cpp
 
 CXX = c++ -std=c++98 -fsanitize=address -g3
