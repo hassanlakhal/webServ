@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/05 15:02:29 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/05 22:25:17 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ class Client
         size_t size;
         size_t sizeAppended;
         Response response;
+        clock_t start_time;
         // short port;
     public:
         Client();
@@ -79,6 +80,8 @@ class Client
         void setSizeAppended(char c, size_t s);
         std::string trim(std::string& word);
         void ParsingRequest();
+        void setTimeOut(clock_t start_time);
+        clock_t getTimeOut();
         ~Client();
 };
 

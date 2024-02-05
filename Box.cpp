@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/04 19:53:51 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/05 23:16:35 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,10 @@ void Box::readRequest(int fdRequest, int epollFd)
 {
 	char buffer[2048] = {0};
 	int bytesRead = recv(fdRequest, buffer, 2047, 0);
+	// if ()
+	// {
+	// 	/* code */
+	// }
 	if (bytesRead <= 0)
 	{
 		std::cout << "Client disconnected." << std::endl;
@@ -298,6 +302,12 @@ void Box::makeSocketNonBlocking(int sockfd)
 		perror("fcntl");
 }
 
+void Box::timeOut(int fd, clock_t endTime)
+{
+	if (endTime - clients[fd].getTimeOut() == 5000000 && clients[fd].getLoadingHeader())
+		throw errorMessage(504, clients[fd].getServerId());
+}
+
 void Box::setUpServer(webServer& data)
 {
 	std::vector<int>::iterator it;
@@ -366,6 +376,7 @@ void Box::setUpServer(webServer& data)
 				clients[client_socket].setResponse(rep);
 				// std::cout << "postion of server  " << d << std::endl;
 				std::cout <<  client_socket << " Client connected." << std::endl;
+				clients[client_socket].setTimeOut(clock());
 				event.events = EPOLLIN | EPOLLOUT;
 				event.data.fd = client_socket;
 				if (epoll_ctl(epollFd, EPOLL_CTL_ADD, client_socket, &event) == -1)
@@ -380,7 +391,7 @@ void Box::setUpServer(webServer& data)
 				{
 					try
 					{
-						readRequest(events[i].data.fd, epollFd);
+						readRequest(events[i].data.fd, epollFd);	
 					}
 					catch (const errorMessage& e)
 					{
@@ -392,9 +403,25 @@ void Box::setUpServer(webServer& data)
 						e.getBody());
 					}
 				}
-				else if ((events[i].events & EPOLLOUT) && !clients[events[i].data.fd].getResponse().getStatusResponse())
+				else if ((events[i].events & EPOLLOUT))
 				{
-					sendResponse(events[i].data.fd);
+					try
+					{
+						timeOut(events[i].data.fd, clock());
+					}
+					catch(const errorMessage& e)
+					{
+						clients[events[i].data.fd].getResponse().\
+						setValues(false,events[i].data.fd,\
+						e.getStatusCode(),\
+						e.what(),\
+						e.getType(),\
+						e.getBody());
+					}
+					if (!clients[events[i].data.fd].getResponse().getStatusResponse())
+					{
+						sendResponse(events[i].data.fd);
+					}
 				}
 			}
 		}

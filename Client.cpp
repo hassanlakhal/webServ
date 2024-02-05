@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/05 16:12:54 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/05 22:26:14 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ Client::Client(const Client& other)
 	this->EnteredfirstTime = other.EnteredfirstTime;
 	this->size = other.size;
 	this->sizeAppended = other.sizeAppended;
+	this->start_time = other.start_time;
 }
 
 Client& Client::operator=(const Client& other)
@@ -77,6 +78,7 @@ Client& Client::operator=(const Client& other)
 		Map = other.Map;
 		this->size = other.size;
 		this->sizeAppended = other.sizeAppended;
+		this->start_time = other.start_time;
 	}
 	return *this;
 }
@@ -86,6 +88,15 @@ void Client::setResponse(const Response& rep)
 	this->response = rep;
 }
 
+clock_t Client::getTimeOut()
+{
+	return this->start_time;
+}
+
+void Client::setTimeOut(clock_t start_time)
+{
+	this->start_time = start_time;
+}
 Response& Client::getResponse()
 {
 	return this->response;

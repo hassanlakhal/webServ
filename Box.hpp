@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/04 19:57:19 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/05 23:08:21 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ class Box
         std::string FullQueryString(std::string& path);
         webServer& getWebServer() ;
         void sendResponse(int fd);
+        void timeOut(int fd, clock_t endTime);
         ~Box();
 };
 
