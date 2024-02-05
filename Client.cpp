@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/05 22:26:14 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/05 23:26:03 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,8 @@ void Client::ParsingRequest()
 			if(Map["Content-Length"].empty())
 				throw errorMessage(400,serverId);
 		}
+		if (Map["Host"].empty())
+			throw errorMessage(400,serverId);
 		if (!Map["Transfer-Encoding"].empty() && Map["Transfer-Encoding"] != "chunked")
 			  throw errorMessage(501,serverId);
 		if (path.find("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~!$&'()*+,;=") != std::string::npos)
