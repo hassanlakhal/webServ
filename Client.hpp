@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/04 19:56:54 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/05 02:07:07 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,12 @@ class Client
         const infoMap getInfoMap() const;
         std::ofstream& getOutFile();
         bool getOutFileOpened() const;
+        void setOutFileOpened(bool b);
         bool getEnteredfirstTime() const;
         void setEnteredfirstTime(bool b);
         size_t getSizeBody() const;
         size_t getSizeAppended() const;
-        void setSizeAppended(size_t s);
+        void setSizeAppended(char c, size_t s);
         std::string trim(std::string& word);
         void ParsingRequest();
         ~Client();

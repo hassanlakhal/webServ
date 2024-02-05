@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/04 19:52:44 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/05 02:06:56 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,6 +259,13 @@ size_t Client::getSizeAppended() const{
 	return this->sizeAppended;
 }
 
-void Client::setSizeAppended(size_t s){
-	this->sizeAppended += s;
+void Client::setSizeAppended(char c, size_t s){
+	if(c == 'a')
+		this->sizeAppended += s;
+	else
+		this->sizeAppended = s;
+}
+
+void Client::setOutFileOpened(bool b){
+	this->outfileOpened = b;
 }
