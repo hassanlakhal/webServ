@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/05 02:07:07 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/05 15:02:29 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ class Client
         std::string protocal;
         std::string type;
         std::string stringBody;
-        std::ofstream outfile;
+        FILE * outfile;
         bool outfileOpened;
         bool EnteredfirstTime;
         bool loadingHead;
@@ -69,7 +69,7 @@ class Client
         Repence& getRepence();
         void openFile(std::string file);
         const infoMap getInfoMap() const;
-        std::ofstream& getOutFile();
+        FILE * getOutFile();
         bool getOutFileOpened() const;
         void setOutFileOpened(bool b);
         bool getEnteredfirstTime() const;

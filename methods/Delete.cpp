@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:53 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/05 04:56:50 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/05 14:47:32 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,4 @@ void deleteM(Box &box, int ind, int fd){
 		else
 			throw errorMessage(404, serverID);
 	}
-	// std::cout << "delete method" << std::endl;
-	// std::cout << "path : " << box.getClients()[fd].getPath() << std::endl;
 }

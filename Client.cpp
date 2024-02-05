@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/05 02:06:56 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/05 16:12:54 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ void Client::ParsingRequest()
 		// std::cout << "Content-Length " << nb << std::endl;
 		if (method == "POST")
 		{
-			if(Map["Content-Length"] == "0" || Map["Content-Length"].empty())
+			if(Map["Content-Length"].empty())
 				throw errorMessage(400,serverId);
 		}
 		if (!Map["Transfer-Encoding"].empty() && Map["Transfer-Encoding"] != "chunked")
@@ -222,14 +222,14 @@ void Client::ParsingRequest()
 
 
 void Client::openFile(std::string file){
-	this->outfile.open(file.c_str());
-	if(!outfile.is_open()){
+	this->outfile = std::fopen(file.c_str(), "a+");
+	if(!this->outfile){
 		//throw
 	}
 	this->outfileOpened = true;
 }
 
-std::ofstream& Client::getOutFile() {
+FILE * Client::getOutFile() {
 	return this->outfile;
 }
 bool Client::getOutFileOpened() const{

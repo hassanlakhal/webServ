@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/05 03:19:09 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/05 20:57:25 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@ void post(Box &box, int ind, int fd){
 	std::vector<unsigned char> body = box.getClients()[fd].getBody();
 
 	Location myLocation = box.getWebServer().getServer()[box.getClients()[fd].getServerId()].getLocation()[ind];
+	std::string path = box.getClients()[fd].getPath();
+	// std::cout << "path : " << path << std::endl;
+	// std::string file = path.substr(1);
+	// if(file.find_last_of('/') != std::string::npos && file.find('.') != std::string::npos)
+	// 	file = file.substr(file.find_last_of('/') + 1);
+	// else
+	// 	file = "";
+
+
 	if(myLocation.getUpload() == "off"){
 		//throw
 	}else{
@@ -23,14 +32,13 @@ void post(Box &box, int ind, int fd){
 		std::string filePath, extention = mapInfo["Content-Type"].substr(mapInfo["Content-Type"].find("/") + 1);
 		if(mapInfo["Transfer-Encoding"].empty()){
 			if(!box.getClients()[fd].getOutFileOpened()){
-				std::cout <<  "ddddddddddddddddddddd" << std::endl;
 				std::stringstream iss;
 				iss << "upload/uploaded_file_";
 				iss << time(0);
 				iss << ".";
 				iss << extention;
 				filePath = iss.str();
-			std::cout << "file path : " << filePath << std::endl;
+				// std::cout << "file path : " << filePath << std::endl;
 				box.getClients()[fd].openFile(filePath);
 			}
 			else
@@ -39,12 +47,13 @@ void post(Box &box, int ind, int fd){
 			std::cout << "size : " << box.getClients()[fd].getSizeBody() << std::endl;
 			std::cout << "size of body : " << body.size() << std::endl;
 			std::cout << "test : " << static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str())) << std::endl;
-			box.getClients()[fd].getOutFile().write(reinterpret_cast<char*>(body.data()), body.size());
-			if(box.getClients()[fd].getSizeBody() == static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str()))){
+			// box.getClients()[fd].getOutFile().write(reinterpret_cast<char*>(body.data()), body.size());
+			fwrite(&body[0], 1, body.size(), box.getClients()[fd].getOutFile());
+			if(box.getClients()[fd].getSizeBody() >= static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str()))){
 
-				std::cout << "vvvvvvvvvvvvvvvvvvvvvvvv" << std::endl;
 				box.getClients()[fd].setOutFileOpened(false);
-				box.getClients()[fd].getOutFile().close();
+				// box.getClients()[fd].getOutFile().close();
+				fclose(box.getClients()[fd].getOutFile());
 				body.clear();
 				std::string path_page = "error_page/201.html";
 				std::string type = "txt/html";
@@ -75,7 +84,8 @@ void post(Box &box, int ind, int fd){
 						body.clear();
 						box.getClients()[fd].setOutFileOpened(false);
 						box.getClients()[fd].setStringBody('e', "");
-						box.getClients()[fd].getOutFile().close();
+						// box.getClients()[fd].getOutFile().close();
+						fclose(box.getClients()[fd].getOutFile());
 						// box.getClients()[fd]
 						std::string path_page = "error_page/201.html";
 						std::string type = "txt/html";
@@ -96,14 +106,16 @@ void post(Box &box, int ind, int fd){
 					box.getClients()[fd].setStringBody('e', box.getClients()[fd].getStringBody().substr(box.getClients()[fd].getChunkSizee()));
 
 					to_write = to_write.substr(0, box.getClients()[fd].getChunkSizee());
-					box.getClients()[fd].getOutFile().write(to_write.c_str(), box.getClients()[fd].getChunkSizee());
+					// box.getClients()[fd].getOutFile().write(to_write.c_str(), box.getClients()[fd].getChunkSizee());
+					fwrite(to_write.c_str(), 1, to_write.length(), box.getClients()[fd].getOutFile());
 					box.getClients()[fd].setEnteredfirstTime(false);
 					box.getClients()[fd].setSizeAppended('e', 0);
 					if(box.getClients()[fd].getStringBody().find("\r\n0\r\n") != std::string::npos){
 						box.getClients()[fd].setOutFileOpened(false);
 						box.getClients()[fd].setStringBody('e', "");
 						body.clear();
-						box.getClients()[fd].getOutFile().close();
+						// box.getClients()[fd].getOutFile().close();
+						fclose(box.getClients()[fd].getOutFile());
 						std::string path_page = "error_page/201.html";
 						std::string type = "txt/html";
 						throw errorMessage(201,path_page,type);
