@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:59:17 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/02 23:13:48 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/05 04:42:45 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void listing_dir(int fd, Location myLocation){
 	DIR *dir;
 	struct dirent *dent;
 	std::string reqPath = myLocation.getRoot() + "/" + myLocation.getPath().substr(1);
-	std::cout << "root : " << reqPath << std::endl;
 	std::string codeHTML = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Document</title></head><body><ul>";
 	if((dir = opendir(reqPath.c_str())) != NULL){
 		while ((dent = readdir(dir)) != NULL)

@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:02:58 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/03 16:38:26 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/05 04:37:02 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <vector>
 #include <sys/wait.h>
 #include <string>
+#include <filesystem>
 
 # define BUFFER_SIZE 1024
 
