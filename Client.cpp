@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/05 23:26:03 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/06 10:21:28 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,8 @@ void Client::setStartLine(std::istringstream& iss)
 	getline(iss,method,' ');
 	getline(iss,path,' ');
 	getline(iss,protocal, '\n');
+	if (method.empty() || protocal.empty() || path.empty() || protocal != "HTTP/1.1\r")
+		throw errorMessage(400,serverId);
 }
 
 void Client::loadingFormation(std::string& line)
@@ -213,7 +215,6 @@ void Client::ParsingRequest()
 		setBody(iss);
 		std::istringstream iss(Map["Content-Length"]);
 		iss >> nb;
-		// std::cout << "Content-Length " << nb << std::endl;
 		if (method == "POST")
 		{
 			if(Map["Content-Length"].empty())
