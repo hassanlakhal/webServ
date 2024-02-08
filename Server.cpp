@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/02 22:51:01 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/07 16:31:23 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ void Server::setPathError(std::string& path)
         }
         else
         {
-            std::cout << nb << " ------------ "  << value<< std::endl;
+            // std::cout << nb << " ------------ "  << value<< std::endl;
             throw std::runtime_error("out of range");
         }
         it++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/05 22:25:17 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/06 23:13:16 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ class Client
         void setResponse(const Response& rep);
         Response& getResponse();
         void openFile(std::string file);
-        const infoMap getInfoMap() const;
+        infoMap getInfoMap() const;
         FILE * getOutFile();
         bool getOutFileOpened() const;
         void setOutFileOpened(bool b);

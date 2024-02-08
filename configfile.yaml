@@ -7,6 +7,7 @@ server:
 
   location:
     - path: /about/gf
+    - root:  www
     - listing_dir: on
     - upload: on
     - autoindex: off
@@ -17,6 +18,17 @@ server:
     - cgi_path: .sh, /usr/bin/bash
   location:
     - path: /home
+    - root:  www
+    - upload: on
+    - listing_dir: on
+    - autoindex: off
+    - methods: POST PUT GET DELETE
+    - index:  index.html
+    - cgi_path: .py, /usr/bin/python3
+    - cgi_path: .php, /usr/bin/php-cgi
+    - cgi_path: .sh, /usr/bin/bash
+  location:
+    - path: /home/ahmed
     - root:  www
     - upload: on
     - listing_dir: on
@@ -59,5 +71,5 @@ server:
     - methods: POST PUT GET DELETE
     - index:  index.html
     - cgi_path: .py, /usr/bin/python3
-    - cgi_path: .php, /usr/bin/php-cgi
+    - cgi_path: .php, /usr/bin/php
     - cgi_path: .sh, /usr/bin/bash

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/06 10:21:28 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/06 23:13:07 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ std::string Client::trim(std::string& word)
 	return word.substr(first, last - first + 1);
 }
 
-const infoMap Client::getInfoMap() const
+infoMap Client::getInfoMap() const
 {
 	return this->Map;
 }

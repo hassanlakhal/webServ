@@ -1,24 +1,25 @@
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
-#include <dirent.h>
-#include <fstream>
-#include <unistd.h>
-int main(int argc, char const *argv[])
-{
-	FILE * file = std::fopen("hyhy","w");
-	if(file)
-	{
-		char buf[10] = "hello wof";
-		char buf2[10];
-		write(fileno(file),buf,10);
-		std::fclose(file);
-		FILE * infile = std::fopen("hyhy","r");
-		int a = read(fileno(infile), buf2, 10);
-		std::string str(buf2);
-		std::cout << "str : " << str << std::endl;
-		
-	}else{
-		std::cout << "not opened" << std::endl;
-	}
-	return 0;
+
+char* getRealPath(const char* path) {
+    char resolvedPath[5000];
+    if (realpath(path, resolvedPath) == NULL) {
+        // Handle error, such as invalid path
+        return NULL;
+    }
+    return strdup(resolvedPath); // Remember to free this memory after use
+}
+
+int main() {
+    const char* path = "/www/myProject/../myProject/../";
+    char* realPath = getRealPath(path);
+    if (realPath != NULL) {
+        std::cout << "Real path: " << realPath << std::endl;
+        free(realPath); // Free the memory allocated by strdup
+    } else {
+        std::cerr << "Failed to get the real path." << std::endl;
+    }
+    return 0;
 }
 

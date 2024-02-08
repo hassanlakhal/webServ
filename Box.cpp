@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/05 23:16:35 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/08 15:42:11 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int Box::matchLocation(std::vector<Location>& loc, std::string path, int id)
 		//check cases of the position of .
 		if(temp2.find('.') == std::string::npos)
 			temp += "/" + temp2;
-		std::cout << temp << std::endl;
+		// std::cout << temp << std::endl;
 		if (it->getPath() == temp)
 			return i;
 		else if (a == 0 && temp.empty() && it->getPath() == "/")
@@ -157,7 +157,7 @@ void Box::sendRequest(int fd)
 	}
 	else
 		idOfServer = clients[fd].getServerId();
-	std::cout << "name server : " << _InfoServer.getServer()[idOfServer].getServerName() <<std::endl;
+	// std::cout << "name server : " << _InfoServer.getServer()[idOfServer].getServerName() <<std::endl;
 	std::vector<Location> loc = _InfoServer.getServer()[idOfServer].getLocation();
 	int ind = matchLocation(loc,clients[fd].getPath(),idOfServer);
 	if (!(_InfoServer.getServer()[idOfServer].getLocation()[ind].getRedirect().empty()))
@@ -276,7 +276,7 @@ void Box::sendResponse(int fd)
 		if (a.getFile().eof())
 		{
 			close(fd);
-			std::cout << "close fd " << fd  << std::endl;
+			// std::cout << "close fd " << fd  << std::endl;
 			a.getFile().close();
 		}
 	}
@@ -376,7 +376,6 @@ void Box::setUpServer(webServer& data)
 				clients[client_socket].setResponse(rep);
 				// std::cout << "postion of server  " << d << std::endl;
 				std::cout <<  client_socket << " Client connected." << std::endl;
-				clients[client_socket].setTimeOut(clock());
 				event.events = EPOLLIN | EPOLLOUT;
 				event.data.fd = client_socket;
 				if (epoll_ctl(epollFd, EPOLL_CTL_ADD, client_socket, &event) == -1)
@@ -391,7 +390,8 @@ void Box::setUpServer(webServer& data)
 				{
 					try
 					{
-						readRequest(events[i].data.fd, epollFd);	
+						clients[client_socket].setTimeOut(clock());
+						readRequest(events[i].data.fd, epollFd);
 					}
 					catch (const errorMessage& e)
 					{
@@ -401,6 +401,7 @@ void Box::setUpServer(webServer& data)
 						e.what(),\
 						e.getType(),\
 						e.getBody());
+						clients[client_socket].setTimeOut(0);
 					}
 				}
 				else if ((events[i].events & EPOLLOUT))

@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:59:17 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/05 04:42:45 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/08 13:19:13 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ void get(Box &box, int ind, int fd){
 		file = "";
 	// std::cout << "file : " << file << std::endl;
 	if(!file.empty()){
-	// std::cout << "dddddddddddddddddddddddd" << std::endl;
+	// std::cout << "ddddddddyydddddddddddddddd" << std::endl;
 
 		// reqPath = reqPath.substr(1);
 		reqPath = reqPath.substr(0, reqPath.find_last_of('/'));
 		// std::cout << "my path : " << reqPath << std::endl;
-		cgi(myLocation, reqPath.substr(1), file, serverID);
+		cgi(box, myLocation, fd, reqPath.substr(1), file, serverID, "GET", "");
 	}
 	else
 	{
@@ -64,7 +64,7 @@ void get(Box &box, int ind, int fd){
 				for (size_t i = 2; i < myLocation.getIndexes().size(); i++, it++)
 				{
 					file =  *it;
-					if(!cgi(myLocation, reqPath.substr(1), file, serverID))
+					if(!cgi(box, myLocation, fd, reqPath.substr(1), file, serverID, "GET", ""))
 						continue;
 				}
 			}else{
@@ -73,7 +73,7 @@ void get(Box &box, int ind, int fd){
 				{
 					file = *it;
 
-					if(!cgi(myLocation, reqPath.substr(1), file, serverID)){
+					if(!cgi(box, myLocation, fd, reqPath.substr(1), file, serverID, "GET", "")){
 						continue;
 					}
 

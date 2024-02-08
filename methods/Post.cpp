@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/05 20:57:25 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/07 16:32:54 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,20 @@
 
 void post(Box &box, int ind, int fd){
 	std::vector<unsigned char> body = box.getClients()[fd].getBody();
-
-	Location myLocation = box.getWebServer().getServer()[box.getClients()[fd].getServerId()].getLocation()[ind];
+	int serverID = box.getClients()[fd].getServerId();
+	Location myLocation = box.getWebServer().getServer()[serverID].getLocation()[ind];
 	std::string path = box.getClients()[fd].getPath();
-	// std::cout << "path : " << path << std::endl;
-	// std::string file = path.substr(1);
-	// if(file.find_last_of('/') != std::string::npos && file.find('.') != std::string::npos)
-	// 	file = file.substr(file.find_last_of('/') + 1);
-	// else
-	// 	file = "";
+	path = box.removeSlach(path);
+	path = box.FullQueryString(path);
+	std::string file = path.substr(1);
+	path = path.substr(0, path.find_last_of('/'));
+	if(file.find_last_of('/') != std::string::npos && file.find('.') != std::string::npos)
+		file = file.substr(file.find_last_of('/') + 1);
+	else
+		file = "";
+
+
+
 
 
 	if(myLocation.getUpload() == "off"){
@@ -41,12 +46,11 @@ void post(Box &box, int ind, int fd){
 				// std::cout << "file path : " << filePath << std::endl;
 				box.getClients()[fd].openFile(filePath);
 			}
-			else
 				//throw
-			std::cout << "extention : " << extention << std::endl;
-			std::cout << "size : " << box.getClients()[fd].getSizeBody() << std::endl;
-			std::cout << "size of body : " << body.size() << std::endl;
-			std::cout << "test : " << static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str())) << std::endl;
+			// std::cout << "extention : " << extention << std::endl;
+			// std::cout << "size : " << box.getClients()[fd].getSizeBody() << std::endl;
+			// std::cout << "size of body : " << body.size() << std::endl;
+			// std::cout << "test : " << static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str())) << std::endl;
 			// box.getClients()[fd].getOutFile().write(reinterpret_cast<char*>(body.data()), body.size());
 			fwrite(&body[0], 1, body.size(), box.getClients()[fd].getOutFile());
 			if(box.getClients()[fd].getSizeBody() >= static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str()))){
@@ -55,9 +59,21 @@ void post(Box &box, int ind, int fd){
 				// box.getClients()[fd].getOutFile().close();
 				fclose(box.getClients()[fd].getOutFile());
 				body.clear();
-				std::string path_page = "error_page/201.html";
-				std::string type = "txt/html";
-				throw errorMessage(201,path_page,type);
+				if(!file.empty()){
+					if(cgi(box, myLocation, fd, path.substr(1), file, serverID, "POST", filePath)){
+
+					}
+					else
+					{
+						// std::cout << "it entred her\n";
+						throw errorMessage(404, serverID);
+					}
+				}
+				else{
+					std::string path_page = "error_page/201.html";
+					std::string type = "txt/html";
+					throw errorMessage(201,path_page,type);
+				}
 			}
 		}
 		else if(mapInfo["Transfer-Encoding"] == "chunked"){
@@ -87,9 +103,18 @@ void post(Box &box, int ind, int fd){
 						// box.getClients()[fd].getOutFile().close();
 						fclose(box.getClients()[fd].getOutFile());
 						// box.getClients()[fd]
-						std::string path_page = "error_page/201.html";
-						std::string type = "txt/html";
-						throw errorMessage(201,path_page,type);
+						if(!file.empty()){
+							if(cgi(box, myLocation, fd, path.substr(1), file, serverID, "POST", filePath)){
+
+							}
+							else
+								throw errorMessage(404, serverID);
+						}
+						else{
+							std::string path_page = "error_page/201.html";
+							std::string type = "txt/html";
+							throw errorMessage(201,path_page,type);
+						}
 					}
 					box.getClients()[fd].setChunkSizee(strtoul(chunkSize.c_str(), NULL, 16));
 					chunk = strBody.substr(strBody.find("\r\n") + 2);
@@ -116,9 +141,18 @@ void post(Box &box, int ind, int fd){
 						body.clear();
 						// box.getClients()[fd].getOutFile().close();
 						fclose(box.getClients()[fd].getOutFile());
-						std::string path_page = "error_page/201.html";
-						std::string type = "txt/html";
-						throw errorMessage(201,path_page,type);
+						if(!file.empty()){
+							if(cgi(box, myLocation, fd, path.substr(1), file, serverID, "POST", filePath)){
+
+							}
+							else
+								throw errorMessage(404, serverID);
+						}
+						else{
+							std::string path_page = "error_page/201.html";
+							std::string type = "txt/html";
+							throw errorMessage(201,path_page,type);
+						}
 					}
 				}
 			}
