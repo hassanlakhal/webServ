@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/08 21:13:00 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/08 22:59:29 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,7 +312,10 @@ void Box::makeSocketNonBlocking(int sockfd)
 void Box::timeOut(int fd, clock_t endTime)
 {
 	if (endTime - clients[fd].getTimeOut() == 5000000 && clients[fd].getLoadingHeader())
+	{
+		std::cout << "dkhal l time aout\n";
 		throw errorMessage(504, clients[fd].getServerId());
+	}
 }
 
 void Box::setUpServer(webServer& data)
@@ -413,19 +416,19 @@ void Box::setUpServer(webServer& data)
 				}
 				else if ((events[i].events & EPOLLOUT))
 				{
-					try
-					{
-						timeOut(events[i].data.fd, clock());
-					}
-					catch(const errorMessage& e)
-					{
-						clients[events[i].data.fd].getResponse().\
-						setValues(false,events[i].data.fd,\
-						e.getStatusCode(),\
-						e.what(),\
-						e.getType(),\
-						e.getBody());
-					}
+					// try
+					// {
+					// 	timeOut(events[i].data.fd, clock());
+					// }
+					// catch(const errorMessage& e)
+					// {
+					// 	clients[events[i].data.fd].getResponse().\
+					// 	setValues(false,events[i].data.fd,\
+					// 	e.getStatusCode(),\
+					// 	e.what(),\
+					// 	e.getType(),\
+					// 	e.getBody());
+					// }
 					if (!clients[events[i].data.fd].getResponse().getStatusResponse())
 					{
 						sendResponse(events[i].data.fd);

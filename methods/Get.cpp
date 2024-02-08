@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:59:17 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/08 21:23:39 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/08 22:55:19 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ void listing_dir(int fd, Location myLocation, Box& box){
 		while ((dent = readdir(dir)) != NULL)
 		{
 			if(strcmp(dent->d_name, ".") && strcmp(dent->d_name, ".."))
-				codeHTML += "<li><a href=\"" + myLocation.getPath() + "/" + dent->d_name + "\">" + dent->d_name + "</a></li>";
+			{
+				size_t len = myLocation.getRoot().length();	
+				codeHTML += "<li><a href=\"" + myLocation.getPath() + box.getClients()[fd].getPath().substr(len) + "/" + dent->d_name + "\">" + dent->d_name + "</a></li>";
+			}
 		}
 	}
 	codeHTML += "</ul></body></html>";

@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/08 21:03:15 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/08 22:26:10 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 
 	FILE * tmpfile = std::fopen((reqPath + "/" + file).c_str(), "r");
 	if(!tmpfile){
+		throw errorMessage(404, box.getClients()[fd].getServerId());
 		return 0;
 	}
 	else

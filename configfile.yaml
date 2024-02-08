@@ -20,7 +20,7 @@ server:
     - cgi_path: .sh, /usr/bin/bash
   location:
     - path: /home
-    - root:  www/
+    - root:  www
     - upload: on
     - listing_dir: on
     - autoindex: off
