@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/01 12:49:20 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/08 17:56:23 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ class Location
         std::set<std::string> index;
         std::map<std::string, std::string> cgi_path;
         std::string  redirectPath;
+        std::string  UploadPath;
         // long proxy_read_time_out;
     public:
         Location();
@@ -54,6 +55,7 @@ class Location
         void setRedirect(std::string& path);
         void setUpload(std::string& upload);
         void setListingDir(std::string& linting);
+        void setUploadPath(std::string& path);
         const std::map<std::string, std::string>& getCgiPath() const;
         std::string getPath() const;
         const std::set<std::string>& getIndexes() const;
@@ -63,6 +65,7 @@ class Location
         const std::string& getUpload() const;
         const std::string& getListingDir() const;
         const std::vector<std::string>& getMethods() const;
+        const std::string& getUploadPath() const;
         // void setLocation(const std::vector<std::pair<std::string, std::string> >& pairs);
         ~Location();
 };

@@ -4,7 +4,9 @@ server:
   root: www
   client_max_body_size: 2G
   server_name: example.com
-
+#/testetst
+#/about/gf/ forlder1/forlder2/file.txt ---> www/forlder1/forlder2/file.txt
+#/about/gf/forlder1  --> www/forlder2/file.txt
   location:
     - path: /about/gf
     - root:  www
@@ -18,18 +20,7 @@ server:
     - cgi_path: .sh, /usr/bin/bash
   location:
     - path: /home
-    - root:  www
-    - upload: on
-    - listing_dir: on
-    - autoindex: off
-    - methods: POST PUT GET DELETE
-    - index:  index.html
-    - cgi_path: .py, /usr/bin/python3
-    - cgi_path: .php, /usr/bin/php-cgi
-    - cgi_path: .sh, /usr/bin/bash
-  location:
-    - path: /home/ahmed
-    - root:  www
+    - root:  www/
     - upload: on
     - listing_dir: on
     - autoindex: off

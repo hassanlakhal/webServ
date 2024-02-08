@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Delete.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:53 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/08 15:37:30 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/08 21:24:55 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ void deleteM(Box &box, int ind, int fd){
 	reqPath = box.removeSlach(reqPath);
 	reqPath = box.FullQueryString(reqPath);
 	reqPath = reqPath.substr(1);
-	reqPath =  myLocation.getRoot() + "/" + reqPath;
 
 	// std::cout << "my repath : " << reqPath << "\n";
 	//clear the path

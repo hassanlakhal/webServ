@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsingFile.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/02 22:35:53 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:38:38 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,8 @@ void fillLocation( std::ifstream& configFile,std::string& line, Server* s)
             loc.setRedirect(word);
         else if(trim(getWordLocation(line,6,true)) == "listing_dir")
             loc.setListingDir(word);
+        else if(trim(getWordLocation(line,6,true)) == "upload_path")
+            loc.setUploadPath(word);
         else if (trim(getLine(line)) == "location")
         {
             s->addLocation(&loc);

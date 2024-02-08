@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/05 23:08:21 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/08 18:04:40 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ class Box
         webServer& getWebServer() ;
         void sendResponse(int fd);
         void timeOut(int fd, clock_t endTime);
+        static bool ComparePath(const Location& loc1, const Location& loc2);
         ~Box();
 };
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/06 23:13:16 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/08 20:39:21 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ class Client
         void setBody(std::istringstream& buff);
         Client& operator=(const Client& other);
         std::string getfullRequset() const ;
+        void setPath(const std::string& path);
         const std::vector<unsigned char>& getBody() const;
         const std::string& getStringBody() const;
         unsigned long getChunkSizee() const;

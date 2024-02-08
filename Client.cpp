@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/06 23:13:07 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/08 20:39:10 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,4 +282,9 @@ void Client::setSizeAppended(char c, size_t s){
 
 void Client::setOutFileOpened(bool b){
 	this->outfileOpened = b;
+}
+
+void Client::setPath(const std::string& path)
+{
+	this->path = path;	
 }

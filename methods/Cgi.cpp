@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/08 13:19:06 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/08 21:03:15 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,8 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 	bool cgiExist = false;
 	std::string tem;
 	std::string fileDel;
-	reqPath =  myLocation.getRoot() + "/" + reqPath;
-	std::cout << reqPath + "/" + file << std::endl;
+	// reqPath =  myLocation.getRoot() + "/" + reqPath;
+	std::cout << "hadxi li taficha : " << reqPath + "/" + file << std::endl;
 
 	FILE * tmpfile = std::fopen((reqPath + "/" + file).c_str(), "r");
 	if(!tmpfile){

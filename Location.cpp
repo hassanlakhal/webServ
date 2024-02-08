@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/01 12:49:56 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:45:12 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 Location::ErrorLocation::ErrorLocation(const std::string& message) : std::runtime_error(message)
 {
 }
+
 
 Location::Location()
 {
@@ -131,6 +132,19 @@ std::string Location::getAutoIndex() const
 
 const std::string& Location::getListingDir() const{
     return this->listingDir;
+}
+
+void Location::setUploadPath(std::string& path)
+{
+    if (path[0] != ' ')
+        throw Location::ErrorLocation("Missing space in line of Location");
+    path = trim(path);
+    this->UploadPath = path;
+}
+
+const std::string& Location::getUploadPath() const
+{
+    return this->UploadPath;
 }
 
 void Location::setMethods(std::string& Methods)

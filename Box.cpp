@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/08 15:42:11 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/08 21:13:00 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,33 +74,34 @@ std::string  Box::removeSlach(std::string& str)
 	return path;
 }
 
+bool Box::ComparePath(const Location& loc1, const Location& loc2)
+{
+	return loc1.getPath().length() < loc2.getPath().length();
+}
+
 int Box::matchLocation(std::vector<Location>& loc, std::string path, int id)
 {
-
-	int i = 0;
-	std::string foundPath;
-	// path : ///
-	// ?
-	// std::cout << "befor " << path <<std::endl;
+	std::vector<std::pair<std::string, int> > hashTable;
+	for (size_t i = 0; i < loc.size(); ++i) 
+	{
+		hashTable.push_back(std::make_pair(loc[i].getPath(), i));
+	}
 	path = removeSlach(path);
 	path = FullQueryString(path);
-	// std::cout << " after " << path <<std::endl;
-	for (std::vector<Location>::iterator it = loc.begin(); it != loc.end(); ++it)
+	// int hashValue = hash(path);
+	for (size_t i = 0; i < hashTable.size(); ++i) 
 	{
-		size_t a = path.find_last_of("/");
-		std::string temp = path.substr(0,a);
-		std::string temp2 = path.substr(a + 1);
-		//check cases of the position of .
-		if(temp2.find('.') == std::string::npos)
-			temp += "/" + temp2;
-		// std::cout << temp << std::endl;
-		if (it->getPath() == temp)
-			return i;
-		else if (a == 0 && temp.empty() && it->getPath() == "/")
-			return i;
-		i++;
+		if (hashTable[i].first == path) 
+		{
+			std::cout <<"test : " << hashTable[i].second  << std::endl;
+			return hashTable[i].second;
+		}
 	}
-	throw errorMessage(404,id);
+	std::cout << "Path : " << path <<std::endl;
+	path = path.substr(0, path.find_last_of('/'));
+	if (!path.empty())
+		return matchLocation(loc,path,id);
+	return -1;
 }
 
 void Box::methodAllowd(std::vector<std::string>& methods, const std::string& method, int id)
@@ -148,6 +149,7 @@ void Box::sendRequest(int fd)
 {
 	int idOfServer = 0;
 	size_t  i = 0;
+	std::string pathLocation;
 	std::map<std::string, std::string> mapInfo = clients[fd].getInfoMap();
 	if(checkDup(_InfoServer.getServer()))
 	{
@@ -160,6 +162,11 @@ void Box::sendRequest(int fd)
 	// std::cout << "name server : " << _InfoServer.getServer()[idOfServer].getServerName() <<std::endl;
 	std::vector<Location> loc = _InfoServer.getServer()[idOfServer].getLocation();
 	int ind = matchLocation(loc,clients[fd].getPath(),idOfServer);
+	if (ind == -1)
+		throw errorMessage(404,idOfServer);
+	pathLocation = loc[ind].getRoot() + clients[fd].getPath().substr(loc[ind].getPath().length());
+	clients[fd].setPath(pathLocation);
+	std::cout << "Path====> "<< clients[fd].getPath() << std::endl;
 	if (!(_InfoServer.getServer()[idOfServer].getLocation()[ind].getRedirect().empty()))
 	   throw errorMessage(301,idOfServer,ind);
 	std::vector<std::string> methods = _InfoServer.getServer()[idOfServer]\

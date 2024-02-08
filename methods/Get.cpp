@@ -3,22 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   Get.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:59:17 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/08 13:19:13 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/08 21:23:39 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "methods.hpp"
 
 
-void listing_dir(int fd, Location myLocation){
+void listing_dir(int fd, Location myLocation, Box& box){
 	(void)fd;
 	DIR *dir;
 	struct dirent *dent;
-	std::string reqPath = myLocation.getRoot() + "/" + myLocation.getPath().substr(1);
+	std::string reqPath = box.getClients()[fd].getPath();
+	std::cout << "lpath jdidi : " << reqPath << "\n";
 	std::string codeHTML = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Document</title></head><body><ul>";
+	codeHTML += "<h2>Listed file</h2>";
 	if((dir = opendir(reqPath.c_str())) != NULL){
 		while ((dent = readdir(dir)) != NULL)
 		{
@@ -39,18 +41,19 @@ void get(Box &box, int ind, int fd){
 	std::string reqPath = box.getClients()[fd].getPath();
 	reqPath = box.removeSlach(reqPath);
 	reqPath = box.FullQueryString(reqPath);
-	std::string file = reqPath.substr(1);
+	std::string file = reqPath;
 	if(file.find_last_of('/') != std::string::npos && file.find('.') != std::string::npos)
 		file = file.substr(file.find_last_of('/') + 1);
 	else
 		file = "";
-	// std::cout << "file : " << file << std::endl;
+	std::cout << "file : " << file << std::endl;
+	std::cout << "path : " << reqPath << std::endl;
 	if(!file.empty()){
-	// std::cout << "ddddddddyydddddddddddddddd" << std::endl;
+	std::cout << "ddddddddyydddddddddddddddd" << std::endl;
 
 		// reqPath = reqPath.substr(1);
 		reqPath = reqPath.substr(0, reqPath.find_last_of('/'));
-		// std::cout << "my path : " << reqPath << std::endl;
+		std::cout << "my path : " << reqPath << std::endl;
 		cgi(box, myLocation, fd, reqPath.substr(1), file, serverID, "GET", "");
 	}
 	else
@@ -81,8 +84,8 @@ void get(Box &box, int ind, int fd){
 			}
 		}
 		if(myLocation.getListingDir() == "on"){
-
-			listing_dir(fd, myLocation);
+			
+			listing_dir(fd, myLocation, box);
 		}
 		else{
 
