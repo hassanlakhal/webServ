@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/09 17:44:23 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/09 22:36:22 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ Client::Client(int serverId): loadingHead(true),serverId(serverId)
 	this->size = 0;
 	this->sizeAppended = 0;
 }
+
+int Client::incremetedFileName = 0;
 
 Client::~Client()
 {
@@ -316,4 +318,11 @@ void Client::setInd(int ind){
 
 int Client::getInd(){
 	return this->ind;
+}
+
+int Client::getIncremetedFileName(){
+	return this->incremetedFileName;
+}
+void Client::IncremetedFileName(){
+	this->incremetedFileName++;
 }

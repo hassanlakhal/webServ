@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/09 18:16:05 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/09 21:56:08 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,6 @@ void Box::sendRequest(int fd)
 	// std::cout << "name server : " << _InfoServer.getServer()[idOfServer].getServerName() <<std::endl;
 	std::vector<Location> loc = _InfoServer.getServer()[idOfServer].getLocation();
 	if(!clients[fd].getMatchedTime()){
-		std::cout << "xxxxxxxxxxxxxxxxxxxxxxxxxx\n";
 		int ind = matchLocation(loc,clients[fd].getPath(),idOfServer);
 		if (ind == -1)
 			throw errorMessage(404,idOfServer);
@@ -186,9 +185,6 @@ void Box::sendRequest(int fd)
 		clients[fd].setMatchedTime(true);
 	}
 	int ind = clients[fd].getInd();
-	std::cout << " -------------ind : " << ind << "\n";
-	std::cout << "Path====>1 "<< clients[fd].getPath() << std::endl;
-	std::cout << "Path====>2 "<< loc[ind].getPath() << std::endl;
 	// exit(0);
 	if (!(_InfoServer.getServer()[idOfServer].getLocation()[ind].getRedirect().empty()))
 	   throw errorMessage(301,idOfServer,ind);

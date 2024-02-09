@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/09 17:54:33 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/09 22:39:03 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,16 @@ void post(Box &box, int ind, int fd){
 		if(mapInfo["Transfer-Encoding"].empty()){
 			if(!box.getClients()[fd].getOutFileOpened()){
 				std::stringstream iss;
-				iss << "upload/uploaded_file_";
+				iss << "upload/file_";
 				iss << time(0);
+				iss << "_";
+				iss << box.getClients()[fd].getIncremetedFileName();
 				iss << ".";
 				iss << extention;
 				filePath = iss.str();
 				// std::cout << "file path : " << filePath << std::endl;
 				box.getClients()[fd].openFile(filePath);
+				box.getClients()[fd].IncremetedFileName();
 			}
 				//throw
 			// std::cout << "extention : " << extention << std::endl;
@@ -79,8 +82,11 @@ void post(Box &box, int ind, int fd){
 			std::string to_write;
 			if(!box.getClients()[fd].getOutFileOpened()){
 				std::stringstream iss;
-				iss << "upload/uploaded_file_";
+				iss << "upload/file_";
 				iss << time(0);
+				iss << "_";
+				iss << box.getClients()[fd].getIncremetedFileName();
+				box.getClients()[fd].IncremetedFileName();
 				iss << ".";
 				iss << extention;
 				filePath = iss.str();

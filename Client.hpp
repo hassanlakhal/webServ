@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/09 17:43:28 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/09 22:36:35 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ class Client
         std::string type;
         std::string stringBody;
         int ind;
+        static int incremetedFileName;
         FILE * outfile;
         bool outfileOpened;
         bool EnteredfirstTime;
@@ -90,6 +91,8 @@ class Client
         clock_t getTimeOut();
         bool getMatchedTime();
         void setMatchedTime(bool b);
+        int getIncremetedFileName();
+        void IncremetedFileName();
         int getInd();
         void setInd(int ind);
         ~Client();
