@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/08 20:39:10 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:44:23 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ Client::Client(): loadingHead(true),serverId(0)
 {
 	this->outfileOpened = false;
 	this->EnteredfirstTime = false;
+	this->matchedTime = false;
 }
 
 Client::Client(int serverId): loadingHead(true),serverId(serverId)
 {
 	this->outfileOpened = false;
 	this->EnteredfirstTime = false;
+	this->matchedTime = false;
 	this->size = 0;
 	this->sizeAppended = 0;
 }
@@ -58,6 +60,7 @@ Client::Client(const Client& other)
 	this->size = other.size;
 	this->sizeAppended = other.sizeAppended;
 	this->start_time = other.start_time;
+	this->matchedTime = other.matchedTime;
 }
 
 Client& Client::operator=(const Client& other)
@@ -75,6 +78,7 @@ Client& Client::operator=(const Client& other)
 		serverId = other.serverId;
 		response = other.response;
 		this->EnteredfirstTime = other.EnteredfirstTime;
+		this->matchedTime = other.matchedTime;
 		Map = other.Map;
 		this->size = other.size;
 		this->sizeAppended = other.sizeAppended;
@@ -167,7 +171,7 @@ const std::vector<unsigned char>& Client::getBody() const
 	return this->body;
 }
 
-std::string Client::getPath() const
+std::string Client::getPath()
 {
 	return this->path;
 }
@@ -286,5 +290,30 @@ void Client::setOutFileOpened(bool b){
 
 void Client::setPath(const std::string& path)
 {
-	this->path = path;	
+	this->path = path;
+}
+
+void Client::setPathLoc(std::string loc){
+	this->pathLoc = loc;
+}
+
+std::string Client::getPathLoc(){
+	return this->pathLoc;
+}
+
+bool Client::getMatchedTime(){
+	return this->matchedTime;
+}
+
+void Client::setMatchedTime(bool b){
+	this->matchedTime = b;
+}
+
+void Client::setInd(int ind){
+	this->ind = ind;
+}
+
+
+int Client::getInd(){
+	return this->ind;
 }

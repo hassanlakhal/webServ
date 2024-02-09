@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/07 16:32:54 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:54:33 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void post(Box &box, int ind, int fd){
 		file = file.substr(file.find_last_of('/') + 1);
 	else
 		file = "";
-
 
 
 
@@ -104,6 +103,7 @@ void post(Box &box, int ind, int fd){
 						fclose(box.getClients()[fd].getOutFile());
 						// box.getClients()[fd]
 						if(!file.empty()){
+							std::cout << "ssssssssssssssssssssssssssssssssss\n";
 							if(cgi(box, myLocation, fd, path.substr(1), file, serverID, "POST", filePath)){
 
 							}
@@ -122,6 +122,7 @@ void post(Box &box, int ind, int fd){
 					box.getClients()[fd].setStringBody('e', chunk);
 					box.getClients()[fd].setEnteredfirstTime(true);
 				}else{
+
 					box.getClients()[fd].setSizeAppended('a', chunk.length());
 					box.getClients()[fd].setStringBody('a', chunk);
 
@@ -157,6 +158,7 @@ void post(Box &box, int ind, int fd){
 				}
 			}
 		}
+
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/08 20:39:21 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/09 17:43:28 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,15 @@ class Client
         std::string host;
         std::string method;
         std::string path;
+        std::string pathLoc;
         std::string protocal;
         std::string type;
         std::string stringBody;
+        int ind;
         FILE * outfile;
         bool outfileOpened;
         bool EnteredfirstTime;
+        bool matchedTime;
         bool loadingHead;
         int serverId;
         unsigned long ChunkSizee;
@@ -56,7 +59,9 @@ class Client
         void setStartLine(std::istringstream& iss);
         const Client& getClinet() const;
         bool getLoadingHeader() const;
-        std::string getPath() const;
+        std::string getPath();
+        std::string getPathLoc();
+        void setPathLoc(std::string loc);
         void loadingFormation(std::string& line);
         void setBody(std::istringstream& buff);
         Client& operator=(const Client& other);
@@ -83,6 +88,10 @@ class Client
         void ParsingRequest();
         void setTimeOut(clock_t start_time);
         clock_t getTimeOut();
+        bool getMatchedTime();
+        void setMatchedTime(bool b);
+        int getInd();
+        void setInd(int ind);
         ~Client();
 };
 

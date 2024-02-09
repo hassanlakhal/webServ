@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/08 22:59:29 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/09 18:16:05 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,25 +82,38 @@ bool Box::ComparePath(const Location& loc1, const Location& loc2)
 int Box::matchLocation(std::vector<Location>& loc, std::string path, int id)
 {
 	std::vector<std::pair<std::string, int> > hashTable;
-	for (size_t i = 0; i < loc.size(); ++i) 
+	for (size_t i = 0; i < loc.size(); ++i)
 	{
 		hashTable.push_back(std::make_pair(loc[i].getPath(), i));
 	}
 	path = removeSlach(path);
 	path = FullQueryString(path);
 	// int hashValue = hash(path);
-	for (size_t i = 0; i < hashTable.size(); ++i) 
+	for (size_t i = 0; i < hashTable.size(); ++i)
 	{
-		if (hashTable[i].first == path) 
+		std::cout << "oooooPath : " << path << "\n";
+		// exit(0);
+		if (hashTable[i].first == path)
 		{
 			std::cout <<"test : " << hashTable[i].second  << std::endl;
 			return hashTable[i].second;
 		}
 	}
-	std::cout << "Path : " << path <<std::endl;
+	// std::cout << "Path : " << path <<std::endl;
 	path = path.substr(0, path.find_last_of('/'));
 	if (!path.empty())
 		return matchLocation(loc,path,id);
+	else
+	{
+		for (size_t i = 0; i < hashTable.size(); ++i)
+		{
+			if (hashTable[i].first == "/")
+			{
+				std::cout <<"test : " << hashTable[i].second  << std::endl;
+				return hashTable[i].second;
+			}
+		}
+	}
 	return -1;
 }
 
@@ -161,12 +174,22 @@ void Box::sendRequest(int fd)
 		idOfServer = clients[fd].getServerId();
 	// std::cout << "name server : " << _InfoServer.getServer()[idOfServer].getServerName() <<std::endl;
 	std::vector<Location> loc = _InfoServer.getServer()[idOfServer].getLocation();
-	int ind = matchLocation(loc,clients[fd].getPath(),idOfServer);
-	if (ind == -1)
-		throw errorMessage(404,idOfServer);
-	pathLocation = loc[ind].getRoot() + clients[fd].getPath().substr(loc[ind].getPath().length());
-	clients[fd].setPath(pathLocation);
-	std::cout << "Path====> "<< clients[fd].getPath() << std::endl;
+	if(!clients[fd].getMatchedTime()){
+		std::cout << "xxxxxxxxxxxxxxxxxxxxxxxxxx\n";
+		int ind = matchLocation(loc,clients[fd].getPath(),idOfServer);
+		if (ind == -1)
+			throw errorMessage(404,idOfServer);
+		clients[fd].setPathLoc(clients[fd].getPath());
+		pathLocation = loc[ind].getRoot() + "/" + clients[fd].getPath().substr(loc[ind].getPath().length());
+		clients[fd].setPath(pathLocation);
+		clients[fd].setInd(ind);
+		clients[fd].setMatchedTime(true);
+	}
+	int ind = clients[fd].getInd();
+	std::cout << " -------------ind : " << ind << "\n";
+	std::cout << "Path====>1 "<< clients[fd].getPath() << std::endl;
+	std::cout << "Path====>2 "<< loc[ind].getPath() << std::endl;
+	// exit(0);
 	if (!(_InfoServer.getServer()[idOfServer].getLocation()[ind].getRedirect().empty()))
 	   throw errorMessage(301,idOfServer,ind);
 	std::vector<std::string> methods = _InfoServer.getServer()[idOfServer]\
@@ -412,6 +435,7 @@ void Box::setUpServer(webServer& data)
 						e.getType(),\
 						e.getBody());
 						clients[client_socket].setTimeOut(0);
+						clients[events[i].data.fd].setMatchedTime(false);
 					}
 				}
 				else if ((events[i].events & EPOLLOUT))

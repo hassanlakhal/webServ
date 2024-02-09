@@ -33,7 +33,8 @@ server:
     - path: /
     - root:  www
     - upload: on
-    - autoindex: on
+    - autoindex: off
+    - listing_dir: on
     - methods: POST PUT GET DELETE
     - index:  index.html
     - cgi_path: .py, /usr/bin/python3
