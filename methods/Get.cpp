@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:59:17 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/09 23:33:09 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:46:21 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,55 +55,73 @@ void get(Box &box, int ind, int fd){
 	reqPath = box.FullQueryString(reqPath);
 	// std::cout << "path : " << reqPath << std::endl;
 	std::string file = reqPath;
-	std::cout << "file : " << file << std::endl;
+	reqPath = reqPath.substr(1);
 	if(file.find_last_of('/') != std::string::npos && file.find('.') != std::string::npos)
 		file = file.substr(file.find_last_of('/') + 1);
 	else
 		file = "";
+
+	struct stat file_stat;
+
+	if(stat(reqPath.c_str(), &file_stat) != 0)
+		throw errorMessage(404, serverID);
+	else
+	{
+		if(!S_ISDIR(file_stat.st_mode)){
+
+			// reqPath = reqPath.substr(0, reqPath.find_last_of('/'));
+			cgi(box, myLocation, fd, reqPath, file, serverID, "GET", "");
+		}
+		else
+		{
+			if(myLocation.getAutoIndex() == "on")
+			{
+
+				std::set<std::string>::iterator it;
+				if(myLocation.getIndexes().size() > 2){
+					it = myLocation.getIndexes().begin();
+					for (size_t i = 2; i < myLocation.getIndexes().size(); i++, it++)
+					{
+						file =  *it;
+						if(!cgi(box, myLocation, fd, reqPath, file, serverID, "GET", ""))
+							continue;
+					}
+				}else{
+					it = myLocation.getIndexes().begin();
+					for (size_t i = 0; i < 2; i++, it++)
+					{
+						file = *it;
+
+						if(!cgi(box, myLocation, fd, reqPath, file, serverID, "GET", "")){
+							continue;
+						}
+
+					}
+				}
+			}
+			if(myLocation.getListingDir() == "on")
+				listing_dir(fd, myLocation, box);
+			else
+				throw errorMessage(403, box.getClients()[fd].getServerId());
+		}
+	}
+
+
+
+
+
+
 	// exit(0);
 	if(!file.empty()){
 	// std::cout << " file arrived : " << reqPath << std::endl;
 
 		// reqPath = reqPath.substr(1);
-		reqPath = reqPath.substr(0, reqPath.find_last_of('/'));
 		// std::cout << "my path : " << reqPath << std::endl;
-		cgi(box, myLocation, fd, reqPath.substr(1), file, serverID, "GET", "");
 	}
 	else
 	{
 
-		if(myLocation.getAutoIndex() == "on")
-		{
 
-			std::set<std::string>::iterator it;
-			if(myLocation.getIndexes().size() > 2){
-				it = myLocation.getIndexes().begin();
-				for (size_t i = 2; i < myLocation.getIndexes().size(); i++, it++)
-				{
-					file =  *it;
-					if(!cgi(box, myLocation, fd, reqPath.substr(1), file, serverID, "GET", ""))
-						continue;
-				}
-			}else{
-				it = myLocation.getIndexes().begin();
-				for (size_t i = 0; i < 2; i++, it++)
-				{
-					file = *it;
-
-					if(!cgi(box, myLocation, fd, reqPath.substr(1), file, serverID, "GET", "")){
-						continue;
-					}
-
-				}
-			}
-		}
-		if(myLocation.getListingDir() == "on"){
-			listing_dir(fd, myLocation, box);
-		}
-		else{
-
-			throw errorMessage(403, box.getClients()[fd].getServerId());
-		}
 	}
 
 

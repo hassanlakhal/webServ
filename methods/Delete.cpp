@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:53 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/09 23:29:49 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:10:20 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ void remove_ressource(std::string reqPath, int serverID){
 	else
 	{
 		if(!S_ISDIR(file_stat.st_mode)){
-			if(file_stat.st_mode & S_IWUSR){
-			std::remove(reqPath.c_str());
-			}
+			if(file_stat.st_mode & S_IWUSR)
+				std::remove(reqPath.c_str());
 			else
 				throw errorMessage(403, serverID);
 		}

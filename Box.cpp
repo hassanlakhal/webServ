@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/09 21:56:08 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:32:47 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,9 @@ int Box::matchLocation(std::vector<Location>& loc, std::string path, int id)
 	// int hashValue = hash(path);
 	for (size_t i = 0; i < hashTable.size(); ++i)
 	{
-		std::cout << "oooooPath : " << path << "\n";
 		// exit(0);
 		if (hashTable[i].first == path)
 		{
-			std::cout <<"test : " << hashTable[i].second  << std::endl;
 			return hashTable[i].second;
 		}
 	}
@@ -109,7 +107,6 @@ int Box::matchLocation(std::vector<Location>& loc, std::string path, int id)
 		{
 			if (hashTable[i].first == "/")
 			{
-				std::cout <<"test : " << hashTable[i].second  << std::endl;
 				return hashTable[i].second;
 			}
 		}

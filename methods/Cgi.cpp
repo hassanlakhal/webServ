@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/08 22:26:10 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:54:29 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,25 +64,23 @@ std::string fillMapType(std::string extention){
 
 
 int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string file, int serverID, std::string method, std::string postFile){
-	std::string extention = file.substr(file.find('.'));
+	std::string extention = "";
+	if(file.find('.') != std::string::npos)
+		extention = file.substr(file.find('.') + 1);
 	bool cgiExist = false;
 	std::string tem;
 	std::string fileDel;
-	// reqPath =  myLocation.getRoot() + "/" + reqPath;
-	std::cout << "hadxi li taficha : " << reqPath + "/" + file << std::endl;
 
-	FILE * tmpfile = std::fopen((reqPath + "/" + file).c_str(), "r");
+	FILE * tmpfile = std::fopen((reqPath).c_str(), "r");
 	if(!tmpfile){
-		throw errorMessage(404, box.getClients()[fd].getServerId());
 		return 0;
 	}
 	else
 		std::fclose(tmpfile);
 	if(!myLocation.getCgiPath().size() && method == "GET")
 	{
-		reqPath += "/" + file;
 		std::string formatType = fillMapType(extention);
-		std::string tem = formatType + "/" + extention.substr(1);
+		std::string tem = formatType + "/" + extention;
 		// std::cout << "format type : " << teint m <<std::endl;
 		throw errorMessage(200, reqPath, tem);
 	}
@@ -99,7 +97,7 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 		it = myLocation.getCgiPath().begin();
 		for (; it != myLocation.getCgiPath().end(); it++)
 		{
-			if(it->first == extention)
+			if(it->first == "." + extention)
 			{
 				cgiExist = true;
 				std::string line;
@@ -129,7 +127,7 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 							throw errorMessage(500, serverID);
 					}
 					// std::cout << "fffffff" << fileno(outfile) << std::endl;
-					std::string arg2 = reqPath + "/" + file;
+					std::string arg2 = reqPath;
 
 
 					char *arg[] = {(char*)it->second.c_str(), (char*)(arg2.c_str()), NULL};
@@ -197,15 +195,17 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 			if(method == "POST"){
 				throw errorMessage(500, serverID);
 			}
-			std::string formatType = fillMapType(extention.substr(1));
-			std::string tmpFile = reqPath + "/" + file;
+		std::cout << "hadxi li taficha : " << reqPath << std::endl;
+
+			std::string formatType = fillMapType(extention);
+			std::string tmpFile = reqPath ;
 	// std::cout << "fpath : " << reqPath << " file : " << tmpFile << std::endl;
 			std::ifstream file(tmpFile.c_str());
 			if (file.is_open()){
 			{
 
 				std::cout << "file to open : " << tmpFile << std::endl;
-				std::string tem = formatType + "/" + extention.substr(1);
+				std::string tem = formatType + "/" + extention;
 				std::cout << "format type : " << tem <<std::endl;
 				throw errorMessage(200, tmpFile, tem);
 			}
