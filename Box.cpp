@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/10 01:25:55 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/10 02:48:22 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,8 @@ void Box::sendRequest(int fd)
 	else
 		idOfServer = clients[fd].getServerId();
 	clients[fd].setServerId(idOfServer);
-	// std::cout << "name server : " << _InfoServer.getServer()[idOfServer].getServerName() <<std::endl;
+	std::cout << "name server : " << _InfoServer.getServer()[idOfServer].getServerName().at(0)\
+	<< " " << clients[fd].getServerId() <<std::endl;
 	std::vector<Location> loc = _InfoServer.getServer()[idOfServer].getLocation();
 	if(!clients[fd].getMatchedTime()){
 		int ind = matchLocation(loc,clients[fd].getPath(),idOfServer);
@@ -190,6 +191,7 @@ void Box::sendRequest(int fd)
 	std::vector<std::string> methods = _InfoServer.getServer()[idOfServer]\
 										.getLocation()[ind].getMethods();
 	methodAllowd(methods,clients[fd].getMethod(),idOfServer);
+	std::cout << "=====> " << ind << std::endl; 
 	if(clients[fd].getMethod() == "GET")
 		get(*this, ind, fd);
 	else if(clients[fd].getMethod() == "POST")

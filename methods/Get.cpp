@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Get.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:59:17 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/10 00:46:21 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/10 03:13:37 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,9 @@ void get(Box &box, int ind, int fd){
 			if(myLocation.getAutoIndex() == "on")
 			{
 
-				std::set<std::string>::iterator it;
+				std::vector<std::string>::const_iterator it;
 				if(myLocation.getIndexes().size() > 2){
-					it = myLocation.getIndexes().begin();
+					it = myLocation.getIndexes().begin() + 2;
 					for (size_t i = 2; i < myLocation.getIndexes().size(); i++, it++)
 					{
 						file =  *it;
@@ -91,7 +91,6 @@ void get(Box &box, int ind, int fd){
 					for (size_t i = 0; i < 2; i++, it++)
 					{
 						file = *it;
-
 						if(!cgi(box, myLocation, fd, reqPath, file, serverID, "GET", "")){
 							continue;
 						}

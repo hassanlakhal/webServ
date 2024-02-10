@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/08 17:56:23 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/10 02:54:20 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ class Location
         std::string  upload;
         std::string listingDir;
         std::vector<std::string> methods;
-        std::set<std::string> index;
+        std::vector<std::string> index;
         std::map<std::string, std::string> cgi_path;
         std::string  redirectPath;
         std::string  UploadPath;
@@ -58,7 +58,7 @@ class Location
         void setUploadPath(std::string& path);
         const std::map<std::string, std::string>& getCgiPath() const;
         std::string getPath() const;
-        const std::set<std::string>& getIndexes() const;
+        const std::vector<std::string>& getIndexes() const;
         std::string getAutoIndex() const;
         std::string getRedirect() const;
         std::string getRoot() const;

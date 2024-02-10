@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/08 16:45:12 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/10 02:54:01 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ Location::ErrorLocation::ErrorLocation(const std::string& message) : std::runtim
 
 Location::Location()
 {
-    this->index.insert("index.html");
-    this->index.insert("index.htm");
+    this->index.push_back("index.html");
+    this->index.push_back("index.htm");
 }
 
 Location::Location(std::string root)
@@ -30,8 +30,8 @@ Location::Location(std::string root)
     this->listingDir = "off";
     this->auto_index  = "off";
     this->upload = "off";
-    this->index.insert("index.html");
-    this->index.insert("index.htm");
+    this->index.push_back("index.html");
+    this->index.push_back("index.htm");
 }
 
 Location::~Location()
@@ -56,7 +56,7 @@ const std::map<std::string, std::string>& Location::getCgiPath() const
     return this->cgi_path;
 }
 
-const std::set<std::string>& Location::getIndexes() const{
+const std::vector<std::string>& Location::getIndexes() const{
     return this->index;
 }
 
@@ -176,7 +176,7 @@ void Location::setIndex(std::string& index)
     std::istringstream iss(index);
     while (getline(iss,line,' '))
     {
-        this->index.insert(line);
+        this->index.push_back(line);
     }
 }
 
