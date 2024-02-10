@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:59:17 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/10 23:50:21 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/11 00:52:09 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void listing_dir(int fd, Location myLocation, Box& box){
 	std::string reqPathLoc = box.getClients()[fd].getPathLoc();
 	if(reqPathLoc == "/")
 		tmp = "";
-	std::cout << "lpath jdidi-- : " << reqPathLoc << "\n";
 	std::string codeHTML = "<!DOCTYPE html><html lang=\"en\"><head><link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\"><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Document</title></head><body><ul>";
 	codeHTML += "<h2>Listed files</h2>";
 	if((dir = opendir(reqPath.c_str())) != NULL){
@@ -32,8 +31,6 @@ void listing_dir(int fd, Location myLocation, Box& box){
 		{
 			if(strcmp(dent->d_name, ".") && strcmp(dent->d_name, ".."))
 			{
-				std::cout << "listed file : " << dent->d_name << "\n";
-				// size_t len = myLocation.getRoot().length();
 				codeHTML += "<li><a href=\"" + reqPathLoc + tmp + dent->d_name + "\">" + dent->d_name + "</a></li>";
 			}
 		}
@@ -69,7 +66,6 @@ void get(Box &box, int ind, int fd){
 	{
 		if(!S_ISDIR(file_stat.st_mode)){
 
-			// reqPath = reqPath.substr(0, reqPath.find_last_of('/'));
 			cgi(box, myLocation, fd, reqPath, file, serverID, "GET", "");
 		}
 		else

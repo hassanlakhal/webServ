@@ -55,6 +55,7 @@ server:
     - autoindex: on
     - listing_dir: on
     - methods: POST GET
+    - cgi_path: .php, /usr/bin/php-cgi
   location:
     - path: /home
     - root:  www
@@ -64,7 +65,18 @@ server:
     - methods: POST PUT GET DELETE
     - index:  index.html
     - cgi_path: .py, /usr/bin/python3
-    - cgi_path: .php, /usr/bin/php
+    - cgi_path: .php, /usr/bin/php-cgi
+    - cgi_path: .sh, /usr/bin/bash
+  location:
+    - path: /
+    - root:  www
+    - upload: on
+    - autoindex: off
+    - listing_dir: on
+    - methods: POST PUT GET DELETE
+    - index:  index.html
+    - cgi_path: .py, /usr/bin/python3
+    - cgi_path: .php, /usr/bin/php-cgi
     - cgi_path: .sh, /usr/bin/bash
 
 server:

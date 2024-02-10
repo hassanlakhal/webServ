@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/10 22:54:17 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/11 00:51:48 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,6 @@ void Box::sendRequest(int fd)
 	std::vector<std::string> methods = _InfoServer.getServer()[idOfServer]\
 										.getLocation()[ind].getMethods();
 	methodAllowd(methods,clients[fd].getMethod(),idOfServer);
-	std::cout << "=====> " << ind << std::endl; 
 	if(clients[fd].getMethod() == "GET")
 		get(*this, ind, fd);
 	else if(clients[fd].getMethod() == "POST")

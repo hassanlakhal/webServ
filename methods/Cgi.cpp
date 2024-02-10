@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/10 23:48:15 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/11 00:52:32 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void getEnv(Box& box, int fd, char *env[], std::string file){
 std::string fillMapType(std::string extention){
 	std::map<std::string, std::string> myMap;
 	std::map<std::string, std::string>::iterator it;
-	std::cout << "extention entred : " << extention << std::endl;
 	myMap["html"] = "text";
 	myMap["htm"] = "text";
 	myMap["csv"] = "text";
@@ -77,7 +76,6 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 	}
 	else
 		std::fclose(tmpfile);
-	std::cout << "haaaaaaaa : " << reqPath + "/" + file << "\n";
 	if(!myLocation.getCgiPath().size() && method == "GET")
 	{
 		std::string formatType = fillMapType(extention);
@@ -87,7 +85,11 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 	else if(!myLocation.getCgiPath().size() && method == "POST")
 	{
 		// throw could not execute the file
-		throw errorMessage(500, serverID);
+		if(method == "POST"){
+			if(unlink(postFile.c_str()) == -1)
+				throw errorMessage(500, serverID);
+		}
+		throw errorMessage(403, serverID);
 
 	}
 	else
@@ -121,7 +123,6 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 				if(pid == 0){
 					FILE* infilePost = NULL;
 					if(method == "POST"){
-						std::cout << "must read form : " << postFile << std::endl;
 						infilePost = std::fopen(postFile.c_str(), "r");
 						if(!infilePost)
 							throw errorMessage(500, serverID);
@@ -186,6 +187,10 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 				std::fclose(infile);
 				if(unlink(fileDel.c_str()) == -1)
 					throw errorMessage(500, serverID);
+				if(method == "POST"){
+					if(unlink(postFile.c_str()) == -1)
+						throw errorMessage(500, serverID);
+				}
 				throw errorMessage(200, codeHTML);
 
 			}
@@ -193,9 +198,10 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 		if(!cgiExist)
 		{
 			if(method == "POST"){
+				unlink(postFile.c_str());
 				throw errorMessage(500, serverID);
 			}
-		std::cout << "hadxi li taficha : " << reqPath << std::endl;
+			std::cout << "hadxi li taficha : " << reqPath << std::endl;
 
 			std::string formatType = fillMapType(extention);
 			std::string tmpFile = reqPath ;

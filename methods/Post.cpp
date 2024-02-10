@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/09 22:39:03 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/11 00:40:14 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 void post(Box &box, int ind, int fd){
 	std::vector<unsigned char> body = box.getClients()[fd].getBody();
+	Location myLocation = box.getWebServer().getServer()[box.getClients()[fd].getServerId()].getLocation()[ind];
 	int serverID = box.getClients()[fd].getServerId();
-	Location myLocation = box.getWebServer().getServer()[serverID].getLocation()[ind];
-	std::string path = box.getClients()[fd].getPath();
-	path = box.removeSlach(path);
-	path = box.FullQueryString(path);
-	std::string file = path.substr(1);
-	path = path.substr(0, path.find_last_of('/'));
+	std::string reqPath = box.getClients()[fd].getPath();
+	reqPath = box.removeSlach(reqPath);
+	reqPath = box.FullQueryString(reqPath);
+	// std::cout << "path : " << reqPath << std::endl;
+	std::string file = reqPath;
+	reqPath = reqPath.substr(1);
 	if(file.find_last_of('/') != std::string::npos && file.find('.') != std::string::npos)
 		file = file.substr(file.find_last_of('/') + 1);
 	else
@@ -30,7 +31,7 @@ void post(Box &box, int ind, int fd){
 
 
 	if(myLocation.getUpload() == "off"){
-		//throw
+		throw errorMessage(403, serverID);
 	}else{
 		std::map<std::string, std::string> mapInfo = box.getClients()[fd].getInfoMap();
 		std::string filePath, extention = mapInfo["Content-Type"].substr(mapInfo["Content-Type"].find("/") + 1);
@@ -55,6 +56,7 @@ void post(Box &box, int ind, int fd){
 			// std::cout << "test : " << static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str())) << std::endl;
 			// box.getClients()[fd].getOutFile().write(reinterpret_cast<char*>(body.data()), body.size());
 			fwrite(&body[0], 1, body.size(), box.getClients()[fd].getOutFile());
+
 			if(box.getClients()[fd].getSizeBody() >= static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str()))){
 
 				box.getClients()[fd].setOutFileOpened(false);
@@ -62,14 +64,12 @@ void post(Box &box, int ind, int fd){
 				fclose(box.getClients()[fd].getOutFile());
 				body.clear();
 				if(!file.empty()){
-					if(cgi(box, myLocation, fd, path.substr(1), file, serverID, "POST", filePath)){
-
+					std::cout << "ccPath : " << reqPath << "\n";
+					std::cout << "ccfile : " << file << "\n";
+					if(cgi(box, myLocation, fd, reqPath, file, serverID, "POST", filePath)){
 					}
 					else
-					{
-						// std::cout << "it entred her\n";
 						throw errorMessage(404, serverID);
-					}
 				}
 				else{
 					std::string path_page = "error_page/201.html";
@@ -109,8 +109,7 @@ void post(Box &box, int ind, int fd){
 						fclose(box.getClients()[fd].getOutFile());
 						// box.getClients()[fd]
 						if(!file.empty()){
-							std::cout << "ssssssssssssssssssssssssssssssssss\n";
-							if(cgi(box, myLocation, fd, path.substr(1), file, serverID, "POST", filePath)){
+							if(cgi(box, myLocation, fd, reqPath, file, serverID, "POST", filePath)){
 
 							}
 							else
@@ -149,7 +148,7 @@ void post(Box &box, int ind, int fd){
 						// box.getClients()[fd].getOutFile().close();
 						fclose(box.getClients()[fd].getOutFile());
 						if(!file.empty()){
-							if(cgi(box, myLocation, fd, path.substr(1), file, serverID, "POST", filePath)){
+							if(cgi(box, myLocation, fd, reqPath, file, serverID, "POST", filePath)){
 
 							}
 							else
