@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/10 02:54:01 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/10 23:50:28 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ Location::ErrorLocation::ErrorLocation(const std::string& message) : std::runtim
 
 Location::Location()
 {
-    this->index.push_back("index.html");
-    this->index.push_back("index.htm");
 }
 
 Location::Location(std::string root)
@@ -30,8 +28,6 @@ Location::Location(std::string root)
     this->listingDir = "off";
     this->auto_index  = "off";
     this->upload = "off";
-    this->index.push_back("index.html");
-    this->index.push_back("index.htm");
 }
 
 Location::~Location()

@@ -54,12 +54,12 @@ server:
     - upload: on
     - autoindex: on
     - listing_dir: on
-    - methods: POST
+    - methods: POST GET
   location:
     - path: /home
     - root:  www
     - upload: on
-    - autoindex: on
+    - autoindex: off
     - listing_dir: on
     - methods: POST PUT GET DELETE
     - index:  index.html
@@ -79,8 +79,9 @@ server:
     - root:   www
     - upload: on
     - autoindex: on
-    - listing_dir: on
-    - methods: P
+    - listing_dir: off
+    - index:  index.html
+    - methods: GET
   location:
     - path: /home
     - root:  www

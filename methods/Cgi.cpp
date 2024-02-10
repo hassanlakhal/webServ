@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/10 03:58:04 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/10 23:48:15 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,11 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 	}
 	else
 		std::fclose(tmpfile);
+	std::cout << "haaaaaaaa : " << reqPath + "/" + file << "\n";
 	if(!myLocation.getCgiPath().size() && method == "GET")
 	{
 		std::string formatType = fillMapType(extention);
 		std::string tem = formatType + "/" + extention;
-		// std::string path = reqPath + "/" + file;
 		throw errorMessage(200,  reqPath, tem);
 	}
 	else if(!myLocation.getCgiPath().size() && method == "POST")
