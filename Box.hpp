@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/08 18:04:40 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/10 19:39:43 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ class Box
         webServer _InfoServer;
         std::map<int,Client> clients;
         std::string QueryString;
+        __uint16_t   _listen;
+        u_long      _host;
         void parssingRequest(std::string& buffer);
         void readRequest(int fdRequest, int epollFd);
     public:
@@ -44,8 +46,8 @@ class Box
         std::string makeResponse(int fd, std::string value);
         void methodAllowd(std::vector<std::string>& methods, const std::string& method, int id);
         Box& operator=(const Box& other);
-        bool checkDup(const std::vector<Server>& sr);
-        bool checkName(const std::vector<Server>& sr, std::string name, size_t  &i);
+        bool checkDup(const std::vector<Server>& sr, std::vector<int>& posServer);
+        bool checkName(const std::vector<Server>& sr, std::string name, size_t  &i,std::vector<int>& posServer);
         void makeSocketNonBlocking(int sockfd);
         std::map<int,Client> &getClients() ;
         std::string removeSlach(std::string& str);

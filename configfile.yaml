@@ -23,7 +23,7 @@ server:
     - root:  www
     - upload: on
     - listing_dir: on
-    - autoindex: off
+    - autoindex: on
     - methods: POST PUT GET DELETE
     - index:  index.html
     - cgi_path: .py, /usr/bin/python3
@@ -55,6 +55,32 @@ server:
     - autoindex: on
     - listing_dir: on
     - methods: GET
+  location:
+    - path: /home
+    - root:  www
+    - upload: on
+    - autoindex: on
+    - listing_dir: on
+    - methods: POST PUT GET DELETE
+    - index:  index.html
+    - cgi_path: .py, /usr/bin/python3
+    - cgi_path: .php, /usr/bin/php
+    - cgi_path: .sh, /usr/bin/bash
+
+server:
+  listen: 8081
+  host: localhost
+  root: www
+  client_max_body_size: 1G
+  server_name: test
+
+  location:
+    - path: /about
+    - root:   www
+    - upload: on
+    - autoindex: on
+    - listing_dir: on
+    - methods: P
   location:
     - path: /home
     - root:  www

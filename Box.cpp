@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/10 02:48:22 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/10 19:38:45 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,24 +130,25 @@ void Box::methodAllowd(std::vector<std::string>& methods, const std::string& met
 	throw errorMessage(405,id);
 }
 
-bool Box::checkDup(const std::vector<Server>& sr)
+bool Box::checkDup(const std::vector<Server>& sr, std::vector<int>& posServer)
 {
-	for (size_t i = 0; i < sr.size() - 1; ++i)
+	for (size_t i = 0; i < sr.size(); ++i)
 	{
-		for (size_t j = i + 1; j < sr.size(); ++j)
+		if ((sr[i].getHost() == _host) && (sr[i].getListen() == _listen))
 		{
-			if ((sr[i].getHost() == sr[j].getHost()) && (sr[i].getListen() == sr[j].getListen()))
-				return true;
+			posServer.push_back(i);
 		}
 	}
+	if (posServer.size() > 1)
+		return true;
 	return false;
 }
 
 
-bool Box::checkName(const std::vector<Server>& sr, std::string name, size_t  &i)
+bool Box::checkName(const std::vector<Server>& sr, std::string name, size_t  &i,std::vector<int>& posServer)
 {
 	(void)name;
-	for (; i < sr.size(); ++i)
+	for (; i < posServer.size(); ++i)
 	{
 		std::vector<std::string> names = sr[i].getServerName();
 		std::vector<std::string>::iterator it = find(names.begin(),names.end(),name);
@@ -160,13 +161,14 @@ bool Box::checkName(const std::vector<Server>& sr, std::string name, size_t  &i)
 void Box::sendRequest(int fd)
 {
 	int idOfServer = 0;
-	size_t  i = 0;
 	std::string pathLocation;
+	std::vector<int> posServer;
 	std::map<std::string, std::string> mapInfo = clients[fd].getInfoMap();
-	if(checkDup(_InfoServer.getServer()))
+	if(checkDup(_InfoServer.getServer(),posServer))
 	{
+		size_t  i = posServer.at(0);
 		// std::cout << mapInfo["Host"] << std::endl;
-		if (checkName(_InfoServer.getServer(), mapInfo["Host"],i))
+		if (checkName(_InfoServer.getServer(), mapInfo["Host"],i,posServer))
 			 idOfServer = i;
 	}
 	else
@@ -404,7 +406,9 @@ void Box::setUpServer(webServer& data)
 				Client client(d);
 				clients[client_socket] = client;
 				clients[client_socket].setResponse(rep);
-				// std::cout << "postion of server  " << d << std::endl;
+				this->_host = _InfoServer.getServer().at(d).getHost();
+				this->_listen = _InfoServer.getServer().at(d).getListen();
+				std::cout << "postion of server  " << d << std::endl;
 				std::cout <<  client_socket << " Client connected." << std::endl;
 				event.events = EPOLLIN | EPOLLOUT;
 				event.data.fd = client_socket;
