@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/09 22:36:35 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/10 01:29:22 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ class Client
         void setChunkSizee(unsigned long s);
         void setStringBody(char c, std::string str);
         void setResponse(const Response& rep);
+        void setServerId(int serverId);
         Response& getResponse();
         void openFile(std::string file);
         infoMap getInfoMap() const;

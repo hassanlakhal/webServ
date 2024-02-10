@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/07 16:31:23 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/10 01:21:01 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,12 @@ void Server::setServerName(std::string& serverName)
     if (serverName[0] != ' ')
         throw std::runtime_error("error line serverName");
     serverName = trim(serverName);
-    this->name = serverName;
+    std::istringstream iss(serverName);
+    std::string line;
+    while (getline(iss,line,' '))
+    {
+        this->name.push_back(line);
+    }
 }
 
 void Server::setHost(std::string& host)
@@ -128,7 +133,7 @@ void Server::setHost(std::string& host)
     }
 }
 
-const std::string& Server::getServerName() const
+const std::vector<std::string>& Server::getServerName() const
 {
     return this->name;
 }

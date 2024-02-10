@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/10 00:32:47 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/10 01:25:55 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,9 @@ bool Box::checkName(const std::vector<Server>& sr, std::string name, size_t  &i)
 	(void)name;
 	for (; i < sr.size(); ++i)
 	{
-		if(sr[i].getServerName() == name)
+		std::vector<std::string> names = sr[i].getServerName();
+		std::vector<std::string>::iterator it = find(names.begin(),names.end(),name);
+		if(it != names.end())
 			return true;
 	}
 	return false;
@@ -169,6 +171,7 @@ void Box::sendRequest(int fd)
 	}
 	else
 		idOfServer = clients[fd].getServerId();
+	clients[fd].setServerId(idOfServer);
 	// std::cout << "name server : " << _InfoServer.getServer()[idOfServer].getServerName() <<std::endl;
 	std::vector<Location> loc = _InfoServer.getServer()[idOfServer].getLocation();
 	if(!clients[fd].getMatchedTime()){
@@ -182,7 +185,6 @@ void Box::sendRequest(int fd)
 		clients[fd].setMatchedTime(true);
 	}
 	int ind = clients[fd].getInd();
-	// exit(0);
 	if (!(_InfoServer.getServer()[idOfServer].getLocation()[ind].getRedirect().empty()))
 	   throw errorMessage(301,idOfServer,ind);
 	std::vector<std::string> methods = _InfoServer.getServer()[idOfServer]\

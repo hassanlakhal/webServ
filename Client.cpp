@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/09 22:36:22 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/10 01:30:24 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -318,6 +318,11 @@ void Client::setInd(int ind){
 
 int Client::getInd(){
 	return this->ind;
+}
+
+void Client::setServerId(int serverId)
+{
+	this->serverId = serverId;
 }
 
 int Client::getIncremetedFileName(){
