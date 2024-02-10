@@ -3,7 +3,7 @@ server:
   host: localhost
   root: www
   client_max_body_size: 2G
-  server_name: localhost
+  server_name: test
 #/testetst
 #/about/gf/ forlder1/forlder2/file.txt ---> www/forlder1/forlder2/file.txt
 #/about/gf/forlder1  --> www/forlder2/file.txt
@@ -46,7 +46,7 @@ server:
   host: localhost
   root: www
   client_max_body_size: 1G
-  server_name: test
+  server_name: localhost
 
   location:
     - path: /about
@@ -54,7 +54,7 @@ server:
     - upload: on
     - autoindex: on
     - listing_dir: on
-    - methods: GET
+    - methods: POST
   location:
     - path: /home
     - root:  www

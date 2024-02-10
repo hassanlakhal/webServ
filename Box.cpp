@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/10 19:38:45 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/10 22:54:17 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,8 +167,11 @@ void Box::sendRequest(int fd)
 	if(checkDup(_InfoServer.getServer(),posServer))
 	{
 		size_t  i = posServer.at(0);
+		std::istringstream iss(mapInfo["Host"]);
+		std::string host;
+		getline(iss,host,':');
 		// std::cout << mapInfo["Host"] << std::endl;
-		if (checkName(_InfoServer.getServer(), mapInfo["Host"],i,posServer))
+		if (checkName(_InfoServer.getServer(), host,i,posServer))
 			 idOfServer = i;
 	}
 	else
