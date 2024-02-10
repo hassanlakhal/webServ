@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/10 03:13:12 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/10 03:58:04 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 	{
 		std::string formatType = fillMapType(extention);
 		std::string tem = formatType + "/" + extention;
-		std::string path = reqPath + "/" + file;
-		throw errorMessage(200,  path, tem);
+		// std::string path = reqPath + "/" + file;
+		throw errorMessage(200,  reqPath, tem);
 	}
 	else if(!myLocation.getCgiPath().size() && method == "POST")
 	{
@@ -206,8 +206,8 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 				std::cout << "file to open : " << tmpFile << std::endl;
 				std::string tem = formatType + "/" + extention;
 				std::cout << "format type : " << tem <<std::endl;
-				std::string path = tmpFile + "/" + file;
-				throw errorMessage(200, path, tem);
+				// std::string path = tmpFile + "/" + file;
+				throw errorMessage(200, tmpFile, tem);
 			}
 
 			}

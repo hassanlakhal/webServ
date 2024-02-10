@@ -42,7 +42,7 @@ server:
     - cgi_path: .sh, /usr/bin/bash
 
 server:
-  listen: 8081
+  listen: 8080
   host: localhost
   root: www
   client_max_body_size: 1G
