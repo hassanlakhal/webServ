@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/11 00:52:32 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/11 16:48:17 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void getEnv(Box& box, int fd, char *env[], std::string file){
 	std::string c = "PATH_TRANSLATED=" + file;
 	std::string d = "REQUEST_METHOD=" + box.getClients()[fd].getMethod();
 	std::string e = "QUERY_STRING=" + box.getQueryString();
+	std::string g = "HTTP_COOKIE=" + mapInfo["Cookie"];
+
 	char f[] = "REDIRECT_STATUS=CGI";
 
 
@@ -30,7 +32,8 @@ void getEnv(Box& box, int fd, char *env[], std::string file){
 	// env[4] = "PATH_INFO=" + mapInfo['content_len'];
 	env[4] = strdup(e.c_str());
 	env[5] = strdup(f);
-	env[6] = NULL;
+	env[6] = strdup(g.c_str());
+	env[7] = NULL;
 
 }
 
@@ -145,7 +148,7 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 							perror("dup2-- fail ");
 						std::fclose(infilePost);
 					}
-					char *env[7];
+					char *env[8];
 					getEnv(box, fd, env, arg2);
 					// std::cout << "env[1] = " << env[3] << "\n";
 					execve(arg[0],arg , env);
@@ -180,7 +183,7 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 				std::string codeHTML = "<!DOCTYPE html><html lang=\"en\"><head>	<meta charset=\"UTF-8\">	<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">	<title>Document</title></head><body>";
 				while ((size_read = read(fileno(infile), buffer, sizeof(buffer)))> 0)
 				{
-					// std::cout << "line : " << buffer << "\n";
+					std::cout << "line : " << buffer << "\n";
 					codeHTML.append(buffer, size_read);
 				}
 				codeHTML += "</body></html>";

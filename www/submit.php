@@ -8,6 +8,7 @@
 <body>
     <h2>Submitted Data</h2>
     <?php
+    setcookie("user", "John Doe", time() + 3600, "/"); // Expires in 1 hour
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $name = $_POST['name'];
         $email = $_POST['email'];

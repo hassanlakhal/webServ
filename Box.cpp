@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/11 00:51:48 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/11 16:16:56 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,8 +177,8 @@ void Box::sendRequest(int fd)
 	else
 		idOfServer = clients[fd].getServerId();
 	clients[fd].setServerId(idOfServer);
-	std::cout << "name server : " << _InfoServer.getServer()[idOfServer].getServerName().at(0)\
-	<< " " << clients[fd].getServerId() <<std::endl;
+	// std::cout << "name server : " << _InfoServer.getServer()[idOfServer].getServerName().at(0)\
+	// << " " << clients[fd].getServerId() <<std::endl;
 	std::vector<Location> loc = _InfoServer.getServer()[idOfServer].getLocation();
 	if(!clients[fd].getMatchedTime()){
 		int ind = matchLocation(loc,clients[fd].getPath(),idOfServer);

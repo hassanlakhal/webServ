@@ -62,6 +62,7 @@ server:
     - upload: on
     - autoindex: off
     - listing_dir: on
+    - upload_path: upload
     - methods: POST PUT GET DELETE
     - index:  index.html
     - cgi_path: .py, /usr/bin/python3

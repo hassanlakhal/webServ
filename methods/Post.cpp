@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/11 00:40:14 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/11 16:21:38 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,19 @@ void post(Box &box, int ind, int fd){
 	else
 		file = "";
 
-
-
-
-	if(myLocation.getUpload() == "off"){
+	if(file.empty() && myLocation.getUpload() == "off"){
 		throw errorMessage(403, serverID);
 	}else{
 		std::map<std::string, std::string> mapInfo = box.getClients()[fd].getInfoMap();
 		std::string filePath, extention = mapInfo["Content-Type"].substr(mapInfo["Content-Type"].find("/") + 1);
 		if(mapInfo["Transfer-Encoding"].empty()){
 			if(!box.getClients()[fd].getOutFileOpened()){
+				int status = std::system(("mkdir -p " + myLocation.getRoot() + "/" + myLocation.getUploadPath()).c_str());
+				if(status != 0)
+					throw errorMessage(500, serverID);
 				std::stringstream iss;
-				iss << "upload/file_";
+				iss << myLocation.getRoot() + "/" + myLocation.getUploadPath();
+				iss << "/file_";
 				iss << time(0);
 				iss << "_";
 				iss << box.getClients()[fd].getIncremetedFileName();
@@ -50,11 +51,7 @@ void post(Box &box, int ind, int fd){
 				box.getClients()[fd].IncremetedFileName();
 			}
 				//throw
-			// std::cout << "extention : " << extention << std::endl;
-			// std::cout << "size : " << box.getClients()[fd].getSizeBody() << std::endl;
-			// std::cout << "size of body : " << body.size() << std::endl;
-			// std::cout << "test : " << static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str())) << std::endl;
-			// box.getClients()[fd].getOutFile().write(reinterpret_cast<char*>(body.data()), body.size());
+
 			fwrite(&body[0], 1, body.size(), box.getClients()[fd].getOutFile());
 
 			if(box.getClients()[fd].getSizeBody() >= static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str()))){
@@ -81,8 +78,12 @@ void post(Box &box, int ind, int fd){
 		else if(mapInfo["Transfer-Encoding"] == "chunked"){
 			std::string to_write;
 			if(!box.getClients()[fd].getOutFileOpened()){
+				int status = std::system(("mkdir -p " + myLocation.getRoot() + "/" + myLocation.getUploadPath()).c_str());
+				if(status != 0)
+					throw errorMessage(500, serverID);
 				std::stringstream iss;
-				iss << "upload/file_";
+				iss << myLocation.getRoot() + "/" + myLocation.getUploadPath();
+				iss << "/file_";
 				iss << time(0);
 				iss << "_";
 				iss << box.getClients()[fd].getIncremetedFileName();

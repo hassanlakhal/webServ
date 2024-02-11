@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:59:17 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/11 00:52:09 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/11 15:28:35 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,23 +91,6 @@ void get(Box &box, int ind, int fd){
 		}
 	}
 
-
-
-
-
-
-	// exit(0);
-	if(!file.empty()){
-	// std::cout << " file arrived : " << reqPath << std::endl;
-
-		// reqPath = reqPath.substr(1);
-		// std::cout << "my path : " << reqPath << std::endl;
-	}
-	else
-	{
-
-
-	}
 
 
 	// std::cout << "GET method - :" << std::endl;
