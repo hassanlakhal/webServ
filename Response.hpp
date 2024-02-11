@@ -31,6 +31,7 @@ class Response
         int fd;
         int status_code;
         bool status_close;
+        bool isCgi;
         std::string header;
         std::string body;
         std::string path;
@@ -42,12 +43,13 @@ class Response
         Response(bool status,int fd, int status_code, std::string path);
         Response& operator=(const Response& other);
         Response(const Response& other);
-        void setValues(bool status,int fd, int status_code, std::string path, std::string type,std::string content);
+        void setValues(bool status,int fd, int status_code, std::string path, std::string type,std::string content, bool isCgi);
         void closeFile();
         bool getStatusResponse() const;
         void setStatusHeader(bool status_header);
         bool getStatusHeader() const;
         bool getStatusClinet() const;
+        bool getStatustCgi() const;
         std::string getHeader();
         std::ifstream& getFile() ;
         std::string getBody();

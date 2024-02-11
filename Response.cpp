@@ -62,7 +62,7 @@ void Response::closeFile()
     this->file.close();
 }
 
-void Response::setValues(bool status,int fd, int status_code, std::string path, std::string type,std::string content)
+void Response::setValues(bool status,int fd, int status_code, std::string path, std::string type,std::string content, bool isCgi)
 {
     this->status = status;
     this->status_code = status_code;
@@ -70,6 +70,7 @@ void Response::setValues(bool status,int fd, int status_code, std::string path, 
     this->fd = fd;
     this->type = type;
     this->body = content;
+    this->isCgi = isCgi;
 }
 
 bool Response::getStatusResponse() const
@@ -108,6 +109,7 @@ Response& Response::operator=(const Response& other)
         body = other.body;
         path = other.path;
         type = other.type;
+        this->isCgi = other.isCgi;
         status_header = other.status_header;
         if (file.is_open())
             file.close();
@@ -122,6 +124,11 @@ bool Response::getStatusHeader() const
     return this->status_header;
 }
 
+bool Response::getStatustCgi() const
+{
+    return this->isCgi;
+}
+
 Response::Response(const Response& other)
 {
     status = other.status;
@@ -132,6 +139,7 @@ Response::Response(const Response& other)
     body = other.body;
     path = other.path;
     type = other.type;
+    this->isCgi = other.isCgi;
     status_header = other.status_header;
     if (file.is_open())
         file.close();

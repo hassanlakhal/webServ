@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/11 16:48:17 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/11 22:31:35 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,8 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 			{
 				cgiExist = true;
 				std::string line;
-    			char buffer[BUFFER_SIZE] = {0};
-				size_t size_read;
+    			// char buffer[BUFFER_SIZE] = {0};
+				// size_t size_read;
 				int status;
 				FILE* outfile;
 				std::stringstream iss;
@@ -174,27 +174,30 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 						throw errorMessage(500, serverID);
 					throw errorMessage(500, serverID);
 				}
-				FILE* infile = std::fopen(fileDel.c_str(), "r");
-				if(!infile){
-					if(unlink(fileDel.c_str()) == -1)
-						throw errorMessage(500, serverID);
-					throw errorMessage(500, serverID);
-				}
-				std::string codeHTML = "<!DOCTYPE html><html lang=\"en\"><head>	<meta charset=\"UTF-8\">	<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">	<title>Document</title></head><body>";
-				while ((size_read = read(fileno(infile), buffer, sizeof(buffer)))> 0)
-				{
-					std::cout << "line : " << buffer << "\n";
-					codeHTML.append(buffer, size_read);
-				}
-				codeHTML += "</body></html>";
-				std::fclose(infile);
-				if(unlink(fileDel.c_str()) == -1)
-					throw errorMessage(500, serverID);
-				if(method == "POST"){
-					if(unlink(postFile.c_str()) == -1)
-						throw errorMessage(500, serverID);
-				}
-				throw errorMessage(200, codeHTML);
+				// FILE* infile = std::fopen(fileDel.c_str(), "r");
+				// if(!infile){
+				// 	if(unlink(fileDel.c_str()) == -1)
+				// 		throw errorMessage(500, serverID);
+				// 	throw errorMessage(500, serverID);
+				// }
+				// std::string codeHTML = "<!DOCTYPE html><html lang=\"en\"><head>	<meta charset=\"UTF-8\">	<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">	<title>Document</title></head><body>";
+				// while ((size_read = read(fileno(infile), buffer, sizeof(buffer)))> 0)
+				// {
+				// 	std::cout << "line : " << buffer << "\n";
+				// 	codeHTML.append(buffer, size_read);
+				// }
+				// codeHTML += "</body></html>";
+				// std::fclose(infile);
+				// if(unlink(fileDel.c_str()) == -1)
+				// 	throw errorMessage(500, serverID);
+				// if(method == "POST"){
+				// 	if(unlink(postFile.c_str()) == -1)
+				// 		throw errorMessage(500, serverID);
+				// }
+				std::cout << "test =====> "<< fileDel << "\n";
+				std::string tem = "text/html";
+
+				throw errorMessage(200, fileDel,true);
 
 			}
 		}

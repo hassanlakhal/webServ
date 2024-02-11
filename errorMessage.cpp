@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:25:10 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/02 02:06:20 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/11 23:00:40 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,25 @@ errorMessage::errorMessage()
     
 }
 
-errorMessage::errorMessage(int status, std::string& body) throw()
+errorMessage::errorMessage(int status ,std::string& path ,bool isCgi) throw()
 {
+    std::cout << "hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\n";
     std::ostringstream oss;
-    oss << body;
+    oss << path;
+    if (!isCgi)
+    {
+        this->type = "text/html";
+        this->body =  oss.str();
+    }
+    else
+        this->message = oss.str();
     this->status_code = status;
-    this->type = "text/html";
-    this->body = oss.str();
+    this->isCgi = isCgi;   
 }
 
 errorMessage::errorMessage(int status, std::string& path, std::string& type) throw()
 {
+    std::cout << "hooooooooooooooooooooooooooooo\n";
     std::ostringstream oss, os;
     oss << path;
     os << type;
@@ -39,6 +47,11 @@ errorMessage::errorMessage(int status, std::string& path, std::string& type) thr
 const std::string& errorMessage::getType() const
 {
     return type;
+}
+
+bool errorMessage::getCgiStatus() const
+{
+    return this->isCgi;
 }
 
 errorMessage::errorMessage(int status, int ind, int posLocation) throw()

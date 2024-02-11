@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/11 16:16:56 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/12 00:52:59 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,35 +288,72 @@ void Box::sendResponse(int fd)
 	Response &a = clients[fd].getResponse();
 	const int bufferSize = 1024;
     char buffer[bufferSize] = {0};
-	if (!a.getStatusHeader())
+	if (!a.getStatustCgi())
 	{
-		countent = a.getHeader();
-		a.openFile(a.getPathFile());
-		a.setStatusHeader(true);
-		send(fd,countent.c_str(),countent.length(),0);
-	}
-	if (a.getFile().is_open())
-	{
-		a.getFile().read(buffer, bufferSize - 1);
-		std::streamsize bytesRead = a.getFile().gcount();
-		if (bytesRead > 0)
+		if (!a.getStatusHeader())
 		{
-			std::string body(buffer, bytesRead);
-			send(fd, body.c_str(), body.length(), 0);
+			countent = a.getHeader();
+			a.openFile(a.getPathFile());
+			a.setStatusHeader(true);
+			send(fd,countent.c_str(),countent.length(),0);
 		}
-		if (a.getFile().eof())
+		if (a.getFile().is_open())
 		{
+			a.getFile().read(buffer, bufferSize - 1);
+			std::streamsize bytesRead = a.getFile().gcount();
+			if (bytesRead > 0)
+			{
+				std::string body(buffer, bytesRead);
+				send(fd, body.c_str(), body.length(), 0);
+			}
+			if (a.getFile().eof())
+			{
+				close(fd);
+				a.getFile().close();
+			}
+		}
+		else if (!a.getBody().empty())
+		{
+			std::string body = a.getBody();
+			send(fd, body.c_str(), body.length(), 0);
 			close(fd);
-			// std::cout << "close fd " << fd  << std::endl;
 			a.getFile().close();
 		}
 	}
-	else if (!a.getBody().empty())
+	else if (a.getStatustCgi())
 	{
-		std::string body = a.getBody();
-		send(fd, body.c_str(), body.length(), 0);
-		close(fd);
-		a.getFile().close();
+		std::string response;
+		if (!a.getStatusHeader())
+		{
+			a.openFile(a.getPathFile());
+			response = "HTTP/1.1 200 OK \r\n";
+		}
+		if (a.getFile().is_open())
+		{
+			a.getFile().read(buffer, bufferSize - 1);
+			std::streamsize bytesRead = a.getFile().gcount();
+			std::string buff(buffer, bytesRead);
+			size_t pos =  buff.find("\r\n\r\n"); 
+			if(pos != std::string::npos && (buff.find("Set-Cookie:") != std::string::npos || buff.find("Content-type:") != std::string::npos))
+			{
+				buff = response  + buff;
+				send(fd,buff.c_str(),buff.length(),0);
+			}
+			else if(!a.getStatusHeader())
+			{
+				buff = response  + "Content-type: text/html\r\n\r\n" + buff;
+				send(fd,buff.c_str(),buff.length(),0);
+			}
+			else
+				send(fd, buff.c_str(), buff.length(), 0);
+			if (a.getFile().eof())
+			{
+				unlink(a.getPathFile().c_str());
+				close(fd);
+				a.getFile().close();
+			}
+		}
+		a.setStatusHeader(true);
 	}
 	clients[fd].setResponse(a);
 }
@@ -436,7 +473,8 @@ void Box::setUpServer(webServer& data)
 						e.getStatusCode(),\
 						e.what(),\
 						e.getType(),\
-						e.getBody());
+						e.getBody(),\
+						e.getCgiStatus());
 						clients[client_socket].setTimeOut(0);
 						clients[events[i].data.fd].setMatchedTime(false);
 					}
