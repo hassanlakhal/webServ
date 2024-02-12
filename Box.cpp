@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/12 00:52:59 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:28:48 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,6 +252,7 @@ void Box::readRequest(int fdRequest, int epollFd)
 {
 	char buffer[2048] = {0};
 	int bytesRead = recv(fdRequest, buffer, 2047, 0);
+	std::cout << "bytes read : " << bytesRead << "\n";
 	// if ()
 	// {
 	// 	/* code */
@@ -333,7 +334,7 @@ void Box::sendResponse(int fd)
 			a.getFile().read(buffer, bufferSize - 1);
 			std::streamsize bytesRead = a.getFile().gcount();
 			std::string buff(buffer, bytesRead);
-			size_t pos =  buff.find("\r\n\r\n"); 
+			size_t pos =  buff.find("\r\n\r\n");
 			if(pos != std::string::npos && (buff.find("Set-Cookie:") != std::string::npos || buff.find("Content-type:") != std::string::npos))
 			{
 				buff = response  + buff;

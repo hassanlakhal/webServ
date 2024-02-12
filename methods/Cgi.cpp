@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/11 22:31:35 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/12 16:46:02 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,20 +115,25 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 				iss << time(0);
 				fileDel = iss.str();
 				outfile = std::fopen(fileDel.c_str(), "w");
-				if(!outfile)
-					throw errorMessage(500, serverID);
+				if(!outfile){
 
+					throw errorMessage(500, serverID);
+				}
 
 				clock_t start_time;
 				start_time = clock();
 				int pid = fork();
 
 				if(pid == 0){
+
 					FILE* infilePost = NULL;
 					if(method == "POST"){
 						infilePost = std::fopen(postFile.c_str(), "r");
-						if(!infilePost)
+						if(!infilePost){
+							std::cout << "ayeeeh dkhal hna\n";
+							//kill child
 							throw errorMessage(500, serverID);
+						}
 					}
 					// std::cout << "fffffff" << fileno(outfile) << std::endl;
 					std::string arg2 = reqPath;
@@ -144,6 +149,7 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 
 					if(method == "POST")
 					{
+						std::cout << "file from : " << infilePost << "\n";
 						if(dup2(fileno(infilePost), 0) == -1)
 							perror("dup2-- fail ");
 						std::fclose(infilePost);
@@ -154,7 +160,7 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 					execve(arg[0],arg , env);
 					exit(48);
 				}
-				std::fclose(outfile);
+
 				// std::fclose(infilePost);
 
 				while(1){
@@ -168,6 +174,9 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 						throw errorMessage(504, serverID);
 					}
 				}
+				std::fclose(outfile);
+				std::cout << "ccufile : " << postFile << "\n";
+
 				if(status != 0){
 					std::cout << "status : " << status << "\n";
 					if(unlink(fileDel.c_str()) == -1)
@@ -190,10 +199,10 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 				// std::fclose(infile);
 				// if(unlink(fileDel.c_str()) == -1)
 				// 	throw errorMessage(500, serverID);
-				// if(method == "POST"){
-				// 	if(unlink(postFile.c_str()) == -1)
-				// 		throw errorMessage(500, serverID);
-				// }
+				if(method == "POST"){
+					if(unlink(postFile.c_str()) == -1)
+						throw errorMessage(500, serverID);
+				}
 				std::cout << "test =====> "<< fileDel << "\n";
 				std::string tem = "text/html";
 

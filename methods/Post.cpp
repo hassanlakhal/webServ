@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/11 16:21:38 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:02:05 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void post(Box &box, int ind, int fd){
 		std::string filePath, extention = mapInfo["Content-Type"].substr(mapInfo["Content-Type"].find("/") + 1);
 		if(mapInfo["Transfer-Encoding"].empty()){
 			if(!box.getClients()[fd].getOutFileOpened()){
+				std::cout << "oppopopopopopopopopop\n";
 				int status = std::system(("mkdir -p " + myLocation.getRoot() + "/" + myLocation.getUploadPath()).c_str());
 				if(status != 0)
 					throw errorMessage(500, serverID);
@@ -46,14 +47,15 @@ void post(Box &box, int ind, int fd){
 				iss << ".";
 				iss << extention;
 				filePath = iss.str();
-				// std::cout << "file path : " << filePath << std::endl;
 				box.getClients()[fd].openFile(filePath);
 				box.getClients()[fd].IncremetedFileName();
+
 			}
 				//throw
 
 			fwrite(&body[0], 1, body.size(), box.getClients()[fd].getOutFile());
-
+			std::cout << "size body : " << box.getClients()[fd].getSizeBody() << std::endl;
+			std::cout << "Content-Length : " << static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str())) << std::endl;
 			if(box.getClients()[fd].getSizeBody() >= static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str()))){
 
 				box.getClients()[fd].setOutFileOpened(false);
@@ -62,8 +64,7 @@ void post(Box &box, int ind, int fd){
 				body.clear();
 				if(!file.empty()){
 					std::cout << "ccPath : " << reqPath << "\n";
-					std::cout << "ccfile : " << file << "\n";
-					if(cgi(box, myLocation, fd, reqPath, file, serverID, "POST", filePath)){
+					if(cgi(box, myLocation, fd, reqPath, file, serverID, "POST", box.getClients()[fd].getFilePath())){
 					}
 					else
 						throw errorMessage(404, serverID);
@@ -110,7 +111,7 @@ void post(Box &box, int ind, int fd){
 						fclose(box.getClients()[fd].getOutFile());
 						// box.getClients()[fd]
 						if(!file.empty()){
-							if(cgi(box, myLocation, fd, reqPath, file, serverID, "POST", filePath)){
+							if(cgi(box, myLocation, fd, reqPath, file, serverID, "POST", box.getClients()[fd].getFilePath())){
 
 							}
 							else

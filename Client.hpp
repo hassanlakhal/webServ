@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/10 01:29:22 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/12 15:16:24 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ class Client
         std::string method;
         std::string path;
         std::string pathLoc;
+        std::string filePath;
         std::string protocal;
         std::string type;
         std::string stringBody;
@@ -79,6 +80,7 @@ class Client
         void openFile(std::string file);
         infoMap getInfoMap() const;
         FILE * getOutFile();
+        std::string getFilePath();
         bool getOutFileOpened() const;
         void setOutFileOpened(bool b);
         bool getEnteredfirstTime() const;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/10 01:30:24 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/12 15:44:16 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,9 +244,10 @@ void Client::ParsingRequest()
 void Client::openFile(std::string file){
 	this->outfile = std::fopen(file.c_str(), "a+");
 	if(!this->outfile){
-		//throw
+		// throw errorMessage(500, )
 	}
 	this->outfileOpened = true;
+	this->filePath = file;
 }
 
 FILE * Client::getOutFile() {
@@ -298,6 +299,11 @@ void Client::setPath(const std::string& path)
 void Client::setPathLoc(std::string loc){
 	this->pathLoc = loc;
 }
+
+std::string Client::getFilePath(){
+	return this->filePath;
+}
+
 
 std::string Client::getPathLoc(){
 	return this->pathLoc;
