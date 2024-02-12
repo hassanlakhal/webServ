@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/12 17:28:48 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/12 19:18:57 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -464,7 +464,7 @@ void Box::setUpServer(webServer& data)
 				{
 					try
 					{
-						clients[client_socket].setTimeOut(clock());
+						clients[events[i].data.fd].setTimeOut(clock());
 						readRequest(events[i].data.fd, epollFd);
 					}
 					catch (const errorMessage& e)
@@ -476,25 +476,39 @@ void Box::setUpServer(webServer& data)
 						e.getType(),\
 						e.getBody(),\
 						e.getCgiStatus());
-						clients[client_socket].setTimeOut(0);
+						clients[events[i].data.fd].setTimeOut(0);
 						clients[events[i].data.fd].setMatchedTime(false);
 					}
 				}
 				else if ((events[i].events & EPOLLOUT))
 				{
-					// try
-					// {
-					// 	timeOut(events[i].data.fd, clock());
-					// }
-					// catch(const errorMessage& e)
-					// {
-					// 	clients[events[i].data.fd].getResponse().\
-					// 	setValues(false,events[i].data.fd,\
-					// 	e.getStatusCode(),\
-					// 	e.what(),\
-					// 	e.getType(),\
-					// 	e.getBody());
-					// }
+					try
+					{
+						clock_t endTime =  clock();
+						if (clients[events[i].data.fd].getTimeOut())
+						{
+							if (endTime - clients[events[i].data.fd].getTimeOut() >= 5000000 && clients[events[i].data.fd].getLoadingHeader())
+							{
+								throw errorMessage(504, clients[events[i].data.fd].getServerId());
+							}
+							else if (endTime - clients[events[i].data.fd].getTimeOut() >= 9000000)
+							{
+								throw errorMessage(504, clients[events[i].data.fd].getServerId());
+							}
+						}
+					}
+					catch(const errorMessage& e)
+					{
+						clients[events[i].data.fd].getResponse().\
+						setValues(false,events[i].data.fd,\
+						e.getStatusCode(),\
+						e.what(),\
+						e.getType(),\
+						e.getBody(),\
+						e.getCgiStatus());
+						clients[events[i].data.fd].setTimeOut(0);
+						clients[events[i].data.fd].setMatchedTime(false);
+					}
 					if (!clients[events[i].data.fd].getResponse().getStatusResponse())
 					{
 						sendResponse(events[i].data.fd);

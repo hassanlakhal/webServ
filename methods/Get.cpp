@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:59:17 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/11 22:46:05 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/12 18:26:35 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void listing_dir(int fd, Location myLocation, Box& box){
 		throw errorMessage(404, serverID);
 	codeHTML += "</ul></body></html>";
 	closedir(dir);
-	std::cout << "code : " << codeHTML << std::endl;
+	// std::cout << "code : " << codeHTML << std::endl;
 	throw errorMessage(200,codeHTML);
 }
 
