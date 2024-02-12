@@ -6,8 +6,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize and validate $bgColor here if needed
     setcookie("background", $bgColor);
     // Redirect after setting the cookie to prevent form resubmission
-    header("Location: " . $_SERVER["PHP_SELF"]);
-    exit();
+    // header("Location: " . $_SERVER["PHP_SELF"]);
+    // exit();
 }
 ?>
 

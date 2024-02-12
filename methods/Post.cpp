@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Post.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/12 17:02:05 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/13 00:29:39 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,9 @@ void post(Box &box, int ind, int fd){
 				filePath = iss.str();
 				box.getClients()[fd].openFile(filePath);
 				box.getClients()[fd].IncremetedFileName();
-
 			}
 				//throw
-
 			fwrite(&body[0], 1, body.size(), box.getClients()[fd].getOutFile());
-			std::cout << "size body : " << box.getClients()[fd].getSizeBody() << std::endl;
-			std::cout << "Content-Length : " << static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str())) << std::endl;
 			if(box.getClients()[fd].getSizeBody() >= static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str()))){
 
 				box.getClients()[fd].setOutFileOpened(false);

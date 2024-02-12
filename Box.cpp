@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/12 19:18:57 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/13 00:50:38 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -489,10 +489,15 @@ void Box::setUpServer(webServer& data)
 						{
 							if (endTime - clients[events[i].data.fd].getTimeOut() >= 5000000 && clients[events[i].data.fd].getLoadingHeader())
 							{
-								throw errorMessage(504, clients[events[i].data.fd].getServerId());
+								close(events[i].data.fd);
 							}
 							else if (endTime - clients[events[i].data.fd].getTimeOut() >= 9000000)
 							{
+								if (clients[events[i].data.fd].getMethod() == "POST")
+								{
+									fclose(clients[events[i].data.fd].getOutFile());
+									clients[events[i].data.fd].setOutFileOpened(false);
+								}
 								throw errorMessage(504, clients[events[i].data.fd].getServerId());
 							}
 						}

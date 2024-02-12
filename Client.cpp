@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/12 15:44:16 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/13 00:30:16 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ Client::Client(int serverId): loadingHead(true),serverId(serverId)
 	this->matchedTime = false;
 	this->size = 0;
 	this->sizeAppended = 0;
+	this->start_time = clock();
 }
 
 int Client::incremetedFileName = 0;
