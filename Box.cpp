@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/13 18:12:21 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/13 19:23:25 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,6 @@ int Box::matchLocation(std::vector<Location>& loc, std::string path, int id)
 	{
 		hashTable.push_back(std::make_pair(loc[i].getPath(), i));
 	}
-	path = removeSlach(path);
-	path = FullQueryString(path);
 	for (size_t i = 0; i < hashTable.size(); ++i)
 	{
 		if (hashTable[i].first == path)
@@ -174,12 +172,16 @@ void Box::sendRequest(int fd)
 		idOfServer = clients[fd].getServerId();
 	clients[fd].setServerId(idOfServer);
 	std::vector<Location> loc = _InfoServer.getServer()[idOfServer].getLocation();
-	if(!clients[fd].getMatchedTime()){
-		int ind = matchLocation(loc,clients[fd].getPath(),idOfServer);
+	if(!clients[fd].getMatchedTime())
+	{
+		std::string path = clients[fd].getPath();
+		path = removeSlach(path);
+		path = FullQueryString(path);
+		int ind = matchLocation(loc,path,idOfServer);
 		if (ind == -1)
 			throw errorMessage(404,idOfServer);
-		clients[fd].setPathLoc(clients[fd].getPath());
-		pathLocation = loc[ind].getRoot() + "/" + clients[fd].getPath().substr(loc[ind].getPath().length());
+		clients[fd].setPathLoc(path);
+		pathLocation = loc[ind].getRoot() + "/" + path.substr(loc[ind].getPath().length());
 		clients[fd].setPath(pathLocation);
 		clients[fd].setInd(ind);
 		clients[fd].setMatchedTime(true);
