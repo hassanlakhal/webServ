@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:53 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/13 18:09:25 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/13 23:09:08 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,26 @@ void remove_ressource(std::string reqPath, int serverID){
 void deleteM(Box &box, int ind, int fd){
 	Location myLocation = box.getWebServer().getServer()[box.getClients()[fd].getServerId()].getLocation()[ind];
 	int serverID = box.getClients()[fd].getServerId();
+	char deleted_path[PATH_MAX];
+	char current_path[PATH_MAX];
+	char root_path[PATH_MAX];
 	std::string reqPath = box.getClients()[fd].getPath();
 	reqPath = box.removeSlach(reqPath);
 	reqPath = box.FullQueryString(reqPath);
-
-	// get real path
 	reqPath = reqPath.substr(1);
-	std::cout << "DreqPath : " << reqPath << std::endl;
-	std::cout << "Droot : " << myLocation.getRoot() << std::endl;
-	if(reqPath == myLocation.getRoot())
+
+	if (!realpath(reqPath.c_str(), deleted_path))
+		throw errorMessage(404, serverID);
+	std::string sd(deleted_path);
+	if (!realpath(".", current_path))
+		throw errorMessage(404, serverID);
+	std::string sc(current_path);
+	if (!realpath(myLocation.getRoot().c_str(), root_path))
+		throw errorMessage(404, serverID);
+	std::string sr(root_path);
+	if(sd.find(sc) == std::string::npos || sr.length() >= sd.length())
 		throw errorMessage(403, serverID);
+
 	remove_ressource(reqPath, serverID);
 	std::string path_page = "error_page/201.html";
 	std::string type = "txt/html";
