@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errorMessage.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:25:10 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/11 23:00:40 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:13:30 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 #include"parsingFile.hpp"
 errorMessage::errorMessage()
 {
-    
+
 }
 
 errorMessage::errorMessage(int status ,std::string& path ,bool isCgi) throw()
 {
-    std::cout << "hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii\n";
     std::ostringstream oss;
     oss << path;
     if (!isCgi)
@@ -30,12 +29,11 @@ errorMessage::errorMessage(int status ,std::string& path ,bool isCgi) throw()
     else
         this->message = oss.str();
     this->status_code = status;
-    this->isCgi = isCgi;   
+    this->isCgi = isCgi;
 }
 
 errorMessage::errorMessage(int status, std::string& path, std::string& type) throw()
 {
-    std::cout << "hooooooooooooooooooooooooooooo\n";
     std::ostringstream oss, os;
     oss << path;
     os << type;
@@ -77,7 +75,7 @@ const std::string& errorMessage::getBody() const
     return this->body;
 }
 
-errorMessage::errorMessage(int status, int ind, const std::string& type) throw() 
+errorMessage::errorMessage(int status, int ind, const std::string& type) throw()
 {
     webServer wserv = getMyServer();
     this->error =  wserv.getServer()[ind].getErrorPath();
@@ -90,12 +88,12 @@ errorMessage::errorMessage(int status, int ind, const std::string& type) throw()
     this->message = oss.str();
 }
 
-const char* errorMessage::what() const throw() 
+const char* errorMessage::what() const throw()
 {
     return this->message.c_str();
 }
 
 errorMessage::~errorMessage() throw()
 {
-    
+
 }

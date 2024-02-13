@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Get.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:59:17 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/12 18:26:35 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:10:25 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void listing_dir(int fd, Location myLocation, Box& box){
 		throw errorMessage(404, serverID);
 	codeHTML += "</ul></body></html>";
 	closedir(dir);
-	// std::cout << "code : " << codeHTML << std::endl;
 	throw errorMessage(200,codeHTML);
 }
 
@@ -50,7 +49,6 @@ void get(Box &box, int ind, int fd){
 	std::string reqPath = box.getClients()[fd].getPath();
 	reqPath = box.removeSlach(reqPath);
 	reqPath = box.FullQueryString(reqPath);
-	// std::cout << "path : " << reqPath << std::endl;
 	std::string file = reqPath;
 	reqPath = reqPath.substr(1);
 	if(file.find_last_of('/') != std::string::npos && file.find('.') != std::string::npos)
@@ -64,15 +62,12 @@ void get(Box &box, int ind, int fd){
 		throw errorMessage(404, serverID);
 	else
 	{
-		if(!S_ISDIR(file_stat.st_mode)){
-
+		if(!S_ISDIR(file_stat.st_mode))
 			cgi(box, myLocation, fd, reqPath, file, serverID, "GET", "");
-		}
 		else
 		{
 			if(myLocation.getAutoIndex() == "on")
 			{
-
 				std::vector<std::string>::const_iterator it;
 				if(myLocation.getIndexes().size()){
 					it = myLocation.getIndexes().begin();
@@ -90,13 +85,6 @@ void get(Box &box, int ind, int fd){
 				throw errorMessage(403, box.getClients()[fd].getServerId());
 		}
 	}
-
-
-
-	// std::cout << "GET method - :" << std::endl;
-	// std::cout << box.getWebServer().getServer()[box.getClients()[fd].getServerId()].getLocation().at(ind).getPath() << std::endl;
-	// std::cout << reqPath << "--------" << file << std::endl;
-
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:53 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/10 00:10:20 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:09:25 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ void remove_ressource(std::string reqPath, int serverID){
 		else{
 			DIR *dir;
 			struct dirent *dent;
-
-
 			if((dir = opendir(reqPath.c_str())) != NULL){
 
 				while ((dent = readdir(dir)) != NULL)
@@ -57,7 +55,6 @@ void remove_ressource(std::string reqPath, int serverID){
 						continue;
 					std::string newReaPath = reqPath + "/" + tmp;
 					remove_ressource(newReaPath, serverID);
-
 				}
 				if(check_empty(reqPath.c_str())){
 					if (stat(reqPath.c_str(), &file_stat) != 0)
@@ -69,15 +66,12 @@ void remove_ressource(std::string reqPath, int serverID){
 					else
 						throw errorMessage(403, serverID);
 				}
-				else{
+				else
 					throw errorMessage(403, serverID);
-				}
-
 				closedir(dir);
 			}
-			else{
+			else
 				throw errorMessage(404, serverID);
-			}
 		}
 	}
 
@@ -89,6 +83,8 @@ void deleteM(Box &box, int ind, int fd){
 	std::string reqPath = box.getClients()[fd].getPath();
 	reqPath = box.removeSlach(reqPath);
 	reqPath = box.FullQueryString(reqPath);
+
+	// get real path
 	reqPath = reqPath.substr(1);
 	std::cout << "DreqPath : " << reqPath << std::endl;
 	std::cout << "Droot : " << myLocation.getRoot() << std::endl;

@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/12 15:16:24 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:13:17 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ class Client
         size_t sizeAppended;
         Response response;
         clock_t start_time;
-        // short port;
     public:
         Client();
         Client(int serverId);

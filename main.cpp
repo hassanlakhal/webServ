@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/06 00:20:40 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/15 11:51:57 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:14:45 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,14 @@ int main(int ac, char *av[])
     {
         webServer s;
         if (ac == 2)
-        {     
-            std::string input(av[1]); 
-            // webServer a(input);
+        {
+            std::string input(av[1]);
             loadingData(input);
-            // webServer a(s);
-            // std::cout << s.getServer()[0].getHost() << std::endl;
-            // std::cout << s.getServer()[1].getHost() << std::endl;
-            // std::cout << s.getServer()[2].getHost() << std::endl;
-            // a.loadConfigFile();
-            // a.loadLocation();
         }
     }
     catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
     }
-    
+
 }

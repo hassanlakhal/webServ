@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/10 01:21:01 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:18:21 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,10 @@ Server::Server()
     eroorPage[405] = "error_page/405.html";
     eroorPage[403] = "error_page/403.html";
     eroorPage[500] = "error_page/500.html";
+    eroorPage[501] = "error_page/501.html";
     eroorPage[504] = "error_page/504.html";
     client_max_body_size = 2147483648;
     this->host = 0;
-    // eroorPage[404] = "error_page/404.html";
-
 }
 
 Server::~Server() throw()
@@ -64,8 +63,6 @@ Server& Server::operator=(const Server& other)
 void Server::addLocation(Location *location)
 {
     Locations.push_back(*location);
-    // std::cout << "***>"<< Locations.at(0).getRoot() << std::endl;
-    // std::cout << location << std::endl;
 }
 
 Server* Server::createServer()
@@ -203,13 +200,9 @@ void Server::setPathError(std::string& path)
                 eroorPage[nb] = value;
         }
         else
-        {
-            // std::cout << nb << " ------------ "  << value<< std::endl;
             throw std::runtime_error("out of range");
-        }
         it++;
     }
-
 }
 
 void Server::setMaxBodySize(std::string& maxBodySize)

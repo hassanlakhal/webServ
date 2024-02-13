@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Post.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/13 00:29:39 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:04:16 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@ void post(Box &box, int ind, int fd){
 	std::string reqPath = box.getClients()[fd].getPath();
 	reqPath = box.removeSlach(reqPath);
 	reqPath = box.FullQueryString(reqPath);
-	// std::cout << "path : " << reqPath << std::endl;
 	std::string file = reqPath;
 	reqPath = reqPath.substr(1);
 	if(file.find_last_of('/') != std::string::npos && file.find('.') != std::string::npos)
 		file = file.substr(file.find_last_of('/') + 1);
 	else
 		file = "";
-
+		
+	if(box.getClients()[fd].getInfoMap()["Content-Type"].find("boundary") != std::string::npos)
+		throw errorMessage(501, serverID);
 	if(file.empty() && myLocation.getUpload() == "off"){
 		throw errorMessage(403, serverID);
 	}else{
@@ -34,10 +35,6 @@ void post(Box &box, int ind, int fd){
 		std::string filePath, extention = mapInfo["Content-Type"].substr(mapInfo["Content-Type"].find("/") + 1);
 		if(mapInfo["Transfer-Encoding"].empty()){
 			if(!box.getClients()[fd].getOutFileOpened()){
-				std::cout << "oppopopopopopopopopop\n";
-				int status = std::system(("mkdir -p " + myLocation.getRoot() + "/" + myLocation.getUploadPath()).c_str());
-				if(status != 0)
-					throw errorMessage(500, serverID);
 				std::stringstream iss;
 				iss << myLocation.getRoot() + "/" + myLocation.getUploadPath();
 				iss << "/file_";
@@ -50,12 +47,13 @@ void post(Box &box, int ind, int fd){
 				box.getClients()[fd].openFile(filePath);
 				box.getClients()[fd].IncremetedFileName();
 			}
-				//throw
 			fwrite(&body[0], 1, body.size(), box.getClients()[fd].getOutFile());
-			if(box.getClients()[fd].getSizeBody() >= static_cast<size_t>(atoi(mapInfo["Content-Length"].c_str()))){
+			std::istringstream iss(mapInfo["Content-Length"].c_str());
+			size_t nb;
+			iss >> nb;
+			if(box.getClients()[fd].getSizeBody() >= nb){
 
 				box.getClients()[fd].setOutFileOpened(false);
-				// box.getClients()[fd].getOutFile().close();
 				fclose(box.getClients()[fd].getOutFile());
 				body.clear();
 				if(!file.empty()){
@@ -75,9 +73,6 @@ void post(Box &box, int ind, int fd){
 		else if(mapInfo["Transfer-Encoding"] == "chunked"){
 			std::string to_write;
 			if(!box.getClients()[fd].getOutFileOpened()){
-				int status = std::system(("mkdir -p " + myLocation.getRoot() + "/" + myLocation.getUploadPath()).c_str());
-				if(status != 0)
-					throw errorMessage(500, serverID);
 				std::stringstream iss;
 				iss << myLocation.getRoot() + "/" + myLocation.getUploadPath();
 				iss << "/file_";
@@ -90,8 +85,6 @@ void post(Box &box, int ind, int fd){
 				filePath = iss.str();
 				box.getClients()[fd].openFile(filePath);
 			}
-			else
-				//throw
 			std::vector<unsigned char>::iterator it;
 			std::string strBody(body.begin(), body.end());
 			if(strBody.length()){
@@ -103,9 +96,7 @@ void post(Box &box, int ind, int fd){
 						body.clear();
 						box.getClients()[fd].setOutFileOpened(false);
 						box.getClients()[fd].setStringBody('e', "");
-						// box.getClients()[fd].getOutFile().close();
 						fclose(box.getClients()[fd].getOutFile());
-						// box.getClients()[fd]
 						if(!file.empty()){
 							if(cgi(box, myLocation, fd, reqPath, file, serverID, "POST", box.getClients()[fd].getFilePath())){
 
@@ -135,7 +126,6 @@ void post(Box &box, int ind, int fd){
 					box.getClients()[fd].setStringBody('e', box.getClients()[fd].getStringBody().substr(box.getClients()[fd].getChunkSizee()));
 
 					to_write = to_write.substr(0, box.getClients()[fd].getChunkSizee());
-					// box.getClients()[fd].getOutFile().write(to_write.c_str(), box.getClients()[fd].getChunkSizee());
 					fwrite(to_write.c_str(), 1, to_write.length(), box.getClients()[fd].getOutFile());
 					box.getClients()[fd].setEnteredfirstTime(false);
 					box.getClients()[fd].setSizeAppended('e', 0);
@@ -143,7 +133,6 @@ void post(Box &box, int ind, int fd){
 						box.getClients()[fd].setOutFileOpened(false);
 						box.getClients()[fd].setStringBody('e', "");
 						body.clear();
-						// box.getClients()[fd].getOutFile().close();
 						fclose(box.getClients()[fd].getOutFile());
 						if(!file.empty()){
 							if(cgi(box, myLocation, fd, reqPath, file, serverID, "POST", filePath)){

@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:02:58 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/08 13:36:20 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:10:38 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 #include <sys/stat.h>
 
 typedef std::map<std::string, std::string> infoMap;
-
-
 # define BUFFER_SIZE 1024
 
 class Box;

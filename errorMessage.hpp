@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errorMessage.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:27:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/11 20:20:06 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:13:42 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 #include <stdexcept>
 #include <sstream>
 #include<map>
-// #include"Server.hpp"
-class errorMessage : public std::exception 
+
+class errorMessage : public std::exception
 {
     public:
         errorMessage();

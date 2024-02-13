@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/13 00:50:38 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:12:21 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,13 @@ int Box::matchLocation(std::vector<Location>& loc, std::string path, int id)
 	}
 	path = removeSlach(path);
 	path = FullQueryString(path);
-	// int hashValue = hash(path);
 	for (size_t i = 0; i < hashTable.size(); ++i)
 	{
-		// exit(0);
 		if (hashTable[i].first == path)
 		{
 			return hashTable[i].second;
 		}
 	}
-	// std::cout << "Path : " << path <<std::endl;
 	path = path.substr(0, path.find_last_of('/'));
 	if (!path.empty())
 		return matchLocation(loc,path,id);
@@ -170,15 +167,12 @@ void Box::sendRequest(int fd)
 		std::istringstream iss(mapInfo["Host"]);
 		std::string host;
 		getline(iss,host,':');
-		// std::cout << mapInfo["Host"] << std::endl;
 		if (checkName(_InfoServer.getServer(), host,i,posServer))
 			 idOfServer = i;
 	}
 	else
 		idOfServer = clients[fd].getServerId();
 	clients[fd].setServerId(idOfServer);
-	// std::cout << "name server : " << _InfoServer.getServer()[idOfServer].getServerName().at(0)\
-	// << " " << clients[fd].getServerId() <<std::endl;
 	std::vector<Location> loc = _InfoServer.getServer()[idOfServer].getLocation();
 	if(!clients[fd].getMatchedTime()){
 		int ind = matchLocation(loc,clients[fd].getPath(),idOfServer);
@@ -202,9 +196,6 @@ void Box::sendRequest(int fd)
 		post(*this, ind, fd);
 	else if(clients[fd].getMethod() == "DELETE")
 		deleteM(*this, ind, fd);
-	// std::cout <<"size of body " << clients[fd].getBody().size() << std::endl;
-
-	// std::cout << std::endl;
 }
 
 int findKey(const mapR& myMap, const std::string& value)
@@ -252,11 +243,6 @@ void Box::readRequest(int fdRequest, int epollFd)
 {
 	char buffer[2048] = {0};
 	int bytesRead = recv(fdRequest, buffer, 2047, 0);
-	std::cout << "bytes read : " << bytesRead << "\n";
-	// if ()
-	// {
-	// 	/* code */
-	// }
 	if (bytesRead <= 0)
 	{
 		std::cout << "Client disconnected." << std::endl;
@@ -434,7 +420,6 @@ void Box::setUpServer(webServer& data)
 	{
 		int client_socket;
 		int numEvents = epoll_wait(epollFd, events, 10, -1);
-		// signal(SIG_PIP);
 		for (int i = 0; i < numEvents; i++)
 		{
 			if ((it = std::find(fds.begin(),fds.end(),events[i].data.fd)) != fds.end())

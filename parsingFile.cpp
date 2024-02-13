@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsingFile.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 21:27:24 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/08 16:38:38 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:15:28 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ bool parsingLocation(const std::string& information)
 {
     size_t hint = 0;
     int ind = numberOfCharacter(information, ' ',hint);
-    // std::cout << ind << " " << information << std::endl;
     if(ind == 4)
     {
        if(hint != 4 || information[hint + 1] != ' ')
@@ -89,15 +88,6 @@ std::string getWordLocation(std::string& word, int pos, bool type)
     return word.substr(pos,word.length() + 1);
 }
 
-// bool isV(int value)
-// {
-//     for (int i = PATH; i <= INDEX; ++i)
-//     {
-//         if (i == value)
-//             return true;
-//     }
-//     return false;
-// }
 
 void fillLocation( std::ifstream& configFile,std::string& line, Server* s)
 {
@@ -210,27 +200,5 @@ void loadingData(std::string& nameFile)
             std::cout <<"test" << line << std::endl;
     }
     configFile.close();
-    // std::cout << "root location : "<< GlobalConfig.getServer()[0].getLocation()[0].getRoot() <<std::endl;
     loading.setUpServer(GlobalConfig);
-    // std::vector<Server>:: const_iterator it =  GlobalConfig.getServer().begin();
-    // int count = 0;
-    // while (it != GlobalConfig.getServer().end())
-    // {
-    //     Server server = *it;
-    //     std::cout << "server : " << count++ << std::endl ;
-    //     std::vector<Location>::const_iterator it1 = server.getLocation().begin();
-    //     std::cout << server.getListen() << std::endl;
-    //     std::cout << server.getRoot() << std::endl;
-    //     std::cout << server.getHost() << std::endl;
-    //     count = 0;
-    //     while (it1 != server.getLocation().end())
-    //     {
-    //         std::cout << "  location : " << count++ << std::endl ;
-    //         Location loc = *it1;
-    //         std::cout << loc.getPath() << std::endl;
-    //         std::cout << loc.getAutoIndex() << std::endl;
-    //         it1++;
-    //     }
-    //     it++;
-    // }
 }

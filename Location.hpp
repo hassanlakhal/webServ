@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Location.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:28 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/10 02:54:20 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:14:24 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <sstream>
 #include <utility>
 #include <stdexcept>
-// #include"Server.hpp"
+
 class Location
 {
     protected:
@@ -35,7 +35,6 @@ class Location
         std::map<std::string, std::string> cgi_path;
         std::string  redirectPath;
         std::string  UploadPath;
-        // long proxy_read_time_out;
     public:
         Location();
         Location(std::string root);
@@ -66,7 +65,6 @@ class Location
         const std::string& getListingDir() const;
         const std::vector<std::string>& getMethods() const;
         const std::string& getUploadPath() const;
-        // void setLocation(const std::vector<std::pair<std::string, std::string> >& pairs);
         ~Location();
 };
 

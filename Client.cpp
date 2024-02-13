@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/13 00:30:16 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:12:59 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,11 +156,9 @@ size_t Client::getSizeBody() const
 
 void Client::setBody(std::istringstream& buff)
 {
-	// this->stringBody = buff.str();
 	std::istreambuf_iterator<char> begin(buff);
 	std::istreambuf_iterator<char> end;
 	body.assign(begin ,end);
-	// body.insert(body.end() ,begin ,end);
 	size += body.size();
 }
 
@@ -244,9 +242,8 @@ void Client::ParsingRequest()
 
 void Client::openFile(std::string file){
 	this->outfile = std::fopen(file.c_str(), "a+");
-	if(!this->outfile){
-		// throw errorMessage(500, )
-	}
+	if(!this->outfile)
+		throw errorMessage(500, this->serverId);
 	this->outfileOpened = true;
 	this->filePath = file;
 }

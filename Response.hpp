@@ -55,7 +55,6 @@ class Response
         std::string getBody();
         const std::string& getPathFile();
         void openFile(const std::string& path);
-        // std::ifstream getFile() const;
         ~Response();
 
 };

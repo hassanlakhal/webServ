@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   webServer.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 23:04:20 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/01/17 22:21:18 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:19:01 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 webServer::webServer(const std::string& nameFile) : nameFile(nameFile)
 {
-    
 }
 
 webServer::webServer()
 {
-    
 }
 
 webServer::webServer(const webServer& other)
@@ -58,58 +56,6 @@ std::vector<Server> webServer::getServer() const
 
 void webServer::loadConfigFile()
 {
-    // // Server server;
-    // // Location location;
-    // bool status = true;
-    // std::ifstream configFile;
-    // configFile.open(this->nameFile.c_str());
-    // std::string line;
-    // while (std::getline(configFile,line))
-    // {
-    //     if(line == "server:")
-    //     {
-    //         while(std::getline(configFile,line))
-    //         { 
-                
-    //             if (line.empty())
-    //             { 
-    //                std::getline(configFile,line);
-    //                if (line == "  location:")
-    //                {
-    //                     while (std::getline(configFile,line))
-    //                     {
-    //                         if (line.empty())
-    //                         {
-    //                             status = false;
-    //                             break;
-    //                         }
-    //                         locations.push_back(line);
-    //                     }
-    //                     if (!status)
-    //                         break;
-    //                }
-    //                else
-    //                     std::cout << "test ===> " << std::endl;
-    //             }
-    //             lines.push_back(line); 
-    //         }
-    //         location.loadLocation(locations);
-    //         // location = location.getLocation();
-    //         // std::vector<std::string>::iterator it = locations.begin();
-    //         // std::cout << "-------------\n";
-    //         // while (it != locations.end())
-    //         // {
-    //         //    std::cout << *it << std::endl;
-    //         //    ++it;
-    //         // }
-    //         // std::cout << "-------------\n";
-    //         lines.clear();
-    //         locations.clear();
-    //     }
-    //     else
-    //         std::cout <<"test" << line << std::endl;
-        
-    // }
 }
 
 webServer::~webServer()
