@@ -10,31 +10,11 @@ if (isset($_COOKIE["name"]) && isset($_COOKIE["email"]) && isset($_COOKIE["profi
 if (isset($_POST["submit"])) {
     setcookie("name", $_POST["name"], time() + (60 * 60 * 24), "/");
     setcookie("email", $_POST["email"], time() + (60 * 60 * 24), "/");
-    $uploadDir = "../uploads/";
-    if (!file_exists($uploadDir))
-        mkdir($uploadDir, 0777, true);
-    $uploadedFiles = [];
-    foreach ($_FILES["media"]["tmp_name"] as $key => $tmpName) {
-        $randomString = bin2hex(random_bytes(8));
-        $file_name = $randomString . "_" . basename($_FILES["media"]["name"][$key]);
-        $uploadFile = $uploadDir . $file_name;
-        if (move_uploaded_file($tmpName, $uploadFile))
-            $uploadedFiles[] = $file_name;
-    }
-    if(isset($_POST['name']))
-        echo "name : " . $_POST['name'];
-    else
-        echo "matal3atch";
-    if (!empty($uploadedFiles)) {
-        foreach ($uploadedFiles as $file) {
-            setcookie("profile", $file, time() + (60 * 60 * 24), "/");
-            echo "<meta http-equiv='refresh' content='0; url=profile.php'>";
-            exit(0);
-        }
-    } else {
-        echo "<h1>Upload Failed</h1>";
-        exit(0);
-    }
+
+    // setcookie("profile", "", time() + (60 * 60 * 24), "/");
+    echo "<meta http-equiv='refresh' content='0; url=profile.php'>";
+    exit(0);
+
 }
 ?>
 
@@ -57,6 +37,7 @@ if (isset($_POST["submit"])) {
 
         form {
             max-width: 400px;
+            min-width: 400px;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -97,13 +78,11 @@ if (isset($_POST["submit"])) {
     </style>
 </head>
 <body>
-<form action="" method="POST" enctype="multipart/form-data">
+<form action="" method="POST" >
     <label for="name">Name:</label>
     <input type="text" name="name" ><br><br>
     <label for="email">Email:</label>
     <input type="email" name="email" ><br><br>
-    <label for="media">Profile Picture : </label>
-    <input type="file" name="media[]" accept="image/*" multiple><br><br>
     <input type="submit" name="submit" value="Upload">
 </form>
 </body>

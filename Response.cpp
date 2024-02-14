@@ -78,6 +78,11 @@ bool Response::getStatusResponse() const
     return this->status;
 }
 
+int Response::getStatusCode() const
+{
+    return this->status_code;
+}
+
 Response::~Response()
 {
 }

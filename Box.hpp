@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/10 19:39:43 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/14 13:36:53 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,13 @@
 #include <sys/epoll.h>
 #include <algorithm>
 #include"errorMessage.hpp"
+# define GREEN "\033[92m"
+# define RESET "\033[0m"
+# define RED "\033[31m"
+# define CYAN "\033[96m"
+
 typedef  std::map<int , std::string> mapR;
+
 class Box
 {
     private:

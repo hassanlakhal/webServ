@@ -52,6 +52,7 @@ class Response
         bool getStatustCgi() const;
         std::string getHeader();
         std::ifstream& getFile() ;
+        int getStatusCode() const;
         std::string getBody();
         const std::string& getPathFile();
         void openFile(const std::string& path);

@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/13 18:12:59 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/14 13:55:49 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ const std::string& Client::getRequset() const
 
 const std::string& Client::getMethod() const
 {
-	// std::cout << method << std::endl;
 	return this->method;
 }
 

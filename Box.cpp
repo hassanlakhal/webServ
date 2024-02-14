@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/13 19:23:25 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/14 14:04:43 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ void Box::readRequest(int fdRequest, int epollFd)
 	int bytesRead = recv(fdRequest, buffer, 2047, 0);
 	if (bytesRead <= 0)
 	{
-		std::cout << "Client disconnected." << std::endl;
+		// std::cout << "Client disconnected." << std::endl;
 		close(fdRequest);
 		epoll_ctl(epollFd, EPOLL_CTL_DEL, fdRequest, 0);
 	}
@@ -299,6 +299,10 @@ void Box::sendResponse(int fd)
 			{
 				close(fd);
 				a.getFile().close();
+				if(a.getStatusCode() == 200)
+					std::cout << GREEN << a.getStatusCode() << " OK" << RESET << std::endl;
+				else
+					std::cout << RED << a.getStatusCode() << " OK" << RESET << std::endl;
 			}
 		}
 		else if (!a.getBody().empty())
@@ -307,6 +311,10 @@ void Box::sendResponse(int fd)
 			send(fd, body.c_str(), body.length(), 0);
 			close(fd);
 			a.getFile().close();
+			if(a.getStatusCode() == 200)
+				std::cout << GREEN << a.getStatusCode() << " OK" << RESET << std::endl;
+			else
+				std::cout << RED << a.getStatusCode() << " OK" << RESET << std::endl;
 		}
 	}
 	else if (a.getStatustCgi())
@@ -340,6 +348,10 @@ void Box::sendResponse(int fd)
 				unlink(a.getPathFile().c_str());
 				close(fd);
 				a.getFile().close();
+				if(a.getStatusCode() == 200)
+					std::cout << GREEN << a.getStatusCode() << " OK" << RESET << std::endl;
+				else
+					std::cout << RED << a.getStatusCode() << " OK" << RESET << std::endl;
 			}
 		}
 		a.setStatusHeader(true);
@@ -363,7 +375,6 @@ void Box::timeOut(int fd, clock_t endTime)
 {
 	if (endTime - clients[fd].getTimeOut() == 5000000 && clients[fd].getLoadingHeader())
 	{
-		std::cout << "dkhal l time aout\n";
 		throw errorMessage(504, clients[fd].getServerId());
 	}
 }
@@ -394,7 +405,7 @@ void Box::setUpServer(webServer& data)
 		{
 			throw std::runtime_error("Error\nsetting SO_REUSEADDR option");
 		}
-		std::cout << "Create Socket \n";
+		// std::cout << "Create Socket \n";
 		host_add.sin_family = AF_INET;
 		host_add.sin_port = htons(data.getServer().at(i).getListen());
 		if (data.getServer().at(i).getHost())
@@ -435,8 +446,7 @@ void Box::setUpServer(webServer& data)
 				clients[client_socket].setResponse(rep);
 				this->_host = _InfoServer.getServer().at(d).getHost();
 				this->_listen = _InfoServer.getServer().at(d).getListen();
-				std::cout << "postion of server  " << d << std::endl;
-				std::cout <<  client_socket << " Client connected." << std::endl;
+				// std::cout <<  client_socket << " Client connected." << std::endl;
 				event.events = EPOLLIN | EPOLLOUT;
 				event.data.fd = client_socket;
 				if (epoll_ctl(epollFd, EPOLL_CTL_ADD, client_socket, &event) == -1)
@@ -535,7 +545,6 @@ std::string Box::FullQueryString(std::string& path)
 	if (a != std::string::npos)
 	{
 		QueryString = path.substr(a + 1, path.length());
-		std::cout << " QueryString " << QueryString << std::endl;
 		return path.substr(0,a);
 	}
 	return path;

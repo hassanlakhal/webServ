@@ -1,5 +1,5 @@
 server:
-  listen: 8080
+  listen: 8090
   host: localhost
   root: www
   client_max_body_size: 2G
@@ -8,8 +8,8 @@ server:
 #/about/gf/ forlder1/forlder2/file.txt ---> www/forlder1/forlder2/file.txt
 #/about/gf/forlder1  --> www/forlder2/file.txt
   location:
-    - path: /about/gf
-    - root:  www
+    - path: /loc
+    - root: www
     - listing_dir: on
     - upload: on
     - autoindex: off
@@ -19,11 +19,11 @@ server:
     - cgi_path: .php, /usr/bin/php-cgi
     - cgi_path: .sh, /usr/bin/bash
   location:
-    - path: /home
-    - root:  www
+    - path: /
+    - root:  www/about/gf
     - upload: on
-    - listing_dir: on
-    - autoindex: on
+    - listing_dir: off
+    - autoindex: off
     - methods: POST PUT GET DELETE
     - index:  index.html
     - cgi_path: .py, /usr/bin/python3

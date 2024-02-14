@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/13 18:08:34 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/14 14:47:26 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ std::string fillMapType(std::string extention){
 	for (; it != myMap.end(); it++)
 	{
 		if(extention == it->first){
-			std::cout << it->second << std::endl;
 			return it->second;
 		}
 	}
@@ -108,6 +107,9 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 				FILE* outfile;
 				std::stringstream iss;
 				iss << "outfile_";
+				iss << box.getClients()[fd].getIncremetedFileName();
+				box.getClients()[fd].IncremetedFileName();
+				iss << "_";
 				iss << time(0);
 				fileDel = iss.str();
 				outfile = std::fopen(fileDel.c_str(), "w");
@@ -124,7 +126,6 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 					if(method == "POST"){
 						infilePost = std::fopen(postFile.c_str(), "r");
 						if(!infilePost){
-							std::cout << "ayeeeh dkhal hna\n";
 							kill(pid, SIGKILL);
 							waitpid(pid, &status,0);
 							throw errorMessage(500, serverID);
@@ -149,6 +150,7 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 					exit(48);
 				}
 
+				std::fclose(outfile);
 				while(1){
 					if (waitpid(pid, &status, WNOHANG) > 0)
 						break;
@@ -161,7 +163,6 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 						throw errorMessage(504, serverID);
 					}
 				}
-				std::fclose(outfile);
 
 				if(status != 0){
 					if(unlink(fileDel.c_str()) == -1)

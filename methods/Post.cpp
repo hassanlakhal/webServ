@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/13 18:04:16 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/14 13:45:26 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void post(Box &box, int ind, int fd){
 		file = file.substr(file.find_last_of('/') + 1);
 	else
 		file = "";
-		
+
 	if(box.getClients()[fd].getInfoMap()["Content-Type"].find("boundary") != std::string::npos)
 		throw errorMessage(501, serverID);
 	if(file.empty() && myLocation.getUpload() == "off"){
@@ -57,7 +57,6 @@ void post(Box &box, int ind, int fd){
 				fclose(box.getClients()[fd].getOutFile());
 				body.clear();
 				if(!file.empty()){
-					std::cout << "ccPath : " << reqPath << "\n";
 					if(cgi(box, myLocation, fd, reqPath, file, serverID, "POST", box.getClients()[fd].getFilePath())){
 					}
 					else
