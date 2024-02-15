@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/14 14:04:43 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/15 04:21:27 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,10 +273,14 @@ void Box::readRequest(int fdRequest, int epollFd)
 void Box::sendResponse(int fd)
 {
 	signal(SIGPIPE,SIG_IGN);
+	std::string mess;
 	std::string countent;
+	std::map<int, std::string> httpMessage;
 	Response &a = clients[fd].getResponse();
 	const int bufferSize = 1024;
     char buffer[bufferSize] = {0};
+	httpMessage = a.getHttpStatusMessages();
+	mess = httpMessage[a.getStatusCode()];
 	if (!a.getStatustCgi())
 	{
 		if (!a.getStatusHeader())
@@ -300,9 +304,9 @@ void Box::sendResponse(int fd)
 				close(fd);
 				a.getFile().close();
 				if(a.getStatusCode() == 200)
-					std::cout << GREEN << a.getStatusCode() << " OK" << RESET << std::endl;
+					std::cout << GREEN << a.getStatusCode() << mess << RESET << std::endl;
 				else
-					std::cout << RED << a.getStatusCode() << " OK" << RESET << std::endl;
+					std::cout << RED << a.getStatusCode() << mess << RESET << std::endl;
 			}
 		}
 		else if (!a.getBody().empty())
@@ -312,9 +316,9 @@ void Box::sendResponse(int fd)
 			close(fd);
 			a.getFile().close();
 			if(a.getStatusCode() == 200)
-				std::cout << GREEN << a.getStatusCode() << " OK" << RESET << std::endl;
+				std::cout << GREEN << a.getStatusCode() << mess << RESET << std::endl;
 			else
-				std::cout << RED << a.getStatusCode() << " OK" << RESET << std::endl;
+				std::cout << RED << a.getStatusCode() << mess << RESET << std::endl;
 		}
 	}
 	else if (a.getStatustCgi())
@@ -349,7 +353,7 @@ void Box::sendResponse(int fd)
 				close(fd);
 				a.getFile().close();
 				if(a.getStatusCode() == 200)
-					std::cout << GREEN << a.getStatusCode() << " OK" << RESET << std::endl;
+					std::cout << GREEN << a.getStatusCode() << mess << RESET << std::endl;
 				else
 					std::cout << RED << a.getStatusCode() << " OK" << RESET << std::endl;
 			}

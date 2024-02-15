@@ -23,6 +23,7 @@
 #include <sstream>
 #include <fcntl.h>
 #include <sys/socket.h>
+#include <map>
 
 class Response
 {
@@ -38,6 +39,7 @@ class Response
         std::string type;
         std::ifstream file;
         bool status_header;
+        std::map<int, std::string> HttpStatusMessages;
     public:
         Response();
         Response(bool status,int fd, int status_code, std::string path);
@@ -56,6 +58,7 @@ class Response
         std::string getBody();
         const std::string& getPathFile();
         void openFile(const std::string& path);
+        const std::map<int, std::string>& getHttpStatusMessages() const;
         ~Response();
 
 };

@@ -16,6 +16,23 @@ Response::Response()
 {
     this->status_header = false;
     this->status = true;
+    HttpStatusMessages[100] = " Continue";
+    HttpStatusMessages[101] = " Switching Protocols";
+    HttpStatusMessages[200] = " OK";
+    HttpStatusMessages[201] = " Created";
+    HttpStatusMessages[301] = " Moved Permanently";
+    HttpStatusMessages[400] = " Bad Request";
+    HttpStatusMessages[401] = " Unauthorized";
+    HttpStatusMessages[402] = " Payment Required";
+    HttpStatusMessages[403] = " Forbidden";
+    HttpStatusMessages[404] = " Not Found";
+    HttpStatusMessages[405] = " Method Not Allowed";
+    HttpStatusMessages[500] = " Internal Server Error";
+    HttpStatusMessages[501] = " Not Implemented";
+    HttpStatusMessages[502] = " Bad Gateway";
+    HttpStatusMessages[503] = " Service Unavailable";
+    HttpStatusMessages[504] = " Gateway Timeout";
+    HttpStatusMessages[505] = " HTTP Version Not Supported";
 }
 
 Response::Response(bool status,int fd, int status_code, std::string path)
@@ -96,7 +113,7 @@ std::string Response::getHeader()
     name_server = "test";
     if (result == "301" || result == "201")
         location =  "\r\nLocation: " + this->path;
-    start_line = "HTTP/1.1 " + result + " OK" + "\r\n";
+    start_line = "HTTP/1.1 " + result + HttpStatusMessages[status_code] + "\r\n";
     header = "Server: " + name_server + "\r\n" + "Content-Type: " + type + location  + "\r\n\r\n";
     start_line += header;
     return start_line;
@@ -150,4 +167,8 @@ Response::Response(const Response& other)
         file.close();
     if (other.file.is_open())
         file.open(other.path.c_str(), std::ios::in | std::ios::binary);
+}
+const std::map<int, std::string>& Response::getHttpStatusMessages() const
+{
+    return HttpStatusMessages;
 }
