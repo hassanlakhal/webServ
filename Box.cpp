@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/15 23:58:04 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:12:31 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,10 +157,13 @@ bool Box::checkName(const std::vector<Server>& sr, std::string name, size_t  &i,
 	(void)name;
 	for (; i < posServer.size(); ++i)
 	{
-		std::vector<std::string> names = sr[i].getServerName();
+		std::vector<std::string> names = sr[posServer[i]].getServerName();
 		std::vector<std::string>::iterator it = find(names.begin(),names.end(),name);
 		if(it != names.end())
+		{
+			i = posServer[i];
 			return true;
+		}	
 	}
 	return false;
 }
@@ -173,12 +176,12 @@ void Box::sendRequest(int fd)
 	std::map<std::string, std::string> mapInfo = clients[fd].getInfoMap();
 	if(checkDup(_InfoServer.getServer(),posServer))
 	{
-		size_t  i = posServer.at(0);
+		size_t  i = 0;
 		std::istringstream iss(mapInfo["Host"]);
 		std::string host;
 		getline(iss,host,':');
 		if (checkName(_InfoServer.getServer(), host,i,posServer))
-			 idOfServer = i;
+			idOfServer = i;
 	}
 	else
 		idOfServer = clients[fd].getServerId();
