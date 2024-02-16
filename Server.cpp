@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/16 07:42:02 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/16 07:55:33 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,7 +248,7 @@ void Server::setMaxBodySize(std::string& maxBodySize)
         this->client_max_body_size = nb * 1024 * 1024 * 1024;
     }
     else
-        std::runtime_error("error line client_max_body_size");
+       throw std::runtime_error("Error: Invalid format for 'client_max_body_size'. It should be a number followed by 'K', 'M', or 'G'.");
 }
 
 long long Server::getMaxBodySize() const
