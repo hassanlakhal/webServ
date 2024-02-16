@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/15 04:21:27 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/15 23:58:04 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ bool Box::ComparePath(const Location& loc1, const Location& loc2)
 int Box::matchLocation(std::vector<Location>& loc, std::string path, int id)
 {
 	std::vector<std::pair<std::string, int> > hashTable;
+	std::stack<int> ind;
 	for (size_t i = 0; i < loc.size(); ++i)
 	{
 		hashTable.push_back(std::make_pair(loc[i].getPath(), i));
@@ -90,6 +91,15 @@ int Box::matchLocation(std::vector<Location>& loc, std::string path, int id)
 	{
 		if (hashTable[i].first == path)
 		{
+			std::string PathLoc = loc[i].getRoot() + hashTable[i].first;
+			std::ifstream file;
+			file.open(PathLoc.c_str(), std::ios::in | std::ios::binary);
+			if (file.is_open())
+			{
+				file.close();
+				ind.push(i);
+				continue;
+			}
 			return hashTable[i].second;
 		}
 	}
@@ -105,6 +115,8 @@ int Box::matchLocation(std::vector<Location>& loc, std::string path, int id)
 				return hashTable[i].second;
 			}
 		}
+		if (ind.size() > 0)
+			return ind.top();
 	}
 	return -1;
 }
@@ -211,34 +223,6 @@ int findKey(const mapR& myMap, const std::string& value)
 	if(!value.empty())
 		return 301;
 	return 200;
-}
-
-std::string Box::makeResponse(int fd, std::string value)
-{
-	std::string start_line ,header ,body ,result ,name_server, location;
-	mapR errorMap = _InfoServer.getServer()[clients[fd].getServerId()].getErrorPath();
-	int number = findKey(errorMap,value);
-	if(number != 200)
-	{
-		if (number == 301)
-			location = "Location: " + value + "\r\n";
-		else
-		{
-			std::string line;
-			std::ifstream file(value.c_str());
-			while (std::getline(file,line))
-				body.append(line);
-		}
-		std::stringstream ss;
-		ss << number;
-		result = ss.str();
-	}
-	else
-		result = "200";
-	name_server = "test";
-	start_line = "HTTP/1.0 " + result + " error" + "\r\n";
-	header = "Server: " + name_server + "\r\n" + "Content-type: text/html\r\n" + location + "\r\n";
-	return (start_line + header + body);
 }
 
 void Box::readRequest(int fdRequest, int epollFd)
@@ -401,7 +385,6 @@ void Box::setUpServer(webServer& data)
 	for (size_t i = 0; i < numberOfServer; i++)
 	{
 		int socket_server = socket(AF_INET,SOCK_STREAM,0);
-		makeSocketNonBlocking(socket_server);
 		if (socket_server < 0)
 			throw std::runtime_error("Error\ncan not open this socket");
 		int reuseaddr = 1;
@@ -444,7 +427,11 @@ void Box::setUpServer(webServer& data)
 				d = it - fds.begin();
 				client_socket = accept(events[i].data.fd, reinterpret_cast<struct sockaddr*>(&client_addr), &client_addrlen);
 				if (client_socket < 0)
-					perror("accept");
+				{
+					perror("accept ");
+					continue;
+				}
+				makeSocketNonBlocking(client_socket);
 				Client client(d);
 				clients[client_socket] = client;
 				clients[client_socket].setResponse(rep);

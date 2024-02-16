@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/13 18:18:21 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/16 07:42:02 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,20 @@ Server& Server::operator=(const Server& other)
 
 void Server::addLocation(Location *location)
 {
+    if (root.empty() && location->getRoot().empty())
+        throw std::runtime_error("Error: Root configuration missing. Please specify the root directory for the server or location.");
     Locations.push_back(*location);
+    if (Locations.size() > 1)
+    {
+        for (size_t i = 0; i < Locations.size() - 1; ++i)
+        {
+            for (size_t j = i + 1; j < Locations.size(); ++j)
+            { 
+                if (Locations[i].getPath() == Locations[j].getPath())
+                   throw std::runtime_error("Error: Duplicate location found. Path '" + Locations[i].getPath() + "' already exists.");
+            }
+        }
+    }
 }
 
 Server* Server::createServer()

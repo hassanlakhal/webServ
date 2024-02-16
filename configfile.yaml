@@ -4,9 +4,7 @@ server:
   root: www
   client_max_body_size: 2G
   server_name: test
-#/testetst
-#/about/gf/ forlder1/forlder2/file.txt ---> www/forlder1/forlder2/file.txt
-#/about/gf/forlder1  --> www/forlder2/file.txt
+
   location:
     - path: /loc
     - root: www
@@ -30,7 +28,7 @@ server:
     - cgi_path: .php, /usr/bin/php-cgi
     - cgi_path: .sh, /usr/bin/bash
    location:
-    - path: /
+    - path: /dd
     - root:  www
     - upload: on
     - autoindex: off
@@ -49,15 +47,16 @@ server:
   server_name: localhost
 
   location:
-    - path: /about
+    - path: /
     - root:   www
     - upload: on
     - autoindex: on
     - listing_dir: on
     - methods: POST GET
     - cgi_path: .php, /usr/bin/php-cgi
+
   location:
-    - path: /home
+    - path: /about1
     - root:  www
     - upload: on
     - autoindex: off
@@ -68,18 +67,6 @@ server:
     - cgi_path: .py, /usr/bin/python3
     - cgi_path: .php, /usr/bin/php-cgi
     - cgi_path: .sh, /usr/bin/bash
-  location:
-    - path: /
-    - root:  www
-    - upload: on
-    - autoindex: off
-    - listing_dir: on
-    - methods: POST PUT GET DELETE
-    - index:  index.html
-    - cgi_path: .py, /usr/bin/python3
-    - cgi_path: .php, /usr/bin/php-cgi
-    - cgi_path: .sh, /usr/bin/bash
-
 server:
   listen: 8081
   host: localhost

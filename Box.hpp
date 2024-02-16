@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/14 13:36:53 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/15 23:56:12 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include <sys/epoll.h>
 #include <algorithm>
 #include"errorMessage.hpp"
+#include<stack>
 # define GREEN "\033[92m"
 # define RESET "\033[0m"
 # define RED "\033[31m"
@@ -49,7 +50,6 @@ class Box
         void setUpServer(webServer& data);
         void sendRequest(int fd);
         int matchLocation(std::vector<Location>& loc, std::string path, int fd);
-        std::string makeResponse(int fd, std::string value);
         void methodAllowd(std::vector<std::string>& methods, const std::string& method, int id);
         Box& operator=(const Box& other);
         bool checkDup(const std::vector<Server>& sr, std::vector<int>& posServer);
