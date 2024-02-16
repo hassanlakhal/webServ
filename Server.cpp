@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/16 07:55:33 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/16 09:59:22 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,40 +218,57 @@ void Server::setPathError(std::string& path)
     }
 }
 
-void Server::setMaxBodySize(std::string& maxBodySize)
+bool isNumber(const std::string& s) 
 {
-    if (maxBodySize[0] != ' ')
-        throw std::runtime_error("error line client_max_body_size");
-    std::string size;
-    if (maxBodySize[maxBodySize.length() - 1] == 'K')
+    if (s.empty())
+        return false;
+    int j = 0;
+    for (size_t i = 0; i < s.length(); ++i) 
     {
-        size = maxBodySize.substr(0, maxBodySize.length() - 1);
-        std::istringstream iss(size);
-        long long nb;
-        iss >> nb;
-        this->client_max_body_size = nb * 1024;
+        if (s[i] == '.' && j < 1)
+        {
+            j++;
+            continue ;
+        }
+        if (!isdigit(s[i]))
+             throw std::runtime_error("Error: Invalid format for 'client_max_body_size'. It should be a number followed by 'K', 'M', or 'G'.");
     }
-    else if (maxBodySize[maxBodySize.length() - 1] == 'M')
-    {
-        size = maxBodySize.substr(0, maxBodySize.length() - 1);
-        std::istringstream iss(size);
-        long long nb;
-        iss >> nb;
-        this->client_max_body_size = nb * 1024 * 1024;
-    }
-    else if (maxBodySize[maxBodySize.length() - 1] == 'G')
-    {
-        size = maxBodySize.substr(0, maxBodySize.length() - 1);
-        std::istringstream iss(size);
-        long long nb;
-        iss >> nb;
-        this->client_max_body_size = nb * 1024 * 1024 * 1024;
-    }
-    else
-       throw std::runtime_error("Error: Invalid format for 'client_max_body_size'. It should be a number followed by 'K', 'M', or 'G'.");
+    return true;
 }
 
-long long Server::getMaxBodySize() const
+void Server::setMaxBodySize(std::string& maxBodySize) 
+{
+    if (maxBodySize.empty() || maxBodySize[0] != ' ')
+        throw std::runtime_error("Error: Invalid format for 'client_max_body_size'. It should start with a space.");
+    
+    maxBodySize = trim(maxBodySize);
+
+    char unit = maxBodySize[maxBodySize.length() - 1];
+    std::string size = maxBodySize.substr(0, maxBodySize.length() - 1);
+    isNumber(size);
+    std::istringstream iss(size);
+    double nb;
+    iss >> nb;
+    switch (unit) 
+    {
+        case 'B':
+            this->client_max_body_size = nb;
+            break;
+        case 'K':
+            this->client_max_body_size = nb * 1024;
+            break;
+        case 'M':
+            this->client_max_body_size = nb * 1024 * 1024;
+            break;
+        case 'G':
+            this->client_max_body_size = nb * 1024 * 1024 * 1024;
+            break;
+        default:
+            throw std::runtime_error("Error: Invalid format for 'client_max_body_size'. It should end with 'B', 'K', 'M', or 'G'.");
+    }
+}
+
+double Server::getMaxBodySize() const
 {
     return this->client_max_body_size;
 }

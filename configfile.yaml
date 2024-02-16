@@ -2,7 +2,7 @@ server:
   listen: 8090
   host: localhost
   root: www
-  client_max_body_size: ssssK
+  client_max_body_size: 100319.99B
   server_name: test
 
   location:
@@ -43,7 +43,7 @@ server:
   listen: 8080
   host: localhost
   root: www
-  client_max_body_size: 1G
+  client_max_body_size: 1.02G
   server_name: localhost
 
   location:

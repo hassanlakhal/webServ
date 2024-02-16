@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/14 13:55:49 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/16 09:59:03 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ void Client::ParsingRequest()
 	std::string line;
 	std::string temp;
 	webServer wserv = getMyServer();
-	long long nb = 0;
+	double nb = 0;
 	if (loadingHead)
 	{
 		setStartLine(iss);
