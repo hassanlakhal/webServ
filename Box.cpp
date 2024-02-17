@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/16 22:12:31 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/17 15:19:27 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ bool Box::checkName(const std::vector<Server>& sr, std::string name, size_t  &i,
 		{
 			i = posServer[i];
 			return true;
-		}	
+		}
 	}
 	return false;
 }
@@ -290,7 +290,7 @@ void Box::sendResponse(int fd)
 			{
 				close(fd);
 				a.getFile().close();
-				if(a.getStatusCode() == 200)
+				if(a.getStatusCode() == 200 || a.getStatusCode() == 201 || a.getStatusCode() == 301)
 					std::cout << GREEN << a.getStatusCode() << mess << RESET << std::endl;
 				else
 					std::cout << RED << a.getStatusCode() << mess << RESET << std::endl;
@@ -302,7 +302,7 @@ void Box::sendResponse(int fd)
 			send(fd, body.c_str(), body.length(), 0);
 			close(fd);
 			a.getFile().close();
-			if(a.getStatusCode() == 200)
+			if(a.getStatusCode() == 200 || a.getStatusCode() == 201 || a.getStatusCode() == 301)
 				std::cout << GREEN << a.getStatusCode() << mess << RESET << std::endl;
 			else
 				std::cout << RED << a.getStatusCode() << mess << RESET << std::endl;
@@ -339,7 +339,7 @@ void Box::sendResponse(int fd)
 				unlink(a.getPathFile().c_str());
 				close(fd);
 				a.getFile().close();
-				if(a.getStatusCode() == 200)
+				if(a.getStatusCode() == 200 || a.getStatusCode() == 201 || a.getStatusCode() == 301)
 					std::cout << GREEN << a.getStatusCode() << mess << RESET << std::endl;
 				else
 					std::cout << RED << a.getStatusCode() << " OK" << RESET << std::endl;

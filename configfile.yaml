@@ -56,7 +56,7 @@ server:
     - cgi_path: .php, /usr/bin/php-cgi
 
   location:
-    - path: /about1
+    - path: /home
     - root:  www
     - upload: on
     - autoindex: off
@@ -67,6 +67,7 @@ server:
     - cgi_path: .py, /usr/bin/python3
     - cgi_path: .php, /usr/bin/php-cgi
     - cgi_path: .sh, /usr/bin/bash
+    - return:  https://profile.intra.42.fr/
 server:
   listen: 8081
   host: localhost
@@ -78,8 +79,8 @@ server:
     - path: /about
     - root:   www
     - upload: on
-    - autoindex: on
-    - listing_dir: off
+    - autoindex: off
+    - listing_dir: on
     - index:  index.html
     - methods: GET
   location:

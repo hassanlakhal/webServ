@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/14 14:47:26 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/17 12:47:51 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,24 @@ std::string fillMapType(std::string extention){
 
 int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string file, int serverID, std::string method, std::string postFile){
 	std::string extention = "";
+	char cgi_path[PATH_MAX];
+	char current_path[PATH_MAX];
+	char root_path[PATH_MAX];
 	if(file.find('.') != std::string::npos)
 		extention = file.substr(file.find('.') + 1);
 	bool cgiExist = false;
 	std::string tem;
 	std::string fileDel;
+
+	realpath(reqPath.c_str(), cgi_path);
+	std::string sd(cgi_path);
+	realpath(".", current_path);
+	std::string sc(current_path);
+	realpath(myLocation.getRoot().c_str(), root_path);
+	std::string sr(root_path);
+	if(sd.find(sc) == std::string::npos || sd.find(sr) == std::string::npos)
+		throw errorMessage(403, serverID);
+
 
 	FILE * tmpfile = std::fopen((reqPath).c_str(), "r");
 	if(!tmpfile){

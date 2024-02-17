@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Get.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:59:17 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/13 19:21:49 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/17 15:23:56 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ void get(Box &box, int ind, int fd){
 	Location myLocation = box.getWebServer().getServer()[box.getClients()[fd].getServerId()].getLocation()[ind];
 	int serverID = box.getClients()[fd].getServerId();
 	std::string reqPath = box.getClients()[fd].getPath();
+	char get_path[PATH_MAX];
+	char current_path[PATH_MAX];
+	char root_path[PATH_MAX];
 	reqPath = box.removeSlach(reqPath);
 	reqPath = box.FullQueryString(reqPath);
 	std::string file = reqPath;
@@ -55,6 +58,20 @@ void get(Box &box, int ind, int fd){
 		file = file.substr(file.find_last_of('/') + 1);
 	else
 		file = "";
+
+
+
+	realpath(reqPath.c_str(), get_path);
+	std::string sd(get_path);
+	realpath(".", current_path);
+	std::string sc(current_path);
+	realpath(myLocation.getRoot().c_str(), root_path);
+	std::string sr(root_path);
+	if(sd.find(sc) == std::string::npos || sd.find(sr) == std::string::npos)
+		throw errorMessage(403, serverID);
+
+
+
 
 	struct stat file_stat;
 

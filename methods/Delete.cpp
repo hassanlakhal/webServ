@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:53 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/14 20:29:32 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/17 12:48:20 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,24 @@ void remove_ressource(std::string reqPath, int serverID){
 	else
 	{
 		if(!S_ISDIR(file_stat.st_mode)){
-			if(file_stat.st_mode & S_IWUSR)
-				std::remove(reqPath.c_str());
+			std::remove(reqPath.c_str());
 		}
 		else
 		{
 			DIR *dir;
 			struct dirent *dent;
-			if((dir = opendir(reqPath.c_str())) != NULL){
+			if(check_empty(reqPath.c_str())){
+				if (stat(reqPath.c_str(), &file_stat) != 0)
+					throw errorMessage(500, serverID);
+				if((file_stat.st_mode & S_IWUSR) || (file_stat.st_mode & S_IRUSR)){
+					if (rmdir(reqPath.c_str()) != 0)
+						throw errorMessage(500, serverID);
+				}
+				else
+					throw errorMessage(403, serverID);
+			}
+			else if((dir = opendir(reqPath.c_str())) != NULL && (file_stat.st_mode & S_IWUSR))
+			{
 
 				while ((dent = readdir(dir)) != NULL)
 				{
@@ -55,18 +65,8 @@ void remove_ressource(std::string reqPath, int serverID){
 					std::string newReaPath = reqPath + "/" + tmp;
 					remove_ressource(newReaPath, serverID);
 				}
-				if(check_empty(reqPath.c_str())){
-					if (stat(reqPath.c_str(), &file_stat) != 0)
-						throw errorMessage(500, serverID);
-					if(file_stat.st_mode & S_IWUSR){
-						if (rmdir(reqPath.c_str()) != 0)
-							throw errorMessage(500, serverID);
-					}
-					else
-						throw errorMessage(403, serverID);
-				}
-				else
-					throw errorMessage(403, serverID);
+				remove_ressource(reqPath, serverID);
+
 				closedir(dir);
 			}
 			else
@@ -96,7 +96,7 @@ void deleteM(Box &box, int ind, int fd){
 	if (!realpath(myLocation.getRoot().c_str(), root_path))
 		throw errorMessage(404, serverID);
 	std::string sr(root_path);
-	if(sd.find(sc) == std::string::npos || sr.length() >= sd.length())
+	if(sd.find(sc) == std::string::npos || sd.find(sr) == std::string::npos)
 		throw errorMessage(403, serverID);
 
 	struct stat file_stat;
@@ -106,7 +106,10 @@ void deleteM(Box &box, int ind, int fd){
 	else
 	{
 		if(!S_ISDIR(file_stat.st_mode)){
-			if(file_stat.st_mode & S_IWUSR)
+			std::string folderHolder = reqPath.substr(0, reqPath.find_last_of('/'));
+			struct stat folder_stat;
+			stat(folderHolder.c_str(), &folder_stat);
+			if(folder_stat.st_mode & S_IWUSR)
 				std::remove(reqPath.c_str());
 			else
 				throw errorMessage(403, serverID);

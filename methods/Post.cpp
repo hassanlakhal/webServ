@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/14 13:45:26 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/17 15:13:52 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@ void post(Box &box, int ind, int fd){
 	Location myLocation = box.getWebServer().getServer()[box.getClients()[fd].getServerId()].getLocation()[ind];
 	int serverID = box.getClients()[fd].getServerId();
 	std::string reqPath = box.getClients()[fd].getPath();
+	char post_path[PATH_MAX];
+	char current_path[PATH_MAX];
+	char root_path[PATH_MAX];
 	reqPath = box.removeSlach(reqPath);
 	reqPath = box.FullQueryString(reqPath);
 	std::string file = reqPath;
@@ -26,6 +29,15 @@ void post(Box &box, int ind, int fd){
 	else
 		file = "";
 
+
+	realpath(reqPath.c_str(), post_path);
+	std::string sd(post_path);
+	realpath(".", current_path);
+	std::string sc(current_path);
+	realpath(myLocation.getRoot().c_str(), root_path);
+	std::string sr(root_path);
+	if(sd.find(sc) == std::string::npos || sd.find(sr) == std::string::npos)
+		throw errorMessage(403, serverID);
 	if(box.getClients()[fd].getInfoMap()["Content-Type"].find("boundary") != std::string::npos)
 		throw errorMessage(501, serverID);
 	if(file.empty() && myLocation.getUpload() == "off"){
@@ -74,6 +86,7 @@ void post(Box &box, int ind, int fd){
 			if(!box.getClients()[fd].getOutFileOpened()){
 				std::stringstream iss;
 				iss << myLocation.getRoot() + "/" + myLocation.getUploadPath();
+				std::cout << "hello worldddddd" << myLocation.getUploadPath() << "xx\n";
 				iss << "/file_";
 				iss << time(0);
 				iss << "_";
