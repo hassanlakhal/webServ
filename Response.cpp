@@ -16,11 +16,9 @@ Response::Response()
 {
     this->status_header = false;
     this->status = true;
-    HttpStatusMessages[100] = " Continue";
-    HttpStatusMessages[101] = " Switching Protocols";
     HttpStatusMessages[200] = " OK";
     HttpStatusMessages[201] = " Created";
-    HttpStatusMessages[204] = "";
+    HttpStatusMessages[204] = " No Content";
     HttpStatusMessages[301] = " Moved Permanently";
     HttpStatusMessages[400] = " Bad Request";
     HttpStatusMessages[401] = " Unauthorized";
