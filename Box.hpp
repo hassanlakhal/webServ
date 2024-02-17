@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/15 23:56:12 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/17 18:55:28 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@
 #include <iostream>
 #include <arpa/inet.h>
 #include <errno.h>
-#include <stdio.h>
-#include <string.h>
+#include <cstring>
 #include <sys/socket.h>
 #include <unistd.h>
 #include <sys/epoll.h>

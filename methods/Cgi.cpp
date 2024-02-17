@@ -6,36 +6,12 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/17 12:47:51 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/17 19:26:18 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "methods.hpp"
 
-void getEnv(Box& box, int fd, char *env[], std::string file){
-	std::map<std::string, std::string> mapInfo = box.getClients()[fd].getInfoMap();
-	std::string a = "CONTENT_LENGTH=" + mapInfo["Content-Length"];
-	std::string b = "CONTENT_TYPE=" + mapInfo["Content-Type"];
-	// std::string c = "SERVER_NAME=" + mapInfo["Host"];
-	std::string c = "PATH_TRANSLATED=" + file;
-	std::string d = "REQUEST_METHOD=" + box.getClients()[fd].getMethod();
-	std::string e = "QUERY_STRING=" + box.getQueryString();
-	std::string g = "HTTP_COOKIE=" + mapInfo["Cookie"];
-
-	char f[] = "REDIRECT_STATUS=CGI";
-
-
-	env[0] = strdup(a.c_str());
-	env[1] = strdup(b.c_str());
-	env[2] = strdup(c.c_str());
-	env[3] = strdup(d.c_str());
-	// env[4] = "PATH_INFO=" + mapInfo['content_len'];
-	env[4] = strdup(e.c_str());
-	env[5] = strdup(f);
-	env[6] = strdup(g.c_str());
-	env[7] = NULL;
-
-}
 
 std::string fillMapType(std::string extention){
 	std::map<std::string, std::string> myMap;
@@ -157,8 +133,26 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 							perror("dup2-- fail ");
 						std::fclose(infilePost);
 					}
-					char *env[8];
-					getEnv(box, fd, env, arg2);
+
+					std::map<std::string, std::string> mapInfo = box.getClients()[fd].getInfoMap();
+					std::string a = "CONTENT_LENGTH=" + mapInfo["Content-Length"];
+					std::string b = "CONTENT_TYPE=" + mapInfo["Content-Type"];
+					std::string c = "PATH_TRANSLATED=" + arg2;
+					std::string d = "REQUEST_METHOD=" + box.getClients()[fd].getMethod();
+					std::string e = "QUERY_STRING=" + box.getQueryString();
+					std::string g = "HTTP_COOKIE=" + mapInfo["Cookie"];
+					char f[] = "REDIRECT_STATUS=CGI";
+
+					char *env[]= {
+						(char *)a.c_str(),
+						(char *)b.c_str(),
+						(char *)c.c_str(),
+						(char *)d.c_str(),
+						(char *)e.c_str(),
+						f,
+						(char *)g.c_str(),
+					};
+
 					execve(arg[0],arg , env);
 					exit(48);
 				}
@@ -177,10 +171,12 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 					}
 				}
 
-				if(status != 0){
+				if(WEXITSTATUS(status) != 0){
+					std::cout << "status : " << WEXITSTATUS(status) << std::endl;
 					if(unlink(fileDel.c_str()) == -1)
 						throw errorMessage(500, serverID);
 					throw errorMessage(500, serverID);
+					std::cout << "status : " <<WEXITSTATUS(status) << "\n";
 				}
 				if(method == "POST"){
 					if(unlink(postFile.c_str()) == -1)

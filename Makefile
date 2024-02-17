@@ -6,7 +6,7 @@
 #    By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 01:05:23 by hlakhal-          #+#    #+#              #
-#    Updated: 2024/01/30 10:57:29 by eej-jama         ###   ########.fr        #
+#    Updated: 2024/02/17 18:18:24 by eej-jama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ SRC =  Location.cpp  Server.cpp webServer.cpp main.cpp parsingFile.cpp\
 		Client.cpp Box.cpp errorMessage.cpp Response.cpp methods/Get.cpp\
 		methods/Post.cpp methods/Cgi.cpp methods/Delete.cpp
 
-CXX = c++ -std=c++98 -fsanitize=address -g3
+CXX = c++ -std=c++98
 
 CXXFLAGS = -Wall -Wextra -Werror
 

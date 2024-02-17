@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/17 16:46:54 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/17 18:45:33 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,6 +306,12 @@ void Box::sendResponse(int fd)
 				std::cout << GREEN << a.getStatusCode() << mess << RESET << std::endl;
 			else
 				std::cout << RED << a.getStatusCode() << mess << RESET << std::endl;
+		}
+		else
+		{
+			send(fd,"ERROR", 5,0);
+			close(fd);
+			return;
 		}
 	}
 	else if (a.getStatustCgi())
