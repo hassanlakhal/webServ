@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:53 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/17 12:48:20 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/17 17:10:35 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,11 @@ bool check_empty(std::string path) {
 
     struct dirent* entry;
     while ((entry = readdir(dir)) != NULL) {
-        if (entry->d_type != DT_DIR && entry->d_name[0] != '.') {
+        if (entry->d_name[0] != '.') {
             closedir(dir);
             return false;
         }
     }
-
     closedir(dir);
     return true;
 }
@@ -38,16 +37,19 @@ void remove_ressource(std::string reqPath, int serverID){
 	else
 	{
 		if(!S_ISDIR(file_stat.st_mode)){
-			std::remove(reqPath.c_str());
+			if(file_stat.st_mode & S_IWUSR)
+				std::remove(reqPath.c_str());
 		}
 		else
 		{
 			DIR *dir;
 			struct dirent *dent;
 			if(check_empty(reqPath.c_str())){
+				std::cout << "content : " << reqPath << "\n";
+
 				if (stat(reqPath.c_str(), &file_stat) != 0)
 					throw errorMessage(500, serverID);
-				if((file_stat.st_mode & S_IWUSR) || (file_stat.st_mode & S_IRUSR)){
+				if((file_stat.st_mode & S_IWUSR)){
 					if (rmdir(reqPath.c_str()) != 0)
 						throw errorMessage(500, serverID);
 				}
@@ -87,14 +89,11 @@ void deleteM(Box &box, int ind, int fd){
 	reqPath = box.FullQueryString(reqPath);
 	reqPath = reqPath.substr(1);
 
-	if (!realpath(reqPath.c_str(), deleted_path))
-		throw errorMessage(404, serverID);
+	realpath(reqPath.c_str(), deleted_path);
 	std::string sd(deleted_path);
-	if (!realpath(".", current_path))
-		throw errorMessage(404, serverID);
+	realpath(".", current_path);
 	std::string sc(current_path);
-	if (!realpath(myLocation.getRoot().c_str(), root_path))
-		throw errorMessage(404, serverID);
+	realpath(myLocation.getRoot().c_str(), root_path);
 	std::string sr(root_path);
 	if(sd.find(sc) == std::string::npos || sd.find(sr) == std::string::npos)
 		throw errorMessage(403, serverID);
@@ -109,7 +108,8 @@ void deleteM(Box &box, int ind, int fd){
 			std::string folderHolder = reqPath.substr(0, reqPath.find_last_of('/'));
 			struct stat folder_stat;
 			stat(folderHolder.c_str(), &folder_stat);
-			if(folder_stat.st_mode & S_IWUSR)
+			stat(reqPath.c_str(), &file_stat);
+			if(folder_stat.st_mode & S_IWUSR && file_stat.st_mode & S_IWUSR)
 				std::remove(reqPath.c_str());
 			else
 				throw errorMessage(403, serverID);
@@ -118,8 +118,8 @@ void deleteM(Box &box, int ind, int fd){
 			remove_ressource(reqPath, serverID);
 	}
 
-	std::string path_page = "error_page/201.html";
-	std::string type = "txt/html";
-	throw errorMessage(201,path_page,type);
+	std::string path_page = "error_page/204.html";
+	std::string type = "text/html";
+	throw errorMessage(204,path_page,type);
 
 }

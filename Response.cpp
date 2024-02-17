@@ -20,6 +20,7 @@ Response::Response()
     HttpStatusMessages[101] = " Switching Protocols";
     HttpStatusMessages[200] = " OK";
     HttpStatusMessages[201] = " Created";
+    HttpStatusMessages[204] = "";
     HttpStatusMessages[301] = " Moved Permanently";
     HttpStatusMessages[400] = " Bad Request";
     HttpStatusMessages[401] = " Unauthorized";

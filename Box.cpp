@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/17 15:19:27 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/17 16:46:54 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,7 +290,7 @@ void Box::sendResponse(int fd)
 			{
 				close(fd);
 				a.getFile().close();
-				if(a.getStatusCode() == 200 || a.getStatusCode() == 201 || a.getStatusCode() == 301)
+				if(a.getStatusCode() == 200 || a.getStatusCode() == 201 || a.getStatusCode() == 301 || a.getStatusCode() == 204 )
 					std::cout << GREEN << a.getStatusCode() << mess << RESET << std::endl;
 				else
 					std::cout << RED << a.getStatusCode() << mess << RESET << std::endl;
@@ -302,7 +302,7 @@ void Box::sendResponse(int fd)
 			send(fd, body.c_str(), body.length(), 0);
 			close(fd);
 			a.getFile().close();
-			if(a.getStatusCode() == 200 || a.getStatusCode() == 201 || a.getStatusCode() == 301)
+			if(a.getStatusCode() == 200 || a.getStatusCode() == 201 || a.getStatusCode() == 301 || a.getStatusCode() == 204)
 				std::cout << GREEN << a.getStatusCode() << mess << RESET << std::endl;
 			else
 				std::cout << RED << a.getStatusCode() << mess << RESET << std::endl;
@@ -339,7 +339,7 @@ void Box::sendResponse(int fd)
 				unlink(a.getPathFile().c_str());
 				close(fd);
 				a.getFile().close();
-				if(a.getStatusCode() == 200 || a.getStatusCode() == 201 || a.getStatusCode() == 301)
+				if(a.getStatusCode() == 200 || a.getStatusCode() == 201 || a.getStatusCode() == 301 || a.getStatusCode() == 204)
 					std::cout << GREEN << a.getStatusCode() << mess << RESET << std::endl;
 				else
 					std::cout << RED << a.getStatusCode() << " OK" << RESET << std::endl;

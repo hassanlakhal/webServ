@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/17 15:13:52 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/17 17:10:41 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void post(Box &box, int ind, int fd){
 				}
 				else{
 					std::string path_page = "error_page/201.html";
-					std::string type = "txt/html";
+					std::string type = "text/html";
 					throw errorMessage(201,path_page,type);
 				}
 			}
@@ -84,9 +84,10 @@ void post(Box &box, int ind, int fd){
 		else if(mapInfo["Transfer-Encoding"] == "chunked"){
 			std::string to_write;
 			if(!box.getClients()[fd].getOutFileOpened()){
+				if(myLocation.getUploadPath().empty())
+					throw errorMessage(404,serverID);
 				std::stringstream iss;
 				iss << myLocation.getRoot() + "/" + myLocation.getUploadPath();
-				std::cout << "hello worldddddd" << myLocation.getUploadPath() << "xx\n";
 				iss << "/file_";
 				iss << time(0);
 				iss << "_";
@@ -118,7 +119,7 @@ void post(Box &box, int ind, int fd){
 						}
 						else{
 							std::string path_page = "error_page/201.html";
-							std::string type = "txt/html";
+							std::string type = "text/html";
 							throw errorMessage(201,path_page,type);
 						}
 					}
@@ -155,7 +156,7 @@ void post(Box &box, int ind, int fd){
 						}
 						else{
 							std::string path_page = "error_page/201.html";
-							std::string type = "txt/html";
+							std::string type = "text/html";
 							throw errorMessage(201,path_page,type);
 						}
 					}
