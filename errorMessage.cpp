@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 15:25:10 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/13 18:13:30 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/17 23:03:31 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ errorMessage::errorMessage(int status ,std::string& path ,bool isCgi) throw()
 errorMessage::errorMessage(int status, std::string& path, std::string& type) throw()
 {
     std::ostringstream oss, os;
+    this->isCgi = false;
     oss << path;
     os << type;
     this->status_code = status;
@@ -55,6 +56,7 @@ bool errorMessage::getCgiStatus() const
 errorMessage::errorMessage(int status, int ind, int posLocation) throw()
 {
     webServer wserv = getMyServer();
+    this->isCgi = false;
     std::ostringstream oss;
     if (status == 301)
     {
@@ -78,6 +80,7 @@ const std::string& errorMessage::getBody() const
 errorMessage::errorMessage(int status, int ind, const std::string& type) throw()
 {
     webServer wserv = getMyServer();
+    this->isCgi = false;
     this->error =  wserv.getServer()[ind].getErrorPath();
     std::ostringstream oss;
     std::map<int ,std::string>::iterator it = error.find(status);
