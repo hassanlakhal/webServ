@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/13 18:13:17 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/18 22:44:17 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,15 @@ class Client
         std::string protocal;
         std::string type;
         std::string stringBody;
+        int pidChild;
+        int statusChild;
         int ind;
         static int incremetedFileName;
         FILE * outfile;
         bool outfileOpened;
         bool EnteredfirstTime;
         bool matchedTime;
+        bool detectCgi;
         bool loadingHead;
         int serverId;
         unsigned long ChunkSizee;
@@ -80,6 +83,8 @@ class Client
         infoMap getInfoMap() const;
         FILE * getOutFile();
         std::string getFilePath();
+        bool getDetectCgi();
+        void setDetectCgi(bool b);
         bool getOutFileOpened() const;
         void setOutFileOpened(bool b);
         bool getEnteredfirstTime() const;
@@ -96,6 +101,10 @@ class Client
         int getIncremetedFileName();
         void IncremetedFileName();
         int getInd();
+        int getPidChild();
+        int getStatusChild();
+        void setPidChild(int i);
+        void setStatusChild(int i);
         void setInd(int ind);
         ~Client();
 };

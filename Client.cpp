@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/17 15:12:49 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/18 22:46:01 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ Client::Client(): loadingHead(true),serverId(0)
 	this->outfileOpened = false;
 	this->EnteredfirstTime = false;
 	this->matchedTime = false;
+	this->detectCgi = false;
 }
 
 Client::Client(int serverId): loadingHead(true),serverId(serverId)
@@ -25,6 +26,7 @@ Client::Client(int serverId): loadingHead(true),serverId(serverId)
 	this->outfileOpened = false;
 	this->EnteredfirstTime = false;
 	this->matchedTime = false;
+	this->detectCgi = false;
 	this->size = 0;
 	this->sizeAppended = 0;
 	this->start_time = clock();
@@ -64,6 +66,7 @@ Client::Client(const Client& other)
 	this->sizeAppended = other.sizeAppended;
 	this->start_time = other.start_time;
 	this->matchedTime = other.matchedTime;
+	this->detectCgi = other.detectCgi;
 }
 
 Client& Client::operator=(const Client& other)
@@ -86,6 +89,7 @@ Client& Client::operator=(const Client& other)
 		this->size = other.size;
 		this->sizeAppended = other.sizeAppended;
 		this->start_time = other.start_time;
+		this->detectCgi = other.detectCgi;
 	}
 	return *this;
 }
@@ -333,4 +337,28 @@ int Client::getIncremetedFileName(){
 }
 void Client::IncremetedFileName(){
 	this->incremetedFileName++;
+}
+
+void Client::setDetectCgi(bool b){
+	this->detectCgi = b;
+}
+
+bool Client::getDetectCgi(){
+	return this->detectCgi;
+}
+
+void Client::setStatusChild(int i){
+	this->statusChild = i;
+}
+
+int Client::getPidChild(){
+	return this->pidChild;
+}
+
+int Client::getStatusChild(){
+	return this->statusChild;
+}
+
+void Client::setPidChild(int i){
+	this->pidChild = i;
 }

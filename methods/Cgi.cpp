@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/17 19:26:18 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/18 22:55:49 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 	if(sd.find(sc) == std::string::npos || sd.find(sr) == std::string::npos)
 		throw errorMessage(403, serverID);
 
-
+//--------------------
 	FILE * tmpfile = std::fopen((reqPath).c_str(), "r");
 	if(!tmpfile){
 		return 0;
@@ -83,93 +83,98 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 	}
 	else
 	{
-
-		std::map<std::string, std::string>::const_iterator it;
-		it = myLocation.getCgiPath().begin();
-		for (; it != myLocation.getCgiPath().end(); it++)
-		{
-			if(it->first == "." + extention)
+		if(!box.getClients()[fd].getDetectCgi()){
+			std::map<std::string, std::string>::const_iterator it;
+			it = myLocation.getCgiPath().begin();
+			for (; it != myLocation.getCgiPath().end(); it++)
 			{
-				cgiExist = true;
-				std::string line;
-				int status;
-				FILE* outfile;
-				std::stringstream iss;
-				iss << "outfile_";
-				iss << box.getClients()[fd].getIncremetedFileName();
-				box.getClients()[fd].IncremetedFileName();
-				iss << "_";
-				iss << time(0);
-				fileDel = iss.str();
-				outfile = std::fopen(fileDel.c_str(), "w");
-				if(!outfile)
-					throw errorMessage(500, serverID);
+				if(it->first == "." + extention)
+				{
+					cgiExist = true;
+					box.getClients()[fd].setDetectCgi(true);
+					std::string line;
+					int status;
+					FILE* outfile;
+					std::stringstream iss;
+					iss << "outfile_";
+					iss << box.getClients()[fd].getIncremetedFileName();
+					box.getClients()[fd].IncremetedFileName();
+					iss << "_";
+					iss << time(0);
+					fileDel = iss.str();
+					outfile = std::fopen(fileDel.c_str(), "w");
+					if(!outfile)
+						throw errorMessage(500, serverID);
 
-				clock_t start_time;
-				start_time = clock();
-				int pid = fork();
+					clock_t start_time;
+					start_time = clock();
+					box.getClients()[fd].setPidChild(fork());
+					int pid = box.getClients()[fd].getPidChild();
+					if(pid == 0){
 
-				if(pid == 0){
-
-					FILE* infilePost = NULL;
-					if(method == "POST"){
-						infilePost = std::fopen(postFile.c_str(), "r");
-						if(!infilePost){
-							kill(pid, SIGKILL);
-							waitpid(pid, &status,0);
-							throw errorMessage(500, serverID);
+						FILE* infilePost = NULL;
+						if(method == "POST"){
+							infilePost = std::fopen(postFile.c_str(), "r");
+							if(!infilePost){
+								kill(pid, SIGKILL);
+								waitpid(pid, &status,0);
+								throw errorMessage(500, serverID);
+							}
 						}
-					}
-					std::string arg2 = reqPath;
-					char *arg[] = {(char*)it->second.c_str(), (char*)(arg2.c_str()), NULL};
+						std::string arg2 = reqPath;
+						char *arg[] = {(char*)it->second.c_str(), (char*)(arg2.c_str()), NULL};
 
-					if(dup2(fileno(outfile), 1) == -1)
-						perror("dup2 fail ");
+						if(dup2(fileno(outfile), 1) == -1)
+							perror("dup2 fail ");
+						std::fclose(outfile);
+
+						if(method == "POST")
+						{
+							if(dup2(fileno(infilePost), 0) == -1)
+								perror("dup2-- fail ");
+							std::fclose(infilePost);
+						}
+
+						std::map<std::string, std::string> mapInfo = box.getClients()[fd].getInfoMap();
+						std::string a = "CONTENT_LENGTH=" + mapInfo["Content-Length"];
+						std::string b = "CONTENT_TYPE=" + mapInfo["Content-Type"];
+						std::string c = "PATH_TRANSLATED=" + arg2;
+						std::string d = "REQUEST_METHOD=" + box.getClients()[fd].getMethod();
+						std::string e = "QUERY_STRING=" + box.getQueryString();
+						std::string g = "HTTP_COOKIE=" + mapInfo["Cookie"];
+						std::string f = "REDIRECT_STATUS=CGI";
+
+						char *env[]= {
+							(char *)a.c_str(),
+							(char *)b.c_str(),
+							(char *)c.c_str(),
+							(char *)d.c_str(),
+							(char *)e.c_str(),
+							(char *)f.c_str(),
+							(char *)g.c_str(),
+						};
+
+						execve(arg[0],arg , env);
+						exit(48);
+					}
+
 					std::fclose(outfile);
+					box.getClients()[fd].setStatusChild(status);
+			}
+				// while(1){
+				int status = box.getClients()[fd].getStatusChild();
+				if (waitpid(box.getClients()[fd].getPidChild(), &status, WNOHANG) == 0)
+					throw 1;
+				box.getClients()[fd].setDetectCgi(false);
 
-					if(method == "POST")
-					{
-						if(dup2(fileno(infilePost), 0) == -1)
-							perror("dup2-- fail ");
-						std::fclose(infilePost);
-					}
-
-					std::map<std::string, std::string> mapInfo = box.getClients()[fd].getInfoMap();
-					std::string a = "CONTENT_LENGTH=" + mapInfo["Content-Length"];
-					std::string b = "CONTENT_TYPE=" + mapInfo["Content-Type"];
-					std::string c = "PATH_TRANSLATED=" + arg2;
-					std::string d = "REQUEST_METHOD=" + box.getClients()[fd].getMethod();
-					std::string e = "QUERY_STRING=" + box.getQueryString();
-					std::string g = "HTTP_COOKIE=" + mapInfo["Cookie"];
-					char f[] = "REDIRECT_STATUS=CGI";
-
-					char *env[]= {
-						(char *)a.c_str(),
-						(char *)b.c_str(),
-						(char *)c.c_str(),
-						(char *)d.c_str(),
-						(char *)e.c_str(),
-						f,
-						(char *)g.c_str(),
-					};
-
-					execve(arg[0],arg , env);
-					exit(48);
-				}
-
-				std::fclose(outfile);
-				while(1){
-					if (waitpid(pid, &status, WNOHANG) > 0)
-						break;
-
-					if(clock() - start_time > 5000000){
-						kill(pid, SIGKILL);
-						waitpid(pid, &status,0);
-						if(unlink(fileDel.c_str()) == -1)
-							throw errorMessage(500, serverID);
-						throw errorMessage(504, serverID);
-					}
-				}
+					// if(clock() - start_time > 5000000){
+					// 	kill(pid, SIGKILL);
+					// 	waitpid(pid, &status,0);
+					// 	if(unlink(fileDel.c_str()) == -1)
+					// 		throw errorMessage(500, serverID);
+					// 	throw errorMessage(504, serverID);
+					// }
+				// }
 
 				if(WEXITSTATUS(status) != 0){
 					std::cout << "status : " << WEXITSTATUS(status) << std::endl;

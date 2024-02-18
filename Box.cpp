@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/17 18:45:33 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/18 22:57:50 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -476,6 +476,13 @@ void Box::setUpServer(webServer& data)
 						clients[events[i].data.fd].setTimeOut(0);
 						clients[events[i].data.fd].setMatchedTime(false);
 					}
+					catch (int a)
+					{
+						std::cout << "chlid ba9i khadam";
+					}
+				}
+				else if(clients[events[i].data.fd].getDetectCgi()){
+					cgi(*this, , events[i].data.fd, std::string reqPath, std::string file, int serverID, std::string method, std::string postFile);
 				}
 				else if ((events[i].events & EPOLLOUT))
 				{
