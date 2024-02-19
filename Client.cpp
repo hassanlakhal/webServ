@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/19 08:48:06 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/19 14:14:09 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ Client::Client(): loadingHead(true),serverId(0)
 	this->outfileOpened = false;
 	this->EnteredfirstTime = false;
 	this->matchedTime = false;
+	this->detectCgi = false;
 }
 
 Client::Client(int serverId): loadingHead(true),serverId(serverId)
@@ -25,9 +26,9 @@ Client::Client(int serverId): loadingHead(true),serverId(serverId)
 	this->outfileOpened = false;
 	this->EnteredfirstTime = false;
 	this->matchedTime = false;
+	this->detectCgi = false;
 	this->size = 0;
 	this->sizeAppended = 0;
-	this->isTimeOut = false;
 	this->start_time = clock();
 }
 
@@ -65,11 +66,7 @@ Client::Client(const Client& other)
 	this->sizeAppended = other.sizeAppended;
 	this->start_time = other.start_time;
 	this->matchedTime = other.matchedTime;
-	fileDelete = other.fileDelete;
-	filePost = other.filePost;
-	pid = other.pid;
-    status = other.status;
-	isTimeOut = other.isTimeOut;
+	this->detectCgi = other.detectCgi;
 }
 
 Client& Client::operator=(const Client& other)
@@ -92,11 +89,7 @@ Client& Client::operator=(const Client& other)
 		this->size = other.size;
 		this->sizeAppended = other.sizeAppended;
 		this->start_time = other.start_time;
-		fileDelete = other.fileDelete;
-		filePost = other.filePost;
-		pid = other.pid;
-        status = other.status;
-		isTimeOut = other.isTimeOut;
+		this->detectCgi = other.detectCgi;
 	}
 	return *this;
 }
@@ -346,45 +339,82 @@ void Client::IncremetedFileName(){
 	this->incremetedFileName++;
 }
 
-void Client::setFilePost(std::string file)
-{
-	this->filePost = file;
-}
-void Client::setFileDelet(std::string file)
-{
-	this->fileDelete = file;
-}
-std::string Client::getFilePost()
-{
-	return this->filePost;
-}
-std::string Client::getFileDelet()
-{
-	return this->fileDelete;	
+void Client::setDetectCgi(bool b){
+	this->detectCgi = b;
 }
 
-void Client::setPid(pid_t pid)
-{
-	this->pid = pid;
-}
-void Client::setStatus(int status)
-{
-	this->status = status;
-}
-pid_t Client::getPid()
-{
-	return this->pid;
-}
-int Client::getStatus()
-{
-	return this->status;
+bool Client::getDetectCgi(){
+	return this->detectCgi;
 }
 
-void Client::setIsTimeOut(bool isTimeOut)
-{
-	this->isTimeOut = isTimeOut;
+void Client::setStatusChild(int i){
+	this->statusChild = i;
 }
-bool Client::getIsTimeOut()
-{
-	return this->isTimeOut;
+
+int Client::getPidChild(){
+	return this->pidChild;
+}
+
+int Client::getStatusChild(){
+	return this->statusChild;
+}
+
+void Client::setPidChild(int i){
+	this->pidChild = i;
+}
+
+void Client::setSavedReqPath(std::string str){
+	this->savedReqPath = str;
+}
+void Client::setSavedFile(std::string str){
+	this->savedFile = str;
+}
+void Client::setSavedServerID(int i){
+	this->savedServerID = i;
+}
+void Client::setSavedMethod(std::string str){
+	this->savedMethod = str;
+}
+void Client::setSavedPostFIle(std::string str){
+	this->savedPostFile = str;
+}
+std::string Client::getSavedReqPath(){
+	return this->savedReqPath;
+}
+std::string Client::getSavedFile(){
+	return this->savedFile;
+}
+int Client::getSavedServerID(){
+	return this->savedServerID;
+}
+std::string Client::getSavedMethod(){
+	return this->savedMethod;
+}
+std::string Client::getSavedPostFIle(){
+	return this->savedPostFile;
+}
+
+void Client::setLocation(Location& loc){
+	this->savedLocation = loc;
+}
+
+Location Client::getLocation(){
+	return this->savedLocation;
+}
+
+void Client::setSavedDileDel(std::string str){
+	this->savedFileDel = str;
+}
+
+std::string Client::getSavedFileDel(){
+	return this->savedFileDel;
+}
+
+
+void Client::setStartTimeCGI(clock_t start_time){
+	this->StartTimeCGI = start_time;
+}
+
+clock_t Client::getStartTimeCGI(){
+	return this->StartTimeCGI;
 }

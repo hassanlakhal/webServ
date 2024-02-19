@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/19 10:26:32 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/19 23:19:14 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,24 +270,33 @@ void Box::sendResponse(int fd)
 	mess = httpMessage[a.getStatusCode()];
 	if (!a.getStatustCgi())
 	{
+
 		if (!a.getStatusHeader())
 		{
+			// std::cout << "aaaaaaaaaaaaaaaa1\n";
 			countent = a.getHeader();
 			a.openFile(a.getPathFile());
 			a.setStatusHeader(true);
+			// std::cout << "header : " << countent << std::endl;
 			send(fd,countent.c_str(),countent.length(),0);
 		}
 		if (a.getFile().is_open())
 		{
+			// std::cout << "aaaaaaaaaaaaaaaa2\n";
+
 			a.getFile().read(buffer, bufferSize - 1);
 			std::streamsize bytesRead = a.getFile().gcount();
+
+			// std::cout << "read from file : " << bytesRead << std::endl;
 			if (bytesRead > 0)
 			{
+				// std::cout << "buffer : " << buffer << std::endl;
 				std::string body(buffer, bytesRead);
 				send(fd, body.c_str(), body.length(), 0);
 			}
 			if (a.getFile().eof())
 			{
+				std::cout << "aaaaaaaaaaaaaaaa3\n";
 				close(fd);
 				a.getFile().close();
 				if(a.getStatusCode() == 200 || a.getStatusCode() == 201 || a.getStatusCode() == 301 || a.getStatusCode() == 204 )
@@ -298,6 +307,7 @@ void Box::sendResponse(int fd)
 		}
 		else if (!a.getBody().empty())
 		{
+			// std::cout << "aaaaaaaaaaaaaaaa4\n";
 			std::string body = a.getBody();
 			send(fd, body.c_str(), body.length(), 0);
 			close(fd);
@@ -457,12 +467,46 @@ void Box::setUpServer(webServer& data)
 			}
 			else
 			{
+					// std::cout << "fd of the client :------------------------------ " <<events[i].data.fd << std::endl;
+
 				if (events[i].events & EPOLLIN && clients[events[i].data.fd].getResponse().getStatusResponse())
 				{
 					try
 					{
 						clients[events[i].data.fd].setTimeOut(clock());
 						readRequest(events[i].data.fd, epollFd);
+					}
+					catch (const errorMessage& e)
+					{
+
+						clients[events[i].data.fd].getResponse().\
+						setValues(false,events[i].data.fd,\
+						e.getStatusCode(),\
+						e.what(),\
+						e.getType(),\
+						e.getBody(),\
+						e.getCgiStatus());
+						clients[events[i].data.fd].setTimeOut(0);
+						clients[events[i].data.fd].setMatchedTime(false);
+					}
+					catch (int a)
+					{
+
+						// std::cout << "chlid ba9i khadam\n";
+					}
+				}
+				else if(clients[events[i].data.fd].getDetectCgi()){
+					try
+					{
+						// std::cout << "bbbbbbbbbbbbbb\n";
+						int fd = events[i].data.fd;
+						Location mylocation = clients[fd].getLocation();
+						std::string reqPath = clients[fd].getSavedReqPath();
+						std::string file = clients[fd].getSavedFile();
+						int serverID = clients[fd].getSavedServerID();
+						std::string method = clients[fd].getSavedMethod();
+						std::string postFile= clients[fd].getSavedPostFIle();
+						cgi(*this, mylocation, fd, reqPath, file, serverID, method, postFile);
 					}
 					catch (const errorMessage& e)
 					{
@@ -474,12 +518,24 @@ void Box::setUpServer(webServer& data)
 						e.getBody(),\
 						e.getCgiStatus());
 						clients[events[i].data.fd].setTimeOut(0);
-						clients[events[i].data.fd].setIsTimeOut(true);
 						clients[events[i].data.fd].setMatchedTime(false);
 					}
+					catch (int a)
+					{
+						// std::cout << "chlid ba9i khadam\n";
+					}
+					// std::cout << "fd of the client :------------------------------ " <<events[i].data.fd << std::endl;
+					// if (!clients[events[i].data.fd].getResponse().getStatusResponse())
+					// {
+					// 	// std::cout << "525252525\n";
+					// 	sendResponse(events[i].data.fd);
+					// 	// close(events[i].data.fd);
+					// }
+
 				}
 				else if ((events[i].events & EPOLLOUT))
 				{
+					// std::cout << "ccccccccccccccccccccccc\n";
 					try
 					{
 						clock_t endTime =  clock();
@@ -512,32 +568,11 @@ void Box::setUpServer(webServer& data)
 						clients[events[i].data.fd].setTimeOut(0);
 						clients[events[i].data.fd].setMatchedTime(false);
 					}
-					if (clients[events[i].data.fd].getIsTimeOut())
-					{
-						try
-						{
-							timeOutCgi(*this,events[i].data.fd);
-						}
-						catch(const errorMessage& e)
-						{
-							std::cout << "ddddd" << std::endl;
-							clients[events[i].data.fd].getResponse().\
-							setValues(false,events[i].data.fd,\
-							e.getStatusCode(),\
-							e.what(),\
-							e.getType(),\
-							e.getBody(),\
-							e.getCgiStatus());
-							clients[events[i].data.fd].setTimeOut(0);
-							clients[events[i].data.fd].setIsTimeOut(false);
-							clients[events[i].data.fd].setMatchedTime(false);
-						}
-					}
 					if (!clients[events[i].data.fd].getResponse().getStatusResponse())
 					{
-							std::cout << "hhhdhdhhdhdhhdhhd\n";
-						// clients[events[i].data.fd].setIsTimeOut(true);
+						// std::cout << "525252525\n";
 						sendResponse(events[i].data.fd);
+						// close(events[i].data.fd);
 					}
 				}
 			}

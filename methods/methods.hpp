@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   methods.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:02:58 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/19 09:15:57 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/13 18:10:38 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,5 @@ void get(Box &box, int ind, int fd);
 void post(Box &box, int ind, int fd);
 int cgi(Box& box, Location& myLocation, int fd, std::string, std::string file, int serverID, std::string method, std::string postFile);
 void deleteM(Box &box, int ind, int fd);
-void timeOutCgi(Box& box, int fd);
+
 #endif

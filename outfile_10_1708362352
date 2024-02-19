@@ -1,0 +1,14 @@
+Set-Cookie: user=John%20Doe; expires=Mon, 19-Feb-2024 18:05:52 GMT; Max-Age=3600; path=/
+Content-type: text/html; charset=UTF-8
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submitted Data</title>
+</head>
+<body>
+    <h2>Submitted Data</h2>
+    <p>No data submitted.</p></body>
+</html>
