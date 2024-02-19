@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/17 18:45:33 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/19 10:26:32 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -474,6 +474,7 @@ void Box::setUpServer(webServer& data)
 						e.getBody(),\
 						e.getCgiStatus());
 						clients[events[i].data.fd].setTimeOut(0);
+						clients[events[i].data.fd].setIsTimeOut(true);
 						clients[events[i].data.fd].setMatchedTime(false);
 					}
 				}
@@ -511,8 +512,31 @@ void Box::setUpServer(webServer& data)
 						clients[events[i].data.fd].setTimeOut(0);
 						clients[events[i].data.fd].setMatchedTime(false);
 					}
+					if (clients[events[i].data.fd].getIsTimeOut())
+					{
+						try
+						{
+							timeOutCgi(*this,events[i].data.fd);
+						}
+						catch(const errorMessage& e)
+						{
+							std::cout << "ddddd" << std::endl;
+							clients[events[i].data.fd].getResponse().\
+							setValues(false,events[i].data.fd,\
+							e.getStatusCode(),\
+							e.what(),\
+							e.getType(),\
+							e.getBody(),\
+							e.getCgiStatus());
+							clients[events[i].data.fd].setTimeOut(0);
+							clients[events[i].data.fd].setIsTimeOut(false);
+							clients[events[i].data.fd].setMatchedTime(false);
+						}
+					}
 					if (!clients[events[i].data.fd].getResponse().getStatusResponse())
 					{
+							std::cout << "hhhdhdhhdhdhhdhhd\n";
+						// clients[events[i].data.fd].setIsTimeOut(true);
 						sendResponse(events[i].data.fd);
 					}
 				}

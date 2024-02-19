@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/17 15:12:49 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/19 08:48:06 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ Client::Client(int serverId): loadingHead(true),serverId(serverId)
 	this->matchedTime = false;
 	this->size = 0;
 	this->sizeAppended = 0;
+	this->isTimeOut = false;
 	this->start_time = clock();
 }
 
@@ -64,6 +65,11 @@ Client::Client(const Client& other)
 	this->sizeAppended = other.sizeAppended;
 	this->start_time = other.start_time;
 	this->matchedTime = other.matchedTime;
+	fileDelete = other.fileDelete;
+	filePost = other.filePost;
+	pid = other.pid;
+    status = other.status;
+	isTimeOut = other.isTimeOut;
 }
 
 Client& Client::operator=(const Client& other)
@@ -86,6 +92,11 @@ Client& Client::operator=(const Client& other)
 		this->size = other.size;
 		this->sizeAppended = other.sizeAppended;
 		this->start_time = other.start_time;
+		fileDelete = other.fileDelete;
+		filePost = other.filePost;
+		pid = other.pid;
+        status = other.status;
+		isTimeOut = other.isTimeOut;
 	}
 	return *this;
 }
@@ -333,4 +344,47 @@ int Client::getIncremetedFileName(){
 }
 void Client::IncremetedFileName(){
 	this->incremetedFileName++;
+}
+
+void Client::setFilePost(std::string file)
+{
+	this->filePost = file;
+}
+void Client::setFileDelet(std::string file)
+{
+	this->fileDelete = file;
+}
+std::string Client::getFilePost()
+{
+	return this->filePost;
+}
+std::string Client::getFileDelet()
+{
+	return this->fileDelete;	
+}
+
+void Client::setPid(pid_t pid)
+{
+	this->pid = pid;
+}
+void Client::setStatus(int status)
+{
+	this->status = status;
+}
+pid_t Client::getPid()
+{
+	return this->pid;
+}
+int Client::getStatus()
+{
+	return this->status;
+}
+
+void Client::setIsTimeOut(bool isTimeOut)
+{
+	this->isTimeOut = isTimeOut;
+}
+bool Client::getIsTimeOut()
+{
+	return this->isTimeOut;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/13 18:13:17 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/19 08:45:34 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,14 @@ class Client
         bool EnteredfirstTime;
         bool matchedTime;
         bool loadingHead;
+        bool isTimeOut;
         int serverId;
         unsigned long ChunkSizee;
         std::vector<unsigned char> body;
+        std::string fileDelete;
+        std::string filePost;
+        pid_t pid;
+        int status;
         infoMap Map;
         size_t size;
         size_t sizeAppended;
@@ -96,6 +101,16 @@ class Client
         int getIncremetedFileName();
         void IncremetedFileName();
         int getInd();
+        void setFilePost(std::string file);
+        void setFileDelet(std::string file);
+        std::string getFilePost();
+        std::string getFileDelet();
+        void setPid(pid_t pid);
+        void setStatus(int status);
+        pid_t getPid();
+        int getStatus();
+        void setIsTimeOut(bool isTimeOut);
+        bool getIsTimeOut();
         void setInd(int ind);
         ~Client();
 };
