@@ -6,7 +6,11 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/02/19 08:45:34 by hlakhal-         ###   ########.fr       */
+=======
+/*   Updated: 2024/02/18 22:44:17 by eej-jama         ###   ########.fr       */
+>>>>>>> a004b927585c1bf291fc794057a38380587a71fb
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +38,15 @@ class Client
         std::string protocal;
         std::string type;
         std::string stringBody;
+        int pidChild;
+        int statusChild;
         int ind;
         static int incremetedFileName;
         FILE * outfile;
         bool outfileOpened;
         bool EnteredfirstTime;
         bool matchedTime;
+        bool detectCgi;
         bool loadingHead;
         bool isTimeOut;
         int serverId;
@@ -85,6 +92,8 @@ class Client
         infoMap getInfoMap() const;
         FILE * getOutFile();
         std::string getFilePath();
+        bool getDetectCgi();
+        void setDetectCgi(bool b);
         bool getOutFileOpened() const;
         void setOutFileOpened(bool b);
         bool getEnteredfirstTime() const;
@@ -101,6 +110,7 @@ class Client
         int getIncremetedFileName();
         void IncremetedFileName();
         int getInd();
+<<<<<<< HEAD
         void setFilePost(std::string file);
         void setFileDelet(std::string file);
         std::string getFilePost();
@@ -111,6 +121,12 @@ class Client
         int getStatus();
         void setIsTimeOut(bool isTimeOut);
         bool getIsTimeOut();
+=======
+        int getPidChild();
+        int getStatusChild();
+        void setPidChild(int i);
+        void setStatusChild(int i);
+>>>>>>> a004b927585c1bf291fc794057a38380587a71fb
         void setInd(int ind);
         ~Client();
 };

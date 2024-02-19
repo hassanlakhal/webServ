@@ -6,7 +6,11 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/02/19 08:48:06 by hlakhal-         ###   ########.fr       */
+=======
+/*   Updated: 2024/02/18 22:46:01 by eej-jama         ###   ########.fr       */
+>>>>>>> a004b927585c1bf291fc794057a38380587a71fb
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +22,7 @@ Client::Client(): loadingHead(true),serverId(0)
 	this->outfileOpened = false;
 	this->EnteredfirstTime = false;
 	this->matchedTime = false;
+	this->detectCgi = false;
 }
 
 Client::Client(int serverId): loadingHead(true),serverId(serverId)
@@ -25,6 +30,7 @@ Client::Client(int serverId): loadingHead(true),serverId(serverId)
 	this->outfileOpened = false;
 	this->EnteredfirstTime = false;
 	this->matchedTime = false;
+	this->detectCgi = false;
 	this->size = 0;
 	this->sizeAppended = 0;
 	this->isTimeOut = false;
@@ -65,11 +71,15 @@ Client::Client(const Client& other)
 	this->sizeAppended = other.sizeAppended;
 	this->start_time = other.start_time;
 	this->matchedTime = other.matchedTime;
+<<<<<<< HEAD
 	fileDelete = other.fileDelete;
 	filePost = other.filePost;
 	pid = other.pid;
     status = other.status;
 	isTimeOut = other.isTimeOut;
+=======
+	this->detectCgi = other.detectCgi;
+>>>>>>> a004b927585c1bf291fc794057a38380587a71fb
 }
 
 Client& Client::operator=(const Client& other)
@@ -92,11 +102,15 @@ Client& Client::operator=(const Client& other)
 		this->size = other.size;
 		this->sizeAppended = other.sizeAppended;
 		this->start_time = other.start_time;
+<<<<<<< HEAD
 		fileDelete = other.fileDelete;
 		filePost = other.filePost;
 		pid = other.pid;
         status = other.status;
 		isTimeOut = other.isTimeOut;
+=======
+		this->detectCgi = other.detectCgi;
+>>>>>>> a004b927585c1bf291fc794057a38380587a71fb
 	}
 	return *this;
 }
@@ -346,6 +360,7 @@ void Client::IncremetedFileName(){
 	this->incremetedFileName++;
 }
 
+<<<<<<< HEAD
 void Client::setFilePost(std::string file)
 {
 	this->filePost = file;
@@ -388,3 +403,28 @@ bool Client::getIsTimeOut()
 {
 	return this->isTimeOut;
 }
+=======
+void Client::setDetectCgi(bool b){
+	this->detectCgi = b;
+}
+
+bool Client::getDetectCgi(){
+	return this->detectCgi;
+}
+
+void Client::setStatusChild(int i){
+	this->statusChild = i;
+}
+
+int Client::getPidChild(){
+	return this->pidChild;
+}
+
+int Client::getStatusChild(){
+	return this->statusChild;
+}
+
+void Client::setPidChild(int i){
+	this->pidChild = i;
+}
+>>>>>>> a004b927585c1bf291fc794057a38380587a71fb
