@@ -6,11 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-<<<<<<< HEAD
 /*   Updated: 2024/02/19 10:26:32 by hlakhal-         ###   ########.fr       */
-=======
-/*   Updated: 2024/02/18 22:57:50 by eej-jama         ###   ########.fr       */
->>>>>>> a004b927585c1bf291fc794057a38380587a71fb
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -481,13 +477,6 @@ void Box::setUpServer(webServer& data)
 						clients[events[i].data.fd].setIsTimeOut(true);
 						clients[events[i].data.fd].setMatchedTime(false);
 					}
-					catch (int a)
-					{
-						std::cout << "chlid ba9i khadam";
-					}
-				}
-				else if(clients[events[i].data.fd].getDetectCgi()){
-					cgi(*this, , events[i].data.fd, std::string reqPath, std::string file, int serverID, std::string method, std::string postFile);
 				}
 				else if ((events[i].events & EPOLLOUT))
 				{
