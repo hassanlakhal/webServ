@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/19 14:12:57 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/20 21:21:54 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 #include <algorithm>
 #include "Response.hpp"
 #include"Location.hpp"
+#include <sys/stat.h>
+
 
 
 typedef std::map<std::string, std::string> infoMap;
@@ -33,6 +35,8 @@ class Client
         std::string path;
         std::string pathLoc;
         std::string filePath;
+        std::string pathInfo;
+        bool pathInfoChecker;
         std::string protocal;
         std::string type;
         std::string stringBody;
@@ -132,6 +136,10 @@ class Client
         std::string getSavedFileDel();
         void setStartTimeCGI(clock_t start_time);
         clock_t getStartTimeCGI();
+        void setPathInfo(std::string str);
+        std::string getPathInfo();
+        void setPathInfoChecker(bool b);
+        bool getPathInfoChecker();
         ~Client();
 };
 

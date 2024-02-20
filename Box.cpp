@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/20 05:41:34 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/20 22:21:41 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ bool Box::checkName(const std::vector<Server>& sr, std::string name, size_t  &i,
 	return false;
 }
 
+
 void Box::sendRequest(int fd)
 {
 	int idOfServer = 0;
@@ -207,6 +208,13 @@ void Box::sendRequest(int fd)
 	std::vector<std::string> methods = _InfoServer.getServer()[idOfServer]\
 										.getLocation()[ind].getMethods();
 	methodAllowd(methods,clients[fd].getMethod(),idOfServer);
+	clients[fd].setPathInfo(clients[fd].getPath());
+	if(!clients[fd].getPathInfo().empty()){
+		if(clients[fd].getPath().find(clients[fd].getPathInfo()) != std::string::npos){
+			clients[fd].setPath(clients[fd].getPath().substr(0, clients[fd].getPath().find(clients[fd].getPathInfo())));
+			clients[fd].setPathLoc(clients[fd].getPathLoc().substr(0, clients[fd].getPathLoc().find(clients[fd].getPathInfo())));
+		}
+	}
 	if(clients[fd].getMethod() == "GET")
 		get(*this, ind, fd);
 	else if(clients[fd].getMethod() == "POST")
@@ -308,7 +316,7 @@ void Box::sendResponse(int fd)
 				close(fd);
 				a.getFile().close();
 			}
-			
+
 		}
 		if (a.getFile().is_open())
 		{
@@ -329,7 +337,7 @@ void Box::sendResponse(int fd)
 				close(fd);
 				a.getFile().close();
 				if(a.getStatusCode() == 200 || a.getStatusCode() == 201 || a.getStatusCode() == 301 || a.getStatusCode() == 204 )
-					std::cout << GREEN << a.getStatusCode() << mess << RESET << std::endl;
+					std::cout << GREEN << a.getStatusCode() << mess << " " << fd <<  RESET << std::endl;
 				else
 					std::cout << RED << a.getStatusCode() << mess << RESET << std::endl;
 			}
@@ -347,7 +355,7 @@ void Box::sendResponse(int fd)
 			close(fd);
 			a.getFile().close();
 			if(a.getStatusCode() == 200 || a.getStatusCode() == 201 || a.getStatusCode() == 301 || a.getStatusCode() == 204)
-				std::cout << GREEN << a.getStatusCode() << mess << RESET << std::endl;
+				std::cout << GREEN << a.getStatusCode() << mess << " " << fd <<  RESET << std::endl;
 			else
 				std::cout << RED << a.getStatusCode() << mess << RESET << std::endl;
 		}
@@ -387,7 +395,7 @@ void Box::sendResponse(int fd)
 					close(fd);
 					a.getFile().close();
 				}
-				
+
 			}
 			else if(!a.getStatusHeader())
 			{
@@ -407,7 +415,7 @@ void Box::sendResponse(int fd)
 					close(fd);
 					a.getFile().close();
 				}
-				
+
 			}
 			if (a.getFile().eof())
 			{
@@ -575,7 +583,7 @@ void Box::setUpServer(webServer& data)
 					}
 					catch (int a)
 					{
-						
+
 					}
 
 				}

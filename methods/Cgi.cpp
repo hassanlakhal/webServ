@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/19 23:19:49 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/20 22:21:12 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,8 +152,9 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 						std::string c = "PATH_TRANSLATED=" + arg2;
 						std::string d = "REQUEST_METHOD=" + box.getClients()[fd].getMethod();
 						std::string e = "QUERY_STRING=" + box.getQueryString();
-						std::string g = "HTTP_COOKIE=" + mapInfo["Cookie"];
 						std::string f = "REDIRECT_STATUS=CGI";
+						std::string g = "HTTP_COOKIE=" + mapInfo["Cookie"];
+						std::string h = "PATH_INFO=" + box.getClients()[fd].getPathInfo() ;
 
 						char *env[]= {
 							(char *)a.c_str(),
@@ -163,6 +164,8 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 							(char *)e.c_str(),
 							(char *)f.c_str(),
 							(char *)g.c_str(),
+							(char *)h.c_str(),
+							NULL
 						};
 
 						execve(arg[0],arg , env);

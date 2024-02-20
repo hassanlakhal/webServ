@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/19 14:14:09 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/20 21:17:07 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ Client::Client(): loadingHead(true),serverId(0)
 	this->EnteredfirstTime = false;
 	this->matchedTime = false;
 	this->detectCgi = false;
+	this->pathInfoChecker = false;
 }
 
 Client::Client(int serverId): loadingHead(true),serverId(serverId)
@@ -30,6 +31,7 @@ Client::Client(int serverId): loadingHead(true),serverId(serverId)
 	this->size = 0;
 	this->sizeAppended = 0;
 	this->start_time = clock();
+	this->pathInfoChecker = false;
 }
 
 int Client::incremetedFileName = 0;
@@ -67,6 +69,7 @@ Client::Client(const Client& other)
 	this->start_time = other.start_time;
 	this->matchedTime = other.matchedTime;
 	this->detectCgi = other.detectCgi;
+	this->pathInfoChecker = other.pathInfoChecker;
 }
 
 Client& Client::operator=(const Client& other)
@@ -90,6 +93,7 @@ Client& Client::operator=(const Client& other)
 		this->sizeAppended = other.sizeAppended;
 		this->start_time = other.start_time;
 		this->detectCgi = other.detectCgi;
+		this->pathInfoChecker = other.pathInfoChecker;
 	}
 	return *this;
 }
@@ -417,4 +421,49 @@ void Client::setStartTimeCGI(clock_t start_time){
 
 clock_t Client::getStartTimeCGI(){
 	return this->StartTimeCGI;
+}
+
+void Client::setPathInfo(std::string req){
+
+	//path : www/folder/lopos
+	struct stat file_stat;
+	if(req.empty()){
+		this->pathInfo = "";
+		setPathInfoChecker(true);
+		return;
+	}
+
+	if(stat(req.c_str(), &file_stat) != 0){
+		std::string s;
+		if(req.find("/") != std::string::npos){
+			s = req.substr(0, req.find_last_of("/"));
+			setPathInfo(s);
+			if(!getPathInfoChecker())
+				this->pathInfo.append(req.substr(req.find_last_of("/")));
+			else
+				this->pathInfo = "";
+		}
+	}
+	else
+	{
+		if(!S_ISDIR(file_stat.st_mode))
+			return;
+		else{
+			this->pathInfo = "";
+			setPathInfoChecker(true);
+			return;
+		}
+	}
+}
+
+std::string Client::getPathInfo(){
+	return this->pathInfo;
+}
+
+void Client::setPathInfoChecker(bool b){
+	this->pathInfoChecker = b;
+}
+
+bool Client::getPathInfoChecker(){
+	return this->pathInfoChecker;
 }
