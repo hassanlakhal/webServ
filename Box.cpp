@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/19 23:19:14 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/20 03:16:23 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,14 @@ void Box::readRequest(int fdRequest, int epollFd)
 	if (bytesRead <= 0)
 	{
 		// std::cout << "Client disconnected." << std::endl;
+		if (clients[fdRequest].getDetectCgi())
+		{
+			int status;
+			kill(clients[fdRequest].getPidChild(),SIGKILL);
+			waitpid(clients[fdRequest].getPidChild(),&status,0);
+			if (unlink(clients[fdRequest].getSavedFileDel().c_str()) == -1)
+				throw errorMessage(500, clients[fdRequest].getSavedServerID());
+		}
 		close(fdRequest);
 		epoll_ctl(epollFd, EPOLL_CTL_DEL, fdRequest, 0);
 	}
