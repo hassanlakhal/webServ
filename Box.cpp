@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/20 22:21:41 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/20 23:48:18 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -518,6 +518,8 @@ void Box::setUpServer(webServer& data)
 				}
 				makeSocketNonBlocking(client_socket);
 				Client client(d);
+				if (clients.find(client_socket) != clients.end())
+					clients.erase(client_socket);
 				clients[client_socket] = client;
 				clients[client_socket].setResponse(rep);
 				this->_host = _InfoServer.getServer().at(d).getHost();

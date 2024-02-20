@@ -76,12 +76,12 @@ server:
   server_name: test
 
   location:
-    - path: /about
+    - path: /
     - root:   www
     - upload: on
     - autoindex: off
     - listing_dir: on
-    - index:  index.html
+    - index:  test.html
     - methods: GET
   location:
     - path: /home
