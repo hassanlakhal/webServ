@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/17 18:55:28 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/20 03:55:29 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ class Box
         void sendResponse(int fd);
         void timeOut(int fd, clock_t endTime);
         static bool ComparePath(const Location& loc1, const Location& loc2);
+        std::string generetPage(int status, std::map<int, std::string> httpMessage);
         ~Box();
 };
 

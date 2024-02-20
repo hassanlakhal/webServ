@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/20 03:16:23 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/20 05:41:34 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,7 +234,6 @@ void Box::readRequest(int fdRequest, int epollFd)
 	int bytesRead = recv(fdRequest, buffer, 2047, 0);
 	if (bytesRead <= 0)
 	{
-		// std::cout << "Client disconnected." << std::endl;
 		if (clients[fdRequest].getDetectCgi())
 		{
 			int status;
@@ -265,11 +264,31 @@ void Box::readRequest(int fdRequest, int epollFd)
 	}
 }
 
+std::string Box::generetPage(int status, std::map<int, std::string> httpMessage)
+{
+	std::stringstream iss;
+	std::string statString;
+	iss << status;
+	statString = iss.str();
+	std::string message = httpMessage[status];
+	std::string html = "<html>\n";
+	html += "<head>\n";
+	html += "<title>" + statString + "</title>\n";
+	html += "</head>\n";
+	html += "<body>\n";
+	html += "<h1 style=\"text-align: center;\">"+ statString +"</h1>\n";
+	html += "<p style=\"text-align: center;\"> " + message + "</p>\n";
+	html += "</body>\n";
+	html += "</html>\n";
+	return html;
+}
+
 void Box::sendResponse(int fd)
 {
 	signal(SIGPIPE,SIG_IGN);
 	std::string mess;
 	std::string countent;
+	ssize_t sendByte;
 	std::map<int, std::string> httpMessage;
 	Response &a = clients[fd].getResponse();
 	const int bufferSize = 1024;
@@ -278,33 +297,35 @@ void Box::sendResponse(int fd)
 	mess = httpMessage[a.getStatusCode()];
 	if (!a.getStatustCgi())
 	{
-
 		if (!a.getStatusHeader())
 		{
-			// std::cout << "aaaaaaaaaaaaaaaa1\n";
 			countent = a.getHeader();
 			a.openFile(a.getPathFile());
 			a.setStatusHeader(true);
-			// std::cout << "header : " << countent << std::endl;
-			send(fd,countent.c_str(),countent.length(),0);
+			sendByte = send(fd,countent.c_str(),countent.length(),0);
+			if (sendByte <= 0)
+			{
+				close(fd);
+				a.getFile().close();
+			}
+			
 		}
 		if (a.getFile().is_open())
 		{
-			// std::cout << "aaaaaaaaaaaaaaaa2\n";
-
 			a.getFile().read(buffer, bufferSize - 1);
 			std::streamsize bytesRead = a.getFile().gcount();
-
-			// std::cout << "read from file : " << bytesRead << std::endl;
 			if (bytesRead > 0)
 			{
-				// std::cout << "buffer : " << buffer << std::endl;
 				std::string body(buffer, bytesRead);
-				send(fd, body.c_str(), body.length(), 0);
+				sendByte = send(fd, body.c_str(), body.length(), 0);
+				if (sendByte <= 0)
+				{
+					close(fd);
+					a.getFile().close();
+				}
 			}
 			if (a.getFile().eof())
 			{
-				std::cout << "aaaaaaaaaaaaaaaa3\n";
 				close(fd);
 				a.getFile().close();
 				if(a.getStatusCode() == 200 || a.getStatusCode() == 201 || a.getStatusCode() == 301 || a.getStatusCode() == 204 )
@@ -315,9 +336,14 @@ void Box::sendResponse(int fd)
 		}
 		else if (!a.getBody().empty())
 		{
-			// std::cout << "aaaaaaaaaaaaaaaa4\n";
 			std::string body = a.getBody();
-			send(fd, body.c_str(), body.length(), 0);
+			sendByte = send(fd, body.c_str(), body.length(), 0);
+			if (sendByte <= 0)
+			{
+				close(fd);
+				a.getFile().close();
+				return ;
+			}
 			close(fd);
 			a.getFile().close();
 			if(a.getStatusCode() == 200 || a.getStatusCode() == 201 || a.getStatusCode() == 301 || a.getStatusCode() == 204)
@@ -327,7 +353,13 @@ void Box::sendResponse(int fd)
 		}
 		else
 		{
-			send(fd,"ERROR", 5,0);
+			std::string html = generetPage(a.getStatusCode(),httpMessage);
+			sendByte = send(fd,html.c_str(), html.size(),0);
+			if (sendByte <= 0)
+			{
+				close(fd);
+				return ;
+			}
 			close(fd);
 			return;
 		}
@@ -349,15 +381,34 @@ void Box::sendResponse(int fd)
 			if(pos != std::string::npos && (buff.find("Set-Cookie:") != std::string::npos || buff.find("Content-type:") != std::string::npos))
 			{
 				buff = response  + buff;
-				send(fd,buff.c_str(),buff.length(),0);
+				sendByte = send(fd,buff.c_str(),buff.length(),0);
+				if (sendByte <= 0)
+				{
+					close(fd);
+					a.getFile().close();
+				}
+				
 			}
 			else if(!a.getStatusHeader())
 			{
 				buff = response  + "Content-type: text/html\r\n\r\n" + buff;
-				send(fd,buff.c_str(),buff.length(),0);
+				sendByte = send(fd,buff.c_str(),buff.length(),0);
+				if (sendByte <= 0)
+				{
+					close(fd);
+					a.getFile().close();
+				}
 			}
 			else
-				send(fd, buff.c_str(), buff.length(), 0);
+			{
+				sendByte = send(fd,buff.c_str(),buff.length(),0);
+				if (sendByte <= 0)
+				{
+					close(fd);
+					a.getFile().close();
+				}
+				
+			}
 			if (a.getFile().eof())
 			{
 				unlink(a.getPathFile().c_str());
@@ -419,7 +470,6 @@ void Box::setUpServer(webServer& data)
 		{
 			throw std::runtime_error("Error\nsetting SO_REUSEADDR option");
 		}
-		// std::cout << "Create Socket \n";
 		host_add.sin_family = AF_INET;
 		host_add.sin_port = htons(data.getServer().at(i).getListen());
 		if (data.getServer().at(i).getHost())
@@ -464,7 +514,6 @@ void Box::setUpServer(webServer& data)
 				clients[client_socket].setResponse(rep);
 				this->_host = _InfoServer.getServer().at(d).getHost();
 				this->_listen = _InfoServer.getServer().at(d).getListen();
-				// std::cout <<  client_socket << " Client connected." << std::endl;
 				event.events = EPOLLIN | EPOLLOUT;
 				event.data.fd = client_socket;
 				if (epoll_ctl(epollFd, EPOLL_CTL_ADD, client_socket, &event) == -1)
@@ -475,8 +524,6 @@ void Box::setUpServer(webServer& data)
 			}
 			else
 			{
-					// std::cout << "fd of the client :------------------------------ " <<events[i].data.fd << std::endl;
-
 				if (events[i].events & EPOLLIN && clients[events[i].data.fd].getResponse().getStatusResponse())
 				{
 					try
@@ -500,13 +547,11 @@ void Box::setUpServer(webServer& data)
 					catch (int a)
 					{
 
-						// std::cout << "chlid ba9i khadam\n";
 					}
 				}
 				else if(clients[events[i].data.fd].getDetectCgi()){
 					try
 					{
-						// std::cout << "bbbbbbbbbbbbbb\n";
 						int fd = events[i].data.fd;
 						Location mylocation = clients[fd].getLocation();
 						std::string reqPath = clients[fd].getSavedReqPath();
@@ -530,20 +575,12 @@ void Box::setUpServer(webServer& data)
 					}
 					catch (int a)
 					{
-						// std::cout << "chlid ba9i khadam\n";
+						
 					}
-					// std::cout << "fd of the client :------------------------------ " <<events[i].data.fd << std::endl;
-					// if (!clients[events[i].data.fd].getResponse().getStatusResponse())
-					// {
-					// 	// std::cout << "525252525\n";
-					// 	sendResponse(events[i].data.fd);
-					// 	// close(events[i].data.fd);
-					// }
 
 				}
 				else if ((events[i].events & EPOLLOUT))
 				{
-					// std::cout << "ccccccccccccccccccccccc\n";
 					try
 					{
 						clock_t endTime =  clock();
@@ -578,9 +615,7 @@ void Box::setUpServer(webServer& data)
 					}
 					if (!clients[events[i].data.fd].getResponse().getStatusResponse())
 					{
-						// std::cout << "525252525\n";
 						sendResponse(events[i].data.fd);
-						// close(events[i].data.fd);
 					}
 				}
 			}
