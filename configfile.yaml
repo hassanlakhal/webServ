@@ -10,6 +10,7 @@ server:
     - root: www
     - listing_dir: on
     - upload: on
+    - upload_path: /upload
     - autoindex: off
     - methods:  POST GET
     - index:  index.html

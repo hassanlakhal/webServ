@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Post.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/17 17:10:41 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/20 07:10:31 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void post(Box &box, int ind, int fd){
 		if(mapInfo["Transfer-Encoding"].empty()){
 			if(!box.getClients()[fd].getOutFileOpened()){
 				std::stringstream iss;
+				if(myLocation.getUploadPath().empty())
+					throw errorMessage(404, serverID);
 				iss << myLocation.getRoot() + "/" + myLocation.getUploadPath();
 				iss << "/file_";
 				iss << time(0);
