@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Post.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/21 01:25:20 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/21 15:38:28 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void post(Box &box, int ind, int fd){
 	else
 		file = "";
 
-
 	realpath(reqPath.c_str(), post_path);
 	std::string sd(post_path);
 	realpath(".", current_path);
@@ -48,7 +47,7 @@ void post(Box &box, int ind, int fd){
 		if(mapInfo["Transfer-Encoding"].empty()){
 			if(!box.getClients()[fd].getOutFileOpened()){
 				std::stringstream iss;
-				if(myLocation.getUploadPath().empty())
+				if(myLocation.getUploadPath().empty() && file.empty())
 					throw errorMessage(404, serverID);
 				iss << myLocation.getRoot() + "/" + myLocation.getUploadPath();
 				iss << "/file_";
@@ -66,7 +65,6 @@ void post(Box &box, int ind, int fd){
 			size_t nb;
 			iss >> nb;
 			if(box.getClients()[fd].getSizeBody() >= nb){
-
 				box.getClients()[fd].setOutFileOpened(false);
 				fclose(box.getClients()[fd].getOutFile());
 				body.clear();
@@ -86,7 +84,7 @@ void post(Box &box, int ind, int fd){
 		else if(mapInfo["Transfer-Encoding"] == "chunked"){
 			std::string to_write;
 			if(!box.getClients()[fd].getOutFileOpened()){
-				if(myLocation.getUploadPath().empty())
+				if(myLocation.getUploadPath().empty() && file.empty())
 					throw errorMessage(404,serverID);
 				std::stringstream iss;
 				iss << myLocation.getRoot() + "/" + myLocation.getUploadPath();

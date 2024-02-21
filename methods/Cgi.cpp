@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/21 00:37:04 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:11:45 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ std::string fillMapType(std::string extention){
 
 
 int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string file, int serverID, std::string method, std::string postFile){
+
 	box.getClients()[fd].setLocation(myLocation);
 	box.getClients()[fd].setSavedReqPath(reqPath);
 	box.getClients()[fd].setSavedFile(file);
@@ -111,7 +112,6 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 					outfile = std::fopen(fileDel.c_str(), "w");
 					if(!outfile)
 						throw errorMessage(500, serverID);
-
 					int status;
 					clock_t start_time;
 					start_time = clock();
@@ -129,8 +129,8 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 								throw errorMessage(500, serverID);
 							}
 						}
-						std::string arg2 = reqPath;
-						// rado 4iiir smaya dyal file 
+						std::string arg2 = reqPath.substr(reqPath.rfind("/") + 1);
+						// rado 4iiir smaya dyal file
 						char *arg[] = {(char*)it->second.c_str(), (char*)(arg2.c_str()), NULL};
 
 						if(dup2(fileno(outfile), 1) == -1)
@@ -165,18 +165,22 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 							(char *)h.c_str(),
 							NULL
 						};
-						// hna dir change dir 
+						// hna dir change dir
+						if(reqPath.find("/") != std::string::npos){
+							std::string newD = reqPath.substr(0, reqPath.find("/"));
+							chdir(newD.c_str());
+ 						}
 						execve(arg[0],arg , env);
 						exit(48);
 					}
 
 					std::fclose(outfile);
-					// box.getClients()[fd].setStatusChild(status);
 				}
 				int status ;
 				int serverID= box.getClients()[fd].getSavedServerID();
 				fileDel = box.getClients()[fd].getSavedFileDel();
 				clock_t endTime = clock();
+				// std::cout << "wsal hnaaaaaaaa\n";
 				if (endTime - box.getClients()[fd].getStartTimeCGI() >= 5000000 )
 				{
 					box.getClients()[fd].setDetectCgi(false);

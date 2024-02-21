@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/21 00:35:16 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:50:49 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,8 +211,8 @@ void Box::sendRequest(int fd)
 	clients[fd].setPathInfo(clients[fd].getPath());
 	if(!clients[fd].getPathInfo().empty()){
 		if(clients[fd].getPath().find(clients[fd].getPathInfo()) != std::string::npos){
-			clients[fd].setPath(clients[fd].getPath().substr(0, clients[fd].getPath().find(clients[fd].getPathInfo())));
-			clients[fd].setPathLoc(clients[fd].getPathLoc().substr(0, clients[fd].getPathLoc().find(clients[fd].getPathInfo())));
+			clients[fd].setPath(clients[fd].getPath().substr(0, clients[fd].getPath().rfind(clients[fd].getPathInfo())));
+			clients[fd].setPathLoc(clients[fd].getPathLoc().substr(0, clients[fd].getPathLoc().rfind(clients[fd].getPathInfo())));
 		}
 	}
 	if(clients[fd].getMethod() == "GET")
@@ -337,7 +337,7 @@ void Box::sendResponse(int fd)
 				close(fd);
 				a.getFile().close();
 				if(a.getStatusCode() == 200 || a.getStatusCode() == 201 || a.getStatusCode() == 301 || a.getStatusCode() == 204 )
-					std::cout << GREEN << a.getStatusCode() << mess << " " << fd <<  RESET << std::endl;
+					std::cout << GREEN << a.getStatusCode() << mess <<  RESET << std::endl;
 				else
 					std::cout << RED << a.getStatusCode() << mess << RESET << std::endl;
 			}
@@ -355,7 +355,7 @@ void Box::sendResponse(int fd)
 			close(fd);
 			a.getFile().close();
 			if(a.getStatusCode() == 200 || a.getStatusCode() == 201 || a.getStatusCode() == 301 || a.getStatusCode() == 204)
-				std::cout << GREEN << a.getStatusCode() << mess << " " << fd <<  RESET << std::endl;
+				std::cout << GREEN << a.getStatusCode() << mess <<  RESET << std::endl;
 			else
 				std::cout << RED << a.getStatusCode() << mess << RESET << std::endl;
 		}

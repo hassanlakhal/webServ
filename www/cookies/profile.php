@@ -14,8 +14,6 @@ if (!isset($_COOKIE["name"]) || !isset($_COOKIE["email"]) || isset($_POST["logou
 <head>
   <meta charset="UTF-8">
   <title>Profile</title>
-  <link rel="stylesheet" href="css/style.css">
-
 </head>
 <body>
   <div class="card">
