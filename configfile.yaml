@@ -42,7 +42,7 @@ server:
 
 server:
   listen: 8080
-  host: localhost
+  host: 127.0.0.1
   root: www
   client_max_body_size: 1.02G
   server_name: localhost
@@ -70,7 +70,7 @@ server:
     - cgi_path: .sh, /usr/bin/bash
 server:
   listen: 8081
-  host: localhost
+  host: 127.0.0.1
   root: www
   client_max_body_size: 1G
   server_name: test
@@ -82,7 +82,7 @@ server:
     - autoindex: off
     - listing_dir: on
     - index:  test.html
-    - methods: GET
+    - methods: POST
   location:
     - path: /home
     - root:  www

@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/20 23:48:18 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/21 00:35:16 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -587,7 +587,6 @@ void Box::setUpServer(webServer& data)
 					{
 
 					}
-
 				}
 				else if ((events[i].events & EPOLLOUT))
 				{
@@ -607,7 +606,7 @@ void Box::setUpServer(webServer& data)
 									fclose(clients[events[i].data.fd].getOutFile());
 									clients[events[i].data.fd].setOutFileOpened(false);
 								}
-								throw errorMessage(504, clients[events[i].data.fd].getServerId());
+								throw errorMessage(408, clients[events[i].data.fd].getServerId());
 							}
 						}
 					}

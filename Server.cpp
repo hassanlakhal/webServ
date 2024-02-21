@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/16 09:59:22 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/21 00:28:09 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ Server::Server()
     eroorPage[414] = "error_page/414.html";
     eroorPage[413] = "error_page/413.html";
     eroorPage[405] = "error_page/405.html";
+    eroorPage[408] = "error_page/408.html";
     eroorPage[403] = "error_page/403.html";
     eroorPage[500] = "error_page/500.html";
     eroorPage[501] = "error_page/501.html";

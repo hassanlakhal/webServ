@@ -26,6 +26,7 @@ Response::Response()
     HttpStatusMessages[403] = " Forbidden";
     HttpStatusMessages[404] = " Not Found";
     HttpStatusMessages[405] = " Method Not Allowed";
+    HttpStatusMessages[408] = " Request Timeout";
     HttpStatusMessages[500] = " Internal Server Error";
     HttpStatusMessages[501] = " Not Implemented";
     HttpStatusMessages[502] = " Bad Gateway";
