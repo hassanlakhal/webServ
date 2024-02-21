@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/21 16:11:45 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:41:50 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,11 +165,11 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 							(char *)h.c_str(),
 							NULL
 						};
-						// hna dir change dir
 						if(reqPath.find("/") != std::string::npos){
-							std::string newD = reqPath.substr(0, reqPath.find("/"));
+							std::string newD = reqPath.substr(0, reqPath.rfind("/"));
 							chdir(newD.c_str());
  						}
+
 						execve(arg[0],arg , env);
 						exit(48);
 					}
@@ -180,7 +180,6 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 				int serverID= box.getClients()[fd].getSavedServerID();
 				fileDel = box.getClients()[fd].getSavedFileDel();
 				clock_t endTime = clock();
-				// std::cout << "wsal hnaaaaaaaa\n";
 				if (endTime - box.getClients()[fd].getStartTimeCGI() >= 5000000 )
 				{
 					box.getClients()[fd].setDetectCgi(false);

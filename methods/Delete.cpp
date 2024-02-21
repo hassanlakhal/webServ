@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:53 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/17 17:10:35 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:56:52 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,23 @@ bool check_empty(std::string path) {
     return true;
 }
 
+void help_remove_ressource(std::string reqPath, int serverID){
+	struct stat file_stat;
+	stat(reqPath.c_str(), &file_stat);
+	if(check_empty(reqPath.c_str())){
+		if (stat(reqPath.c_str(), &file_stat) != 0)
+			throw errorMessage(500, serverID);
+		if((file_stat.st_mode & S_IWUSR)){
+			if (rmdir(reqPath.c_str()) != 0)
+				throw errorMessage(500, serverID);
+		}
+		else
+			throw errorMessage(403, serverID);
+	}
+	else
+		throw errorMessage(403, serverID);
+}
+
 void remove_ressource(std::string reqPath, int serverID){
 
 	struct stat file_stat;
@@ -46,7 +63,6 @@ void remove_ressource(std::string reqPath, int serverID){
 			struct dirent *dent;
 			if(check_empty(reqPath.c_str())){
 				std::cout << "content : " << reqPath << "\n";
-
 				if (stat(reqPath.c_str(), &file_stat) != 0)
 					throw errorMessage(500, serverID);
 				if((file_stat.st_mode & S_IWUSR)){
@@ -67,7 +83,7 @@ void remove_ressource(std::string reqPath, int serverID){
 					std::string newReaPath = reqPath + "/" + tmp;
 					remove_ressource(newReaPath, serverID);
 				}
-				remove_ressource(reqPath, serverID);
+				help_remove_ressource(reqPath, serverID);
 
 				closedir(dir);
 			}

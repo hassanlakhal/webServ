@@ -12,7 +12,7 @@ server:
     - upload: on
     - upload_path: /upload
     - autoindex: off
-    - methods:  POST GET
+    - methods:  POST GET DELETE
     - index:  index.html
     - cgi_path: .py, /usr/bin/python3
     - cgi_path: .php, /usr/bin/php-cgi
@@ -53,7 +53,7 @@ server:
     - upload: on
     - autoindex: on
     - listing_dir: on
-    - methods: POST GET
+    - methods: POST GET DELETE
     - cgi_path: .php, /usr/bin/php-cgi
 
   location:
