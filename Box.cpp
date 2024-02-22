@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/21 14:50:49 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/22 22:47:15 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,8 @@ void Box::methodAllowd(std::vector<std::string>& methods, const std::string& met
 		if (it != methods.end())
 			return ;
 	}
+	else
+		throw errorMessage(501,id);
 	throw errorMessage(405,id);
 }
 
@@ -143,6 +145,7 @@ bool Box::checkDup(const std::vector<Server>& sr, std::vector<int>& posServer)
 	{
 		if ((sr[i].getHost() == _host) && (sr[i].getListen() == _listen))
 		{
+			std::cout << "d: " << i << std::endl; 
 			posServer.push_back(i);
 		}
 	}
@@ -154,7 +157,6 @@ bool Box::checkDup(const std::vector<Server>& sr, std::vector<int>& posServer)
 
 bool Box::checkName(const std::vector<Server>& sr, std::string name, size_t  &i,std::vector<int>& posServer)
 {
-	(void)name;
 	for (; i < posServer.size(); ++i)
 	{
 		std::vector<std::string> names = sr[posServer[i]].getServerName();
@@ -173,20 +175,7 @@ void Box::sendRequest(int fd)
 {
 	int idOfServer = 0;
 	std::string pathLocation;
-	std::vector<int> posServer;
-	std::map<std::string, std::string> mapInfo = clients[fd].getInfoMap();
-	if(checkDup(_InfoServer.getServer(),posServer))
-	{
-		size_t  i = 0;
-		std::istringstream iss(mapInfo["Host"]);
-		std::string host;
-		getline(iss,host,':');
-		if (checkName(_InfoServer.getServer(), host,i,posServer))
-			idOfServer = i;
-	}
-	else
-		idOfServer = clients[fd].getServerId();
-	clients[fd].setServerId(idOfServer);
+	idOfServer = clients[fd].getServerId();
 	std::vector<Location> loc = _InfoServer.getServer()[idOfServer].getLocation();
 	if(!clients[fd].getMatchedTime())
 	{
@@ -239,6 +228,8 @@ int findKey(const mapR& myMap, const std::string& value)
 void Box::readRequest(int fdRequest, int epollFd)
 {
 	char buffer[2048] = {0};
+	int idOfServer = 0;
+	double nb = 0;
 	int bytesRead = recv(fdRequest, buffer, 2047, 0);
 	if (bytesRead <= 0)
 	{
@@ -260,8 +251,42 @@ void Box::readRequest(int fdRequest, int epollFd)
 			clients[fdRequest].setRequset(buff);
 		if (clients[fdRequest].getfullRequset().find("\r\n\r\n") != std::string::npos)
 		{
+			clients[fdRequest].setServerId(idOfServer);
 			if (clients[fdRequest].getLoadingHeader())
+			{
 				clients[fdRequest].ParsingRequest();
+				std::map<std::string, std::string> mapInfo = clients[fdRequest].getInfoMap();
+				std::vector<int> posServer;
+				std::istringstream iss(mapInfo["Content-Length"]);
+				if(checkDup(_InfoServer.getServer(),posServer))
+				{
+					size_t  i = 0;
+					std::istringstream iss(mapInfo["Host"]);
+					std::string host;
+					getline(iss,host,':');
+					if (checkName(_InfoServer.getServer(), host,i,posServer))
+						idOfServer = i;
+				}
+				else
+					idOfServer = clients[fdRequest].getServerId();
+				clients[fdRequest].setServerId(idOfServer);
+				iss >> nb;
+				if (clients[fdRequest].getMethod() == "POST")
+				{
+					if(mapInfo["Content-Length"].empty())
+						throw errorMessage(400,idOfServer);
+				}
+				if (mapInfo["Host"].empty())
+					throw errorMessage(400,idOfServer);
+				if (!mapInfo["Transfer-Encoding"].empty() && mapInfo["Transfer-Encoding"] != "chunked")
+					throw errorMessage(501,idOfServer);
+				if (clients[fdRequest].getPath().find("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~!$&'()*+,;=") != std::string::npos)
+					throw  errorMessage(400,idOfServer);
+				if (mapInfo["Host"].length() + clients[fdRequest].getPath().length() > 2048)
+					throw errorMessage(414,idOfServer);
+				if (nb > _InfoServer.getServer()[idOfServer].getMaxBodySize())
+					throw errorMessage(413,idOfServer);
+			}
 			else
 			{
 				std::istringstream iss(buff);

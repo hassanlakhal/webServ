@@ -1,9 +1,9 @@
 server:
-  listen: 8090
-  host: localhost
+  listen: 8080
+  host: 127.0.0.1
   root: www
-  client_max_body_size: 100319.99B
-  server_name: test
+  client_max_body_size: 1G
+  server_name: server1
 
   location:
     - path: /loc
@@ -19,11 +19,12 @@ server:
     - cgi_path: .sh, /usr/bin/bash
   location:
     - path: /
-    - root:  www/about/gf
+    - root:  server1
     - upload: on
     - listing_dir: off
-    - autoindex: off
-    - methods: POST PUT GET DELETE
+    - autoindex: on
+    - upload_path: ./
+    - methods: POST
     - index:  index.html
     - cgi_path: .py, /usr/bin/python3
     - cgi_path: .php, /usr/bin/php-cgi
@@ -45,15 +46,17 @@ server:
   host: 127.0.0.1
   root: www
   client_max_body_size: 1.02G
-  server_name: localhost
+  server_name: server2
 
   location:
     - path: /
-    - root:   www
+    - root:  server2
     - upload: on
     - autoindex: on
-    - listing_dir: on
+    - listing_dir: off
+    - upload_path: ./
     - methods: POST GET DELETE
+    - index: index.html
     - cgi_path: .php, /usr/bin/php-cgi
 
   location:

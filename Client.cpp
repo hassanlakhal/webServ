@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/21 13:48:10 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/22 22:39:34 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,6 @@ void Client::ParsingRequest()
 	std::string line;
 	std::string temp;
 	webServer wserv = getMyServer();
-	double nb = 0;
 	if (loadingHead)
 	{
 		setStartLine(iss);
@@ -225,23 +224,6 @@ void Client::ParsingRequest()
 			loadingFormation(line);
 		}
 		setBody(iss);
-		std::istringstream iss(Map["Content-Length"]);
-		iss >> nb;
-		if (method == "POST")
-		{
-			if(Map["Content-Length"].empty())
-				throw errorMessage(400,serverId);
-		}
-		if (Map["Host"].empty())
-			throw errorMessage(400,serverId);
-		if (!Map["Transfer-Encoding"].empty() && Map["Transfer-Encoding"] != "chunked")
-			  throw errorMessage(501,serverId);
-		if (path.find("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~!$&'()*+,;=") != std::string::npos)
-			throw  errorMessage(400,serverId);
-		if (Map["Host"].length() + path.length() > 2048)
-			   throw errorMessage(414,serverId);
-		if (nb > wserv.getServer()[serverId].getMaxBodySize())
-			throw errorMessage(413,serverId);
 		loadingHead = false;
 	}
 }
