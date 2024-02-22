@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/22 22:47:15 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/23 00:09:19 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ bool Box::checkDup(const std::vector<Server>& sr, std::vector<int>& posServer)
 	{
 		if ((sr[i].getHost() == _host) && (sr[i].getListen() == _listen))
 		{
-			std::cout << "d: " << i << std::endl; 
 			posServer.push_back(i);
 		}
 	}
@@ -251,7 +250,6 @@ void Box::readRequest(int fdRequest, int epollFd)
 			clients[fdRequest].setRequset(buff);
 		if (clients[fdRequest].getfullRequset().find("\r\n\r\n") != std::string::npos)
 		{
-			clients[fdRequest].setServerId(idOfServer);
 			if (clients[fdRequest].getLoadingHeader())
 			{
 				clients[fdRequest].ParsingRequest();
@@ -546,6 +544,7 @@ void Box::setUpServer(webServer& data)
 				if (clients.find(client_socket) != clients.end())
 					clients.erase(client_socket);
 				clients[client_socket] = client;
+				std::cout << "id server " << d << " " << client_socket << " " << clients[client_socket].getServerId()<<std::endl;
 				clients[client_socket].setResponse(rep);
 				this->_host = _InfoServer.getServer().at(d).getHost();
 				this->_listen = _InfoServer.getServer().at(d).getListen();

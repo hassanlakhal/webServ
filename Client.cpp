@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/22 22:39:34 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/23 00:05:10 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,6 +316,7 @@ int Client::getInd(){
 void Client::setServerId(int serverId)
 {
 	this->serverId = serverId;
+	std::cout << "set " << this->serverId << std::endl;
 }
 
 int Client::getIncremetedFileName(){
