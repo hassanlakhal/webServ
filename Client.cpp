@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/23 00:05:10 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/23 01:12:08 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,11 @@ void Client::setStartLine(std::istringstream& iss)
 	getline(iss,method,' ');
 	getline(iss,path,' ');
 	getline(iss,protocal, '\n');
-	if (method.empty() || protocal.empty() || path.empty() || protocal != "HTTP/1.1\r")
-		throw errorMessage(400,serverId);
+}
+
+std::string  Client::getProtocal()
+{
+	return this->protocal;
 }
 
 void Client::loadingFormation(std::string& line)
@@ -316,7 +319,6 @@ int Client::getInd(){
 void Client::setServerId(int serverId)
 {
 	this->serverId = serverId;
-	std::cout << "set " << this->serverId << std::endl;
 }
 
 int Client::getIncremetedFileName(){

@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/22 21:15:10 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/23 00:39:42 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ class Client
         std::string getPathInfo();
         void setPathInfoChecker(bool b);
         bool getPathInfoChecker();
+        std::string  getProtocal();
         ~Client();
 };
 

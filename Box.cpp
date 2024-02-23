@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/23 00:09:19 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/23 01:12:49 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,6 +269,8 @@ void Box::readRequest(int fdRequest, int epollFd)
 					idOfServer = clients[fdRequest].getServerId();
 				clients[fdRequest].setServerId(idOfServer);
 				iss >> nb;
+				if (clients[fdRequest].getMethod().empty() || clients[fdRequest].getProtocal().empty() || clients[fdRequest].getPath().empty() || clients[fdRequest].getProtocal() != "HTTP/1.1\r")
+					throw errorMessage(400,idOfServer);
 				if (clients[fdRequest].getMethod() == "POST")
 				{
 					if(mapInfo["Content-Length"].empty())
@@ -339,7 +341,7 @@ void Box::sendResponse(int fd)
 				close(fd);
 				a.getFile().close();
 			}
-
+			return ;
 		}
 		if (a.getFile().is_open())
 		{
@@ -544,7 +546,6 @@ void Box::setUpServer(webServer& data)
 				if (clients.find(client_socket) != clients.end())
 					clients.erase(client_socket);
 				clients[client_socket] = client;
-				std::cout << "id server " << d << " " << client_socket << " " << clients[client_socket].getServerId()<<std::endl;
 				clients[client_socket].setResponse(rep);
 				this->_host = _InfoServer.getServer().at(d).getHost();
 				this->_listen = _InfoServer.getServer().at(d).getListen();
