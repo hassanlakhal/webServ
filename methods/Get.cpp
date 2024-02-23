@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Get.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:59:17 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/17 15:23:56 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/23 02:37:05 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void get(Box &box, int ind, int fd){
 
 
 	struct stat file_stat;
+	struct stat fileIndstat;
 
 	if(stat(reqPath.c_str(), &file_stat) != 0)
 		throw errorMessage(404, serverID);
@@ -91,6 +92,14 @@ void get(Box &box, int ind, int fd){
 					for (size_t i = 0; i < myLocation.getIndexes().size(); i++, it++)
 					{
 						file =  *it;
+						std::string path = reqPath + "/" + file;
+						std::string type = "text/html";
+						stat(path.c_str(),&fileIndstat);
+						if(S_ISDIR(fileIndstat.st_mode))
+						{
+							std::string pathLocation = myLocation.getPath() + "/" + file;
+							throw errorMessage(301,pathLocation,type);
+						}
 						if(!cgi(box, myLocation, fd, reqPath + "/" + file, file, serverID, "GET", ""))
 							continue;
 					}

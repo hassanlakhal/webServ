@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/23 01:12:49 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/23 02:46:04 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -341,6 +341,8 @@ void Box::sendResponse(int fd)
 				close(fd);
 				a.getFile().close();
 			}
+			if(a.getStatusCode() == 301)
+					std::cout << GREEN << a.getStatusCode() << mess <<  RESET << std::endl;
 			return ;
 		}
 		if (a.getFile().is_open())
