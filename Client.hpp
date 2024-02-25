@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/23 00:39:42 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/25 23:42:34 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ class Client
         std::string getSavedMethod();
         std::string getSavedPostFIle();
         void setLocation(Location& loc);
-        Location getLocation();
+        Location& getLocation();
 		void setSavedDileDel(std::string str);
         std::string getSavedFileDel();
         void setStartTimeCGI(clock_t start_time);

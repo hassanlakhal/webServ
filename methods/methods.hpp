@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   methods.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:02:58 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/13 18:10:38 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/25 22:46:56 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef std::map<std::string, std::string> infoMap;
 class Box;
 void get(Box &box, int ind, int fd);
 void post(Box &box, int ind, int fd);
-int cgi(Box& box, Location& myLocation, int fd, std::string, std::string file, int serverID, std::string method, std::string postFile);
+int cgi(Client& client, Location& myLocation, std::string reqPath, std::string file, int serverID, std::string method, std::string postFile);
 void deleteM(Box &box, int ind, int fd);
 
 #endif

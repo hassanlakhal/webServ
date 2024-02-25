@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Post.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/21 15:38:28 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/25 22:50:19 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void post(Box &box, int ind, int fd){
 				fclose(box.getClients()[fd].getOutFile());
 				body.clear();
 				if(!file.empty()){
-					if(cgi(box, myLocation, fd, reqPath, file, serverID, "POST", box.getClients()[fd].getFilePath())){
+					if(cgi(box.getClients()[fd], myLocation, reqPath, file, serverID, "POST", box.getClients()[fd].getFilePath())){
 					}
 					else
 						throw errorMessage(404, serverID);
@@ -111,7 +111,7 @@ void post(Box &box, int ind, int fd){
 						box.getClients()[fd].setStringBody('e', "");
 						fclose(box.getClients()[fd].getOutFile());
 						if(!file.empty()){
-							if(cgi(box, myLocation, fd, reqPath, file, serverID, "POST", box.getClients()[fd].getFilePath())){
+							if(cgi(box.getClients()[fd], myLocation, reqPath, file, serverID, "POST", box.getClients()[fd].getFilePath())){
 
 							}
 							else
@@ -148,7 +148,7 @@ void post(Box &box, int ind, int fd){
 						body.clear();
 						fclose(box.getClients()[fd].getOutFile());
 						if(!file.empty()){
-							if(cgi(box, myLocation, fd, reqPath, file, serverID, "POST", filePath)){
+							if(cgi(box.getClients()[fd], myLocation, reqPath, file, serverID, "POST", filePath)){
 
 							}
 							else

@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/23 02:46:04 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/25 23:58:05 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -581,22 +581,17 @@ void Box::setUpServer(webServer& data)
 						clients[events[i].data.fd].setTimeOut(0);
 						clients[events[i].data.fd].setMatchedTime(false);
 					}
-					catch (int a)
-					{
-
-					}
 				}
 				else if(clients[events[i].data.fd].getDetectCgi()){
 					try
 					{
 						int fd = events[i].data.fd;
-						Location mylocation = clients[fd].getLocation();
 						std::string reqPath = clients[fd].getSavedReqPath();
 						std::string file = clients[fd].getSavedFile();
 						int serverID = clients[fd].getSavedServerID();
 						std::string method = clients[fd].getSavedMethod();
 						std::string postFile= clients[fd].getSavedPostFIle();
-						cgi(*this, mylocation, fd, reqPath, file, serverID, method, postFile);
+						cgi(clients[fd], clients[fd].getLocation(),reqPath, file, serverID, method, postFile);
 					}
 					catch (const errorMessage& e)
 					{
@@ -609,10 +604,6 @@ void Box::setUpServer(webServer& data)
 						e.getCgiStatus());
 						clients[events[i].data.fd].setTimeOut(0);
 						clients[events[i].data.fd].setMatchedTime(false);
-					}
-					catch (int a)
-					{
-
 					}
 				}
 				else if ((events[i].events & EPOLLOUT))

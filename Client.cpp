@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/23 01:12:08 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/25 23:42:26 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -387,7 +387,7 @@ void Client::setLocation(Location& loc){
 	this->savedLocation = loc;
 }
 
-Location Client::getLocation(){
+Location& Client::getLocation(){
 	return this->savedLocation;
 }
 

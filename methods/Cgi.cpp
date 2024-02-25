@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/21 16:41:50 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/25 23:57:27 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,40 +40,43 @@ std::string fillMapType(std::string extention){
 }
 
 
-int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string file, int serverID, std::string method, std::string postFile){
+int cgi(Client& client, Location& myLocation, std::string reqPath, std::string file, int serverID, std::string method, std::string postFile){
 
-	box.getClients()[fd].setLocation(myLocation);
-	box.getClients()[fd].setSavedReqPath(reqPath);
-	box.getClients()[fd].setSavedFile(file);
-	box.getClients()[fd].setSavedServerID(serverID);
-	box.getClients()[fd].setSavedMethod(method);
-	box.getClients()[fd].setSavedPostFIle(postFile);
 
 	std::string extention = "";
-	char cgi_path[PATH_MAX];
-	char current_path[PATH_MAX];
-	char root_path[PATH_MAX];
+	char cgi_path[PATH_MAX] = {0};
+	char current_path[PATH_MAX] = {0};
+	char root_path[PATH_MAX] = {0};
 	if(file.find('.') != std::string::npos)
 		extention = file.substr(file.find('.') + 1);
 	bool cgiExist = false;
 	std::string tem;
 	std::string fileDel;
 
-	realpath(reqPath.c_str(), cgi_path);
-	std::string sd(cgi_path);
-	realpath(".", current_path);
-	std::string sc(current_path);
-	realpath(myLocation.getRoot().c_str(), root_path);
-	std::string sr(root_path);
-	if(sd.find(sc) == std::string::npos || sd.find(sr) == std::string::npos)
-		throw errorMessage(403, serverID);
-
+	if(!client.getDetectCgi())
+	{
+		client.setLocation(myLocation);
+		client.setSavedReqPath(reqPath);
+		client.setSavedFile(file);
+		client.setSavedServerID(serverID);
+		client.setSavedMethod(method);
+		client.setSavedPostFIle(postFile);
+		realpath(reqPath.c_str(), cgi_path);
+		std::string sd(cgi_path);
+		realpath(".", current_path);
+		std::string sc(current_path);
+		realpath(myLocation.getRoot().c_str(), root_path);
+		std::string sr(root_path);
+		if(sd.find(sc) == std::string::npos || sd.find(sr) == std::string::npos)
+			throw errorMessage(403, serverID);
 	FILE * tmpfile = std::fopen((reqPath).c_str(), "r");
 	if(!tmpfile){
 		return 0;
 	}
 	else
 		std::fclose(tmpfile);
+	}
+
 	if(!myLocation.getCgiPath().size() && method == "GET")
 	{
 		std::string formatType = fillMapType(extention);
@@ -97,27 +100,27 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 			if(it->first == "." + extention)
 			{
 				cgiExist = true;
-				if(!box.getClients()[fd].getDetectCgi()){
-					box.getClients()[fd].setDetectCgi(true);
+				if(!client.getDetectCgi()){
+					client.setDetectCgi(true);
 					std::string line;
 					FILE* outfile;
 					std::stringstream iss;
 					iss << "outfile_";
-					iss << box.getClients()[fd].getIncremetedFileName();
-					box.getClients()[fd].IncremetedFileName();
+					iss << client.getIncremetedFileName();
+					client.IncremetedFileName();
 					iss << "_";
 					iss << time(0);
 					fileDel = iss.str();
-					box.getClients()[fd].setSavedDileDel(fileDel);
+					client.setSavedDileDel(fileDel);
 					outfile = std::fopen(fileDel.c_str(), "w");
 					if(!outfile)
 						throw errorMessage(500, serverID);
 					int status;
 					clock_t start_time;
 					start_time = clock();
-					box.getClients()[fd].setStartTimeCGI(start_time);
-					box.getClients()[fd].setPidChild(fork());
-					int pid = box.getClients()[fd].getPidChild();
+					client.setStartTimeCGI(start_time);
+					client.setPidChild(fork());
+					int pid = client.getPidChild();
 					if(pid == 0){
 
 						FILE* infilePost = NULL;
@@ -144,15 +147,15 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 							std::fclose(infilePost);
 						}
 
-						std::map<std::string, std::string> mapInfo = box.getClients()[fd].getInfoMap();
+						std::map<std::string, std::string> mapInfo = client.getInfoMap();
 						std::string a = "CONTENT_LENGTH=" + mapInfo["Content-Length"];
 						std::string b = "CONTENT_TYPE=" + mapInfo["Content-Type"];
 						std::string c = "PATH_TRANSLATED=" + arg2;
-						std::string d = "REQUEST_METHOD=" + box.getClients()[fd].getMethod();
-						std::string e = "QUERY_STRING=" + box.getQueryString();
+						std::string d = "REQUEST_METHOD=" + client.getMethod();
+						std::string e = "QUERY_STRING=" ;
 						std::string f = "REDIRECT_STATUS=CGI";
 						std::string g = "HTTP_COOKIE=" + mapInfo["Cookie"];
-						std::string h = "PATH_INFO=" + box.getClients()[fd].getPathInfo() ;
+						std::string h = "PATH_INFO=" + client.getPathInfo() ;
 
 						char *env[]= {
 							(char *)a.c_str(),
@@ -177,22 +180,22 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 					std::fclose(outfile);
 				}
 				int status ;
-				int serverID= box.getClients()[fd].getSavedServerID();
-				fileDel = box.getClients()[fd].getSavedFileDel();
+				int serverID= client.getSavedServerID();
+				fileDel = client.getSavedFileDel();
 				clock_t endTime = clock();
-				if (endTime - box.getClients()[fd].getStartTimeCGI() >= 5000000 )
+				if (endTime - client.getStartTimeCGI() >= 5000000 )
 				{
-					box.getClients()[fd].setDetectCgi(false);
-					kill(box.getClients()[fd].getPidChild(), SIGKILL);
-					waitpid(box.getClients()[fd].getPidChild(), &status,0);
+					client.setDetectCgi(false);
+					kill(client.getPidChild(), SIGKILL);
+					waitpid(client.getPidChild(), &status,0);
 					if(unlink(fileDel.c_str()) == -1)
 						throw errorMessage(500, serverID);
 					throw errorMessage(504, serverID);
 				}
-				else if (waitpid(box.getClients()[fd].getPidChild(), &status, WNOHANG) == 0){
-					throw 0;
+				else if (waitpid(client.getPidChild(), &status, WNOHANG) == 0){
+					return 1;
 				}
-				box.getClients()[fd].setDetectCgi(false);
+				client.setDetectCgi(false);
 				if(WEXITSTATUS(status) != 0){
 					std::cout << "status : " << WEXITSTATUS(status) << std::endl;
 					if(unlink(fileDel.c_str()) == -1)
@@ -201,7 +204,7 @@ int cgi(Box& box, Location& myLocation, int fd, std::string reqPath, std::string
 					std::cout << "status : " <<WEXITSTATUS(status) << "\n";
 				}
 				if(method == "POST"){
-					postFile = box.getClients()[fd].getSavedPostFIle();
+					postFile = client.getSavedPostFIle();
 					if(unlink(postFile.c_str()) == -1)
 						throw errorMessage(500, serverID);
 				}

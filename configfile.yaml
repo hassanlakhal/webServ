@@ -8,12 +8,12 @@ server:
   location:
     - path: /loc
     - root: www
-    - listing_dir: on
+    - listing_dir: off
     - upload: on
     - upload_path: /upload
-    - autoindex: off
-    - methods:  POST GET DELETE
-    - index:  index.html
+    - autoindex: on
+    - methods:  POST GET
+    - index:  index.html 33.png
     - cgi_path: .py, /usr/bin/python3
     - cgi_path: .php, /usr/bin/php-cgi
     - cgi_path: .sh, /usr/bin/bash

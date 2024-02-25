@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:59:17 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/23 02:37:05 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/25 22:48:54 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void get(Box &box, int ind, int fd){
 	else
 	{
 		if(!S_ISDIR(file_stat.st_mode))
-			cgi(box, myLocation, fd, reqPath, file, serverID, "GET", "");
+			cgi( box.getClients()[fd], myLocation, reqPath, file, serverID, "GET", "");
 		else
 		{
 			if(myLocation.getAutoIndex() == "on")
@@ -100,7 +100,7 @@ void get(Box &box, int ind, int fd){
 							std::string pathLocation = myLocation.getPath() + "/" + file;
 							throw errorMessage(301,pathLocation,type);
 						}
-						if(!cgi(box, myLocation, fd, reqPath + "/" + file, file, serverID, "GET", ""))
+						if(!cgi(box.getClients()[fd], myLocation, reqPath + "/" + file, file, serverID, "GET", ""))
 							continue;
 					}
 				}
