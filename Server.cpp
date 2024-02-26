@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/21 00:28:09 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/26 13:09:49 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,7 @@ void Server::setPathError(std::string& path)
 bool isNumber(const std::string& s) 
 {
     if (s.empty())
-        return false;
+        throw std::runtime_error("Error: Invalid format for 'client_max_body_size'. It should be a number followed by 'K', 'M', or 'G'.");
     int j = 0;
     for (size_t i = 0; i < s.length(); ++i) 
     {

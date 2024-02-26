@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/26 09:49:43 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/26 13:06:02 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void post(Box &box, int ind, int fd){
 			if(!box.getClients()[fd].getOutFileOpened()){
 				std::stringstream iss;
 				if(myLocation.getUploadPath().empty() && file.empty())
-					throw errorMessage(404, serverID);
+					throw errorMessage(500, serverID);
 				iss << myLocation.getRoot() + "/" + myLocation.getUploadPath();
 				iss << "/file_";
 				iss << time(0);

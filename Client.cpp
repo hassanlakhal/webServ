@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/26 09:47:26 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/26 13:01:27 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,7 +238,7 @@ void Client::ParsingRequest()
 void Client::openFile(std::string file){
 	this->outfile = std::fopen(file.c_str(), "a+");
 	if(!this->outfile)
-		throw errorMessage(404, this->serverId);
+		throw errorMessage(500, this->serverId);
 	this->outfileOpened = true;
 	this->filePath = file;
 }
