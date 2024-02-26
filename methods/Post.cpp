@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Post.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/26 20:14:30 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/27 00:37:32 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ void post(Box &box, int ind, int fd){
 	reqPath =box.getClients()[fd].FullQueryString(reqPath);
 	std::string file = reqPath;
 	reqPath = reqPath.substr(1);
-	std::cout << "path : " << reqPath << std::endl;
-	std::cout << "file : " << file << std::endl;
 	struct stat oStat;
 	if(stat(reqPath.c_str(), &oStat) != 0)
 		throw errorMessage(404, serverID);

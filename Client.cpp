@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/26 21:03:35 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/27 00:36:51 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,6 @@ void Client::loadingFormation(std::string& line)
 	while (getline(iss, key,':') && getline(iss,value))
 	{
 		Map[key] = trim(value);
-		std::cout << key << " " << value << std::endl;
 	}
 }
 

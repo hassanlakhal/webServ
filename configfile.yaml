@@ -13,7 +13,7 @@ server:
     - upload_path: upload
     - autoindex: on
     - methods:  POST GET
-    - index:  index.html 33.png
+    - index:  login.html
     - cgi_path: .py, /usr/bin/python3
     - cgi_path: .php, /usr/bin/php-cgi
     - cgi_path: .sh, /usr/bin/bash

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/26 21:32:45 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/27 00:40:27 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,6 @@ bool isNumber(int idOfServer, std::map<std::string, std::string>& info)
 	if(it != info.end())
 	{
 		std::string s = info["Content-Length"];
-		std::cout << "dddd" << info["Content-Length"]<< std::endl;
 		if (s.empty())
 			throw errorMessage(400, idOfServer);
 		for (size_t i = 0; i < s.length(); ++i)
@@ -242,7 +241,11 @@ bool isNumber(int idOfServer, std::map<std::string, std::string>& info)
 		return false;
 	}
 	else
-		throw errorMessage(400, idOfServer);
+	{
+		it = info.find("Transfer-Encoding");
+		if(it == info.end())
+			throw errorMessage(400, idOfServer);
+	}
     return true;
 }
 
