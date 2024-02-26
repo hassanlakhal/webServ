@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:54 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/20 03:55:29 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/26 09:50:56 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ class Box
         std::map<int,Client> &getClients() ;
         std::string removeSlach(std::string& str);
         const std::string& getQueryString() const;
-        std::string FullQueryString(std::string& path);
+        // std::string FullQueryString(std::string& path);
         webServer& getWebServer() ;
         void sendResponse(int fd);
         void timeOut(int fd, clock_t endTime);

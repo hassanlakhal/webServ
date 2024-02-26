@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/25 23:57:27 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/26 09:47:56 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,12 @@ int cgi(Client& client, Location& myLocation, std::string reqPath, std::string f
 		std::string sr(root_path);
 		if(sd.find(sc) == std::string::npos || sd.find(sr) == std::string::npos)
 			throw errorMessage(403, serverID);
-	FILE * tmpfile = std::fopen((reqPath).c_str(), "r");
-	if(!tmpfile){
-		return 0;
-	}
-	else
-		std::fclose(tmpfile);
+		FILE * tmpfile = std::fopen((reqPath).c_str(), "r");
+		if(!tmpfile){
+			return 0;
+		}
+		else
+			std::fclose(tmpfile);
 	}
 
 	if(!myLocation.getCgiPath().size() && method == "GET")
@@ -152,7 +152,7 @@ int cgi(Client& client, Location& myLocation, std::string reqPath, std::string f
 						std::string b = "CONTENT_TYPE=" + mapInfo["Content-Type"];
 						std::string c = "PATH_TRANSLATED=" + arg2;
 						std::string d = "REQUEST_METHOD=" + client.getMethod();
-						std::string e = "QUERY_STRING=" ;
+						std::string e = "QUERY_STRING=" + client.getQueryString();
 						std::string f = "REDIRECT_STATUS=CGI";
 						std::string g = "HTTP_COOKIE=" + mapInfo["Cookie"];
 						std::string h = "PATH_INFO=" + client.getPathInfo() ;

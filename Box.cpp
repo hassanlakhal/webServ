@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/25 23:58:05 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/26 09:50:46 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ void Box::sendRequest(int fd)
 	{
 		std::string path = clients[fd].getPath();
 		path = removeSlach(path);
-		path = FullQueryString(path);
+		path = clients[fd].FullQueryString(path);
 		int ind = matchLocation(loc,path,idOfServer);
 		if (ind == -1)
 			throw errorMessage(404,idOfServer);
@@ -668,13 +668,13 @@ const std::string& Box::getQueryString() const
 	return this->QueryString;
 }
 
-std::string Box::FullQueryString(std::string& path)
-{
-	size_t a = path.find_last_of('?');
-	if (a != std::string::npos)
-	{
-		QueryString = path.substr(a + 1, path.length());
-		return path.substr(0,a);
-	}
-	return path;
-}
+// std::string Box::FullQueryString(std::string& path)
+// {
+// 	size_t a = path.find_last_of('?');
+// 	if (a != std::string::npos)
+// 	{
+// 		QueryString = path.substr(a + 1, path.length());
+// 		return path.substr(0,a);
+// 	}
+// 	return path;
+// }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Delete.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:53 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/21 16:56:52 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/26 09:49:04 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void deleteM(Box &box, int ind, int fd){
 	char root_path[PATH_MAX];
 	std::string reqPath = box.getClients()[fd].getPath();
 	reqPath = box.removeSlach(reqPath);
-	reqPath = box.FullQueryString(reqPath);
+	reqPath = box.getClients()[fd].FullQueryString(reqPath);
 	reqPath = reqPath.substr(1);
 
 	realpath(reqPath.c_str(), deleted_path);

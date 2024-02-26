@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/25 23:42:34 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/26 09:51:35 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ class Client
         Location savedLocation;
         std::string savedFileDel;
         clock_t StartTimeCGI;
+        std::string QueryString;
     public:
         Client();
         Client(int serverId);
@@ -141,6 +142,8 @@ class Client
         void setPathInfoChecker(bool b);
         bool getPathInfoChecker();
         std::string  getProtocal();
+        std::string FullQueryString(std::string& path);
+        const std::string& getQueryString() const;
         ~Client();
 };
 

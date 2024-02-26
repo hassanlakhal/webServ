@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/25 22:50:19 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/26 09:49:43 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void post(Box &box, int ind, int fd){
 	char current_path[PATH_MAX];
 	char root_path[PATH_MAX];
 	reqPath = box.removeSlach(reqPath);
-	reqPath = box.FullQueryString(reqPath);
+	reqPath =box.getClients()[fd].FullQueryString(reqPath);
 	std::string file = reqPath;
 	reqPath = reqPath.substr(1);
 	if(file.find_last_of('/') != std::string::npos && file.find('.') != std::string::npos)

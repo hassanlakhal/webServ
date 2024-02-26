@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/25 23:42:26 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/26 09:47:26 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ Client::Client(const Client& other)
 	this->matchedTime = other.matchedTime;
 	this->detectCgi = other.detectCgi;
 	this->pathInfoChecker = other.pathInfoChecker;
+	QueryString = other.QueryString;
+
 }
 
 Client& Client::operator=(const Client& other)
@@ -94,6 +96,7 @@ Client& Client::operator=(const Client& other)
 		this->start_time = other.start_time;
 		this->detectCgi = other.detectCgi;
 		this->pathInfoChecker = other.pathInfoChecker;
+		QueryString = other.QueryString;
 	}
 	return *this;
 }
@@ -399,6 +402,21 @@ std::string Client::getSavedFileDel(){
 	return this->savedFileDel;
 }
 
+std::string Client::FullQueryString(std::string& path)
+{
+	size_t a = path.find_last_of('?');
+	if (a != std::string::npos)
+	{
+		QueryString = path.substr(a + 1, path.length());
+		return path.substr(0,a);
+	}
+	return path;
+}
+
+const std::string& Client::getQueryString() const
+{
+	return this->QueryString;
+}
 
 void Client::setStartTimeCGI(clock_t start_time){
 	this->StartTimeCGI = start_time;
