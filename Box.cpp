@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/26 09:50:46 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:59:34 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,13 +268,16 @@ void Box::readRequest(int fdRequest, int epollFd)
 				else
 					idOfServer = clients[fdRequest].getServerId();
 				clients[fdRequest].setServerId(idOfServer);
-				iss >> nb;
+				if(!(iss >> nb))
+					throw errorMessage(400, idOfServer);
 				if (clients[fdRequest].getMethod().empty() || clients[fdRequest].getProtocal().empty() || clients[fdRequest].getPath().empty() || clients[fdRequest].getProtocal() != "HTTP/1.1\r")
 					throw errorMessage(400,idOfServer);
 				if (clients[fdRequest].getMethod() == "POST")
 				{
 					if(mapInfo["Content-Length"].empty())
 						throw errorMessage(400,idOfServer);
+					if (nb > _InfoServer.getServer()[idOfServer].getMaxBodySize() || _InfoServer.getServer()[idOfServer].getMaxBodySize() == 0)
+						throw errorMessage(413,idOfServer);
 				}
 				if (mapInfo["Host"].empty())
 					throw errorMessage(400,idOfServer);
@@ -284,8 +287,6 @@ void Box::readRequest(int fdRequest, int epollFd)
 					throw  errorMessage(400,idOfServer);
 				if (mapInfo["Host"].length() + clients[fdRequest].getPath().length() > 2048)
 					throw errorMessage(414,idOfServer);
-				if (nb > _InfoServer.getServer()[idOfServer].getMaxBodySize())
-					throw errorMessage(413,idOfServer);
 			}
 			else
 			{

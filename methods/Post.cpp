@@ -6,9 +6,10 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/26 14:19:32 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/26 20:14:30 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "methods.hpp"
 
@@ -24,8 +25,14 @@ void post(Box &box, int ind, int fd){
 	reqPath =box.getClients()[fd].FullQueryString(reqPath);
 	std::string file = reqPath;
 	reqPath = reqPath.substr(1);
-	if(file.find_last_of('/') != std::string::npos && file.find('.') != std::string::npos)
+	std::cout << "path : " << reqPath << std::endl;
+	std::cout << "file : " << file << std::endl;
+	struct stat oStat;
+	if(stat(reqPath.c_str(), &oStat) != 0)
+		throw errorMessage(404, serverID);
+	if(!S_ISDIR(oStat.st_mode)){
 		file = file.substr(file.find_last_of('/') + 1);
+	}
 	else
 		file = "";
 
@@ -47,11 +54,11 @@ void post(Box &box, int ind, int fd){
 		if(mapInfo["Transfer-Encoding"].empty()){
 			if(!box.getClients()[fd].getOutFileOpened()){
 				std::stringstream iss;
-				if(myLocation.getUploadPath().empty() && file.empty()){
-					throw errorMessage(500, serverID);
-				}
 				struct stat mStat;
 				std::string pa =  myLocation.getRoot() + "/" + myLocation.getUploadPath();
+				if((myLocation.getUploadPath().empty() || stat(pa.c_str(), &mStat) != 0) && file.empty()){
+					throw errorMessage(500, serverID);
+				}
 				if(myLocation.getUploadPath().empty() || stat(pa.c_str(), &mStat) != 0){
 					iss << myLocation.getRoot();
 				}
@@ -64,6 +71,7 @@ void post(Box &box, int ind, int fd){
 				iss << ".";
 				iss << extention;
 				filePath = iss.str();
+
 				box.getClients()[fd].openFile(filePath);
 				box.getClients()[fd].IncremetedFileName();
 			}
@@ -91,10 +99,17 @@ void post(Box &box, int ind, int fd){
 		else if(mapInfo["Transfer-Encoding"] == "chunked"){
 			std::string to_write;
 			if(!box.getClients()[fd].getOutFileOpened()){
-				if(myLocation.getUploadPath().empty() && file.empty())
-					throw errorMessage(404,serverID);
 				std::stringstream iss;
-				iss << myLocation.getRoot() + "/" + myLocation.getUploadPath();
+				struct stat mStat;
+				std::string pa =  myLocation.getRoot() + "/" + myLocation.getUploadPath();
+				if((myLocation.getUploadPath().empty() || stat(pa.c_str(), &mStat) != 0) && file.empty()){
+					throw errorMessage(500, serverID);
+				}
+				if(myLocation.getUploadPath().empty() || stat(pa.c_str(), &mStat) != 0){
+					iss << myLocation.getRoot();
+				}
+				else
+					iss << myLocation.getRoot() + "/" + myLocation.getUploadPath();
 				iss << "/file_";
 				iss << time(0);
 				iss << "_";
