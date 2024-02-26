@@ -6,7 +6,7 @@
 /*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 21:14:32 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/16 07:34:31 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/26 16:46:10 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,10 @@ void Location::setRoot(std::string& root)
     if (root[0] != ' ')
         throw Location::ErrorLocation("Missing space in line of Location");
     root = trim(root);
+    if(root.empty() || root.length() < 2)
+        throw std::runtime_error("error line root");
+    if(root[0] != '.' || root[1] != '/')
+        throw std::runtime_error("error line root");
     this->root = root;
 }
 void Location::setCgi(std::string& path)
@@ -90,9 +94,15 @@ void Location::setCgi(std::string& path)
     std::string key, value;
     while (it != paths.end())
     {
+        std::string temp;
         std::istringstream iss(*it);
         getline(iss,key,',');
         getline(iss,value);
+        temp.resize(trim(key).length(), ' ');
+        if (trim(key).empty() || trim(key) == temp)
+            throw Location::ErrorLocation("Missing key in block CGI");
+        else if (trim(value).empty())
+            throw Location::ErrorLocation("Missing value in block CGI");
         cgi_path[trim(key)] = trim(value);
         it++;
     }

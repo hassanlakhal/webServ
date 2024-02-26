@@ -1,7 +1,7 @@
 server:
   listen: 8080
   host: 127.0.0.1
-  root: www
+  root: ./www
   client_max_body_size: 1G
   server_name: server1
 
@@ -19,7 +19,7 @@ server:
     - cgi_path: .sh, /usr/bin/bash
   location:
     - path: /
-    - root:  server1
+    - root:  ./server1
     - upload: on
     - listing_dir: off
     - autoindex: on
@@ -31,7 +31,7 @@ server:
     - cgi_path: .sh, /usr/bin/bash
    location:
     - path: /dd
-    - root:  www
+    - root:  ./www
     - upload: on
     - autoindex: off
     - listing_dir: on
@@ -44,13 +44,13 @@ server:
 server:
   listen: 8081
   host: 127.0.0.1
-  root: /nfs/homes/eej-jama/Desktop/Serve/server2
+  root: ./server2
   client_max_body_size: 1.02G
   server_name: server2
 
   location:
     - path: /
-    - root:  /nfs/homes/eej-jama/Desktop/Serve/server2
+    - root:  ./server2
     - upload: on
     - autoindex: off
     - listing_dir: off
@@ -61,7 +61,7 @@ server:
 
   location:
     - path: /home
-    - root:  www
+    - root:  ./www
     - upload: on
     - autoindex: off
     - listing_dir: on
