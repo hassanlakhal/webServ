@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/26 14:19:40 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:03:35 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ void Client::loadingFormation(std::string& line)
 	while (getline(iss, key,':') && getline(iss,value))
 	{
 		Map[key] = trim(value);
+		std::cout << key << " " << value << std::endl;
 	}
 }
 

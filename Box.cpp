@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/26 19:59:34 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:32:45 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,28 @@ int findKey(const mapR& myMap, const std::string& value)
 	return 200;
 }
 
+bool isNumber(int idOfServer, std::map<std::string, std::string>& info)
+{
+	std::map<std::string, std::string>::iterator it;
+	it = info.find("Content-Length");
+	if(it != info.end())
+	{
+		std::string s = info["Content-Length"];
+		std::cout << "dddd" << info["Content-Length"]<< std::endl;
+		if (s.empty())
+			throw errorMessage(400, idOfServer);
+		for (size_t i = 0; i < s.length(); ++i)
+		{
+			if (!isdigit(s[i]))
+				throw errorMessage(400, idOfServer);
+		}
+		return false;
+	}
+	else
+		throw errorMessage(400, idOfServer);
+    return true;
+}
+
 void Box::readRequest(int fdRequest, int epollFd)
 {
 	char buffer[2048] = {0};
@@ -255,7 +277,6 @@ void Box::readRequest(int fdRequest, int epollFd)
 				clients[fdRequest].ParsingRequest();
 				std::map<std::string, std::string> mapInfo = clients[fdRequest].getInfoMap();
 				std::vector<int> posServer;
-				std::istringstream iss(mapInfo["Content-Length"]);
 				if(checkDup(_InfoServer.getServer(),posServer))
 				{
 					size_t  i = 0;
@@ -268,14 +289,16 @@ void Box::readRequest(int fdRequest, int epollFd)
 				else
 					idOfServer = clients[fdRequest].getServerId();
 				clients[fdRequest].setServerId(idOfServer);
-				if(!(iss >> nb))
-					throw errorMessage(400, idOfServer);
 				if (clients[fdRequest].getMethod().empty() || clients[fdRequest].getProtocal().empty() || clients[fdRequest].getPath().empty() || clients[fdRequest].getProtocal() != "HTTP/1.1\r")
 					throw errorMessage(400,idOfServer);
 				if (clients[fdRequest].getMethod() == "POST")
 				{
-					if(mapInfo["Content-Length"].empty())
-						throw errorMessage(400,idOfServer);
+					bool isI =  isNumber(idOfServer,mapInfo);
+					if (!isI)
+					{
+						std::istringstream iss(mapInfo["Content-Length"]);
+						iss >> nb;
+					}
 					if (nb > _InfoServer.getServer()[idOfServer].getMaxBodySize() || _InfoServer.getServer()[idOfServer].getMaxBodySize() == 0)
 						throw errorMessage(413,idOfServer);
 				}
