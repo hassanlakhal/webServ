@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 20:39:57 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/26 13:09:49 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:39:37 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void Server::addLocation(Location *location)
         for (size_t i = 0; i < Locations.size() - 1; ++i)
         {
             for (size_t j = i + 1; j < Locations.size(); ++j)
-            { 
+            {
                 if (Locations[i].getPath() == Locations[j].getPath())
                    throw std::runtime_error("Error: Duplicate location found. Path '" + Locations[i].getPath() + "' already exists.");
             }
@@ -172,6 +172,11 @@ void Server::setRoot(std::string& root)
     if (root[0] != ' ')
         throw std::runtime_error("error line root");
     root = trim(root);
+    if(root.empty() || root.length() < 2){
+        throw std::runtime_error("error line root");
+    }
+    if(root[0] != '.' || root[1] != '/')
+        throw std::runtime_error("error line root");
     this->root =  root;
 }
 
@@ -219,12 +224,12 @@ void Server::setPathError(std::string& path)
     }
 }
 
-bool isNumber(const std::string& s) 
+bool isNumber(const std::string& s)
 {
     if (s.empty())
         throw std::runtime_error("Error: Invalid format for 'client_max_body_size'. It should be a number followed by 'K', 'M', or 'G'.");
     int j = 0;
-    for (size_t i = 0; i < s.length(); ++i) 
+    for (size_t i = 0; i < s.length(); ++i)
     {
         if (s[i] == '.' && j < 1)
         {
@@ -237,11 +242,11 @@ bool isNumber(const std::string& s)
     return true;
 }
 
-void Server::setMaxBodySize(std::string& maxBodySize) 
+void Server::setMaxBodySize(std::string& maxBodySize)
 {
     if (maxBodySize.empty() || maxBodySize[0] != ' ')
         throw std::runtime_error("Error: Invalid format for 'client_max_body_size'. It should start with a space.");
-    
+
     maxBodySize = trim(maxBodySize);
 
     char unit = maxBodySize[maxBodySize.length() - 1];
@@ -250,7 +255,7 @@ void Server::setMaxBodySize(std::string& maxBodySize)
     std::istringstream iss(size);
     double nb;
     iss >> nb;
-    switch (unit) 
+    switch (unit)
     {
         case 'B':
             this->client_max_body_size = nb;

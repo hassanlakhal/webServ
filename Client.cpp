@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/26 13:01:27 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:19:40 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,8 +237,9 @@ void Client::ParsingRequest()
 
 void Client::openFile(std::string file){
 	this->outfile = std::fopen(file.c_str(), "a+");
-	if(!this->outfile)
+	if(!this->outfile){
 		throw errorMessage(500, this->serverId);
+	}
 	this->outfileOpened = true;
 	this->filePath = file;
 }

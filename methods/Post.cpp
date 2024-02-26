@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Post.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/26 13:06:02 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:19:32 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,16 @@ void post(Box &box, int ind, int fd){
 		if(mapInfo["Transfer-Encoding"].empty()){
 			if(!box.getClients()[fd].getOutFileOpened()){
 				std::stringstream iss;
-				if(myLocation.getUploadPath().empty() && file.empty())
+				if(myLocation.getUploadPath().empty() && file.empty()){
 					throw errorMessage(500, serverID);
-				iss << myLocation.getRoot() + "/" + myLocation.getUploadPath();
+				}
+				struct stat mStat;
+				std::string pa =  myLocation.getRoot() + "/" + myLocation.getUploadPath();
+				if(myLocation.getUploadPath().empty() || stat(pa.c_str(), &mStat) != 0){
+					iss << myLocation.getRoot();
+				}
+				else
+					iss << myLocation.getRoot() + "/" + myLocation.getUploadPath();
 				iss << "/file_";
 				iss << time(0);
 				iss << "_";

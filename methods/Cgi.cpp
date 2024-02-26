@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cgi.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/26 09:47:56 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/26 14:19:11 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ std::string fillMapType(std::string extention){
 
 
 int cgi(Client& client, Location& myLocation, std::string reqPath, std::string file, int serverID, std::string method, std::string postFile){
-
 
 	std::string extention = "";
 	char cgi_path[PATH_MAX] = {0};

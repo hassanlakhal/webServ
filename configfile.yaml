@@ -7,10 +7,10 @@ server:
 
   location:
     - path: /loc
-    - root: www
+    - root: ./www
     - listing_dir: off
     - upload: on
-    - upload_path: /upload
+    - upload_path: upload
     - autoindex: on
     - methods:  POST GET
     - index:  index.html 33.png
@@ -44,15 +44,15 @@ server:
 server:
   listen: 8081
   host: 127.0.0.1
-  root: www
+  root: /nfs/homes/eej-jama/Desktop/Serve/server2
   client_max_body_size: 1.02G
   server_name: server2
 
   location:
     - path: /
-    - root:  server2
+    - root:  /nfs/homes/eej-jama/Desktop/Serve/server2
     - upload: on
-    - autoindex: on
+    - autoindex: off
     - listing_dir: off
     - upload_path: ./
     - methods: POST GET DELETE
@@ -63,7 +63,7 @@ server:
     - path: /home
     - root:  www
     - upload: on
-    - autoindex: on
+    - autoindex: off
     - listing_dir: on
     - upload_path: index.html
     - methods: POST GET DELETE
