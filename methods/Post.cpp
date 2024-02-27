@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/27 14:47:39 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/27 16:15:05 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,10 @@ void post(Box &box, int ind, int fd){
 						box.getClients()[fd].setOutFileOpened(false);
 						box.getClients()[fd].setStringBody('e', "");
 						fclose(box.getClients()[fd].getOutFile());
+						if(box.getClients()[fd].getSizeCompared() > box.getWebServer().getServer()[serverID].getMaxBodySize()){
+							unlink(filePath.c_str());
+							throw errorMessage(413, serverID);
+						}
 						if(!file.empty()){
 							if(cgi(box.getClients()[fd], myLocation, reqPath, file, serverID, "POST", box.getClients()[fd].getFilePath())){
 
@@ -145,23 +149,14 @@ void post(Box &box, int ind, int fd){
 					}
 					box.getClients()[fd].setChunkSizee(strtoul(chunkSize.c_str(), NULL, 16));
 					chunk = strBody.substr(strBody.find("\r\n") + 2);
-					box.getClients()[fd].setSizeCompared(chunk.length());
+
 					box.getClients()[fd].setSizeAppended('a', chunk.length());
 					box.getClients()[fd].setStringBody('e', chunk);
 					box.getClients()[fd].setEnteredfirstTime(true);
-					if(box.getClients()[fd].getSizeCompared() > box.getWebServer().getServer()[serverID].getMaxBodySize()){
-						unlink(filePath.c_str());
-						throw errorMessage(413, serverID);
-					}
 				}else{
 
 					box.getClients()[fd].setSizeAppended('a', chunk.length());
 					box.getClients()[fd].setStringBody('a', chunk);
-					box.getClients()[fd].setSizeCompared(chunk.length());
-					if(box.getClients()[fd].getSizeCompared() > box.getWebServer().getServer()[serverID].getMaxBodySize()){
-						unlink(filePath.c_str());
-						throw errorMessage(413, serverID);
-					}
 				}
 				if(box.getClients()[fd].getChunkSizee() <= box.getClients()[fd].getSizeAppended()){
 					to_write = box.getClients()[fd].getStringBody();
@@ -171,6 +166,12 @@ void post(Box &box, int ind, int fd){
 					fwrite(to_write.c_str(), 1, to_write.length(), box.getClients()[fd].getOutFile());
 					box.getClients()[fd].setEnteredfirstTime(false);
 					box.getClients()[fd].setSizeAppended('e', 0);
+					box.getClients()[fd].setSizeCompared(to_write.length());
+					if(box.getClients()[fd].getSizeCompared() > box.getWebServer().getServer()[serverID].getMaxBodySize()){
+						fclose(box.getClients()[fd].getOutFile());
+						unlink(filePath.c_str());
+						throw errorMessage(413, serverID);
+					}
 					if(box.getClients()[fd].getStringBody().find("\r\n0\r\n") != std::string::npos){
 						box.getClients()[fd].setOutFileOpened(false);
 						box.getClients()[fd].setStringBody('e', "");

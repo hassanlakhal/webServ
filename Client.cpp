@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/27 14:36:09 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:44:11 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ Client& Client::operator=(const Client& other)
 	}
 	return *this;
 }
+
 
 void Client::setResponse(const Response& rep)
 {
