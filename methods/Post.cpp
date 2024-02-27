@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Post.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:15 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/27 00:37:32 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/27 14:47:39 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,14 +145,23 @@ void post(Box &box, int ind, int fd){
 					}
 					box.getClients()[fd].setChunkSizee(strtoul(chunkSize.c_str(), NULL, 16));
 					chunk = strBody.substr(strBody.find("\r\n") + 2);
+					box.getClients()[fd].setSizeCompared(chunk.length());
 					box.getClients()[fd].setSizeAppended('a', chunk.length());
 					box.getClients()[fd].setStringBody('e', chunk);
 					box.getClients()[fd].setEnteredfirstTime(true);
+					if(box.getClients()[fd].getSizeCompared() > box.getWebServer().getServer()[serverID].getMaxBodySize()){
+						unlink(filePath.c_str());
+						throw errorMessage(413, serverID);
+					}
 				}else{
 
 					box.getClients()[fd].setSizeAppended('a', chunk.length());
 					box.getClients()[fd].setStringBody('a', chunk);
-
+					box.getClients()[fd].setSizeCompared(chunk.length());
+					if(box.getClients()[fd].getSizeCompared() > box.getWebServer().getServer()[serverID].getMaxBodySize()){
+						unlink(filePath.c_str());
+						throw errorMessage(413, serverID);
+					}
 				}
 				if(box.getClients()[fd].getChunkSizee() <= box.getClients()[fd].getSizeAppended()){
 					to_write = box.getClients()[fd].getStringBody();

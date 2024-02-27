@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:53 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/26 09:51:35 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/27 14:34:49 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ class Client
         bool loadingHead;
         int serverId;
         unsigned long ChunkSizee;
+        unsigned long sizeCompard;
         std::vector<unsigned char> body;
         infoMap Map;
         size_t size;
@@ -144,6 +145,8 @@ class Client
         std::string  getProtocal();
         std::string FullQueryString(std::string& path);
         const std::string& getQueryString() const;
+        void setSizeCompared(size_t s);
+        size_t getSizeCompared();
         ~Client();
 };
 

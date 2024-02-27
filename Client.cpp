@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 09:53:30 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/27 00:36:51 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/27 14:36:09 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ Client::Client(): loadingHead(true),serverId(0)
 	this->matchedTime = false;
 	this->detectCgi = false;
 	this->pathInfoChecker = false;
+	this->sizeCompard = 0;
 }
 
 Client::Client(int serverId): loadingHead(true),serverId(serverId)
@@ -32,6 +33,7 @@ Client::Client(int serverId): loadingHead(true),serverId(serverId)
 	this->sizeAppended = 0;
 	this->start_time = clock();
 	this->pathInfoChecker = false;
+	this->sizeCompard = 0;
 }
 
 int Client::incremetedFileName = 0;
@@ -70,6 +72,7 @@ Client::Client(const Client& other)
 	this->matchedTime = other.matchedTime;
 	this->detectCgi = other.detectCgi;
 	this->pathInfoChecker = other.pathInfoChecker;
+	this->sizeCompard = other.sizeCompard;
 	QueryString = other.QueryString;
 
 }
@@ -97,6 +100,7 @@ Client& Client::operator=(const Client& other)
 		this->detectCgi = other.detectCgi;
 		this->pathInfoChecker = other.pathInfoChecker;
 		QueryString = other.QueryString;
+		this->sizeCompard = other.sizeCompard;
 	}
 	return *this;
 }
@@ -470,4 +474,12 @@ void Client::setPathInfoChecker(bool b){
 
 bool Client::getPathInfoChecker(){
 	return this->pathInfoChecker;
+}
+
+void Client::setSizeCompared(size_t s){
+	this->sizeCompard += s;
+}
+
+size_t Client::getSizeCompared(){
+	return this->sizeCompard;
 }

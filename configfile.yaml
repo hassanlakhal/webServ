@@ -2,7 +2,7 @@ server:
   listen: 8080
   host: 127.0.0.1
   root: ./www
-  client_max_body_size: 1G
+  client_max_body_size: 50M
   server_name: server1
 
   location:

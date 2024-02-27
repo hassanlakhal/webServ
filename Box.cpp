@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/27 00:40:27 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/27 14:14:08 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,11 +304,12 @@ void Box::readRequest(int fdRequest, int epollFd)
 					}
 					if (nb > _InfoServer.getServer()[idOfServer].getMaxBodySize() || _InfoServer.getServer()[idOfServer].getMaxBodySize() == 0)
 						throw errorMessage(413,idOfServer);
+					if (!mapInfo["Transfer-Encoding"].empty() && mapInfo["Transfer-Encoding"] != "chunked")
+						throw errorMessage(501,idOfServer);
 				}
 				if (mapInfo["Host"].empty())
 					throw errorMessage(400,idOfServer);
-				if (!mapInfo["Transfer-Encoding"].empty() && mapInfo["Transfer-Encoding"] != "chunked")
-					throw errorMessage(501,idOfServer);
+
 				if (clients[fdRequest].getPath().find("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~!$&'()*+,;=") != std::string::npos)
 					throw  errorMessage(400,idOfServer);
 				if (mapInfo["Host"].length() + clients[fdRequest].getPath().length() > 2048)
