@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Box.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/27 16:59:49 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/28 00:33:51 by hlakhal-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -369,8 +369,14 @@ void Box::sendResponse(int fd)
 				close(fd);
 				a.getFile().close();
 			}
-			if(a.getStatusCode() == 301)
+			if(a.getStatusCode() == 301 || a.getStatusCode() == 204)
 					std::cout << GREEN << a.getStatusCode() << mess <<  RESET << std::endl;
+			if (a.getStatusCode() == 204)
+			{
+				close(fd);
+				a.getFile().close();
+				return ;
+			}
 			return ;
 		}
 		if (a.getFile().is_open())

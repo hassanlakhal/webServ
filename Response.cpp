@@ -114,6 +114,14 @@ std::string Response::getHeader()
     name_server = "test";
     if (result == "301" || result == "201")
         location =  "\r\nLocation: " + this->path;
+    if (result == "204")
+    {
+        start_line = "HTTP/1.1 " + result + HttpStatusMessages[status_code] +"\r\n";
+        header = "Server: YourServer\r\n";
+        header += "Content-Length: 0\r\n";
+        header += "\r\n"; 
+        return start_line + header;
+    }
     start_line = "HTTP/1.1 " + result + HttpStatusMessages[status_code] + "\r\n";
     header = "Server: " + name_server + "\r\n" + "Content-Type: " + type + location  + "\r\n\r\n";
     start_line += header;
