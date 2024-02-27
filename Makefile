@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+         #
+#    By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/06 01:05:23 by hlakhal-          #+#    #+#              #
-#    Updated: 2024/02/21 01:24:17 by hlakhal-         ###   ########.fr        #
+#    Updated: 2024/02/27 17:10:11 by eej-jama         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRC =  Location.cpp  Server.cpp webServer.cpp main.cpp parsingFile.cpp\
 
 CXX = c++ -std=c++98
 
-CXXFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
+CXXFLAGS = -Wall -Wextra -Werror 
 
 all:$(NAME)
 

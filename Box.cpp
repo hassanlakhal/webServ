@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:22:45 by hlakhal-          #+#    #+#             */
-/*   Updated: 2024/02/27 14:14:08 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/27 16:59:49 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,6 +294,8 @@ void Box::readRequest(int fdRequest, int epollFd)
 				clients[fdRequest].setServerId(idOfServer);
 				if (clients[fdRequest].getMethod().empty() || clients[fdRequest].getProtocal().empty() || clients[fdRequest].getPath().empty() || clients[fdRequest].getProtocal() != "HTTP/1.1\r")
 					throw errorMessage(400,idOfServer);
+				if (mapInfo["Host"].empty())
+					throw errorMessage(400,idOfServer);
 				if (clients[fdRequest].getMethod() == "POST")
 				{
 					bool isI =  isNumber(idOfServer,mapInfo);
@@ -307,8 +309,6 @@ void Box::readRequest(int fdRequest, int epollFd)
 					if (!mapInfo["Transfer-Encoding"].empty() && mapInfo["Transfer-Encoding"] != "chunked")
 						throw errorMessage(501,idOfServer);
 				}
-				if (mapInfo["Host"].empty())
-					throw errorMessage(400,idOfServer);
 
 				if (clients[fdRequest].getPath().find("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~!$&'()*+,;=") != std::string::npos)
 					throw  errorMessage(400,idOfServer);

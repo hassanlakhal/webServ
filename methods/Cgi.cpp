@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:06:29 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/26 14:19:11 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/27 16:50:28 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,11 +196,9 @@ int cgi(Client& client, Location& myLocation, std::string reqPath, std::string f
 				}
 				client.setDetectCgi(false);
 				if(WEXITSTATUS(status) != 0){
-					std::cout << "status : " << WEXITSTATUS(status) << std::endl;
 					if(unlink(fileDel.c_str()) == -1)
 						throw errorMessage(500, serverID);
 					throw errorMessage(500, serverID);
-					std::cout << "status : " <<WEXITSTATUS(status) << "\n";
 				}
 				if(method == "POST"){
 					postFile = client.getSavedPostFIle();

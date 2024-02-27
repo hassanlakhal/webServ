@@ -6,7 +6,7 @@
 /*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:59:17 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/26 14:18:47 by eej-jama         ###   ########.fr       */
+/*   Updated: 2024/02/27 17:03:03 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void get(Box &box, int ind, int fd){
 		file = "";
 
 
-	// std::cout << "req path 1 : " << reqPath << std::endl;
 
 	realpath(reqPath.c_str(), get_path);
 	std::string sd(get_path);
@@ -68,10 +67,6 @@ void get(Box &box, int ind, int fd){
 	std::string sc(current_path);
 	realpath(myLocation.getRoot().c_str(), root_path);
 	std::string sr(root_path);
-
-	// std::cout << "req path : " << sd << std::endl;
-	// std::cout << "current paath : " << sc << std::endl;
-	// std::cout << "root path : " << sr << std::endl;
 	if(sd.find(sc) == std::string::npos || sd.find(sr) == std::string::npos)
 		throw errorMessage(403, serverID);
 

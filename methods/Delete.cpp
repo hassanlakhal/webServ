@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Delete.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hlakhal- <hlakhal-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: eej-jama <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 11:08:53 by eej-jama          #+#    #+#             */
-/*   Updated: 2024/02/26 09:49:04 by hlakhal-         ###   ########.fr       */
+/*   Updated: 2024/02/27 16:27:48 by eej-jama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void remove_ressource(std::string reqPath, int serverID){
 			DIR *dir;
 			struct dirent *dent;
 			if(check_empty(reqPath.c_str())){
-				std::cout << "content : " << reqPath << "\n";
 				if (stat(reqPath.c_str(), &file_stat) != 0)
 					throw errorMessage(500, serverID);
 				if((file_stat.st_mode & S_IWUSR)){
