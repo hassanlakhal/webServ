@@ -64,4 +64,25 @@ This project focuses on **network programming**, **event-driven I/O**, **multi-c
 
 ```bash
 make
+```
 
+## 🌍 Configuration Example
+
+``` bash
+server:
+  listen: 2323
+  host: 127.0.0.1
+  root: ./www
+  client_max_body_size: 1G
+  server_name: server2
+
+  location:
+    - path: /
+    - root:  ./www
+    - upload: on
+    - autoindex: on
+    - listing_dir: on
+    - upload_path: ./
+    - methods: POST GET DELETE
+    - index: index.html
+    - cgi_path: .php, /usr/bin/php-cgi
