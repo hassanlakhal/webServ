@@ -50,3 +50,19 @@ This project focuses on **network programming**, **event-driven I/O**, **multi-c
 - **OS**: Linux (Debian/Ubuntu recommended)
 
 ---
+
+---
+
+## 🚀 Getting Started
+
+### 🔧 Prerequisites
+
+- A Linux environment (Debian-based recommended)
+- A C++ compiler (e.g., `g++`)
+- Make
+
+### 🛠️ Build the Server
+
+```bash
+make
+
