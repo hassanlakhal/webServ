@@ -46,12 +46,11 @@ This project focuses on **network programming**, **event-driven I/O**, **multi-c
 
 - **Language**: C++
 - **Network API**: POSIX sockets
-- **Event handling**: `select` / `poll` / `kqueue` (platform-dependent)
+- **Event handling**: ` epool ` (platform-dependent)
 - **OS**: Linux (Debian/Ubuntu recommended)
 
 ---
 
----
 
 ## 🚀 Getting Started
 
